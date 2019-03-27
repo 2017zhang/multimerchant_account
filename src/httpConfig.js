@@ -1,6 +1,6 @@
-// const request = 'http://sapi.shopsn.cn/';
+ const request = 'http://sapi.shopsn.cn/';
 // const imgRequest = "http://center.shopsn.cn/";
-const request = 'http://www.b2b2c_sapi.com/';
+//const request = 'http://www.b2b2c_sapi.com/';
 const imgRequest = "http://www.b2b2c_center.com/";
 const uploadImage = 'upload.php/';
 const config = {
