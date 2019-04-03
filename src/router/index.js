@@ -88,6 +88,7 @@ const shopnav = r => require(['@/components/home/shop/children/shopNav'], r); //
 const addshopnav = r => require(['@/components/home/shop/children/addShopNav'], r); //商户中心-店铺-添加店铺导航
 const navset = r => require(['@/components/home/shop/children/navSet'], r); //商户中心-店铺-导航设置
 const service = r => require(['@/components/home/service/service'], r); //商户中心-客服
+const conversation = r => require(['@/components/home/service/children/conversation'], r); //商户中心-会话
 const servicetype = r => require(['@/components/home/service/children/serviceType'], r); //商户中心-客服类型
 const addservicetype = r => require(['@/components/home/service/children/addServiceType'], r); //商户中心-添加客服类型
 const servicemanage = r => require(['@/components/home/service/children/serviceManage'], r); //商户中心-客服管理
@@ -579,6 +580,11 @@ const router = new Router({
                 path: '/addservicemanage',
                 name: 'addservicemanage',
                 component: addservicemanage
+            },
+            { //商户中心-会话
+                path: '/conversation',
+                name: 'conversation',
+                component: conversation
             },
             // { //商户中心-客服-系统消息
             //     path: '/systemInfo',
