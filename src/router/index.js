@@ -74,6 +74,10 @@ const addMember = r => require(['@/components/home/member/children/addMember'], 
 const shop = r => require(['@/components/home/shop/shop'], r); //商户中心-店铺
 const add = r => require(['@/components/add/add'],r);
 const shopfit = r => require(['@/components/home/shop/children/shopFit'], r); //商户中心-店铺设置
+
+
+
+const shopscope = r => require(['@/components/home/shop/children/shopScope'], r); //商户中心-店铺设置
 const shopinfo = r => require(['@/components/home/shop/children/shopInfo'], r); //商户中心-店铺信息
 const delivery = r => require(['@/components/home/shop/children/delivery'], r); //商户中心-店铺-配送方式
 const shopset = r => require(['@/components/home/shop/children/shopSet'], r); //商户中心-店铺-装修店铺
@@ -259,6 +263,11 @@ const router = new Router({
                 path: '/addFreight',
                 name: 'addFreight',
                 component: addFreight
+            },
+            { //商户中心-添加运费设置
+                path: '/shopscope',
+                name: 'shopscope',
+                component: shopscope
             },
             // { //商户中心-快递公司列表
             //     path: '/expressList',
