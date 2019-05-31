@@ -11,7 +11,7 @@
 			<el-upload :action="action" list-type="picture-card" accept=".jpg,.png,.jpeg" multiple name="fileData" :data="uploadData" :before-upload="beforeUploade" :file-list="fileList" :on-success="success" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
 				<i class="el-icon-plus"></i>
 			</el-upload>
-			<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5000kb,图片宽度介于{{imageConf.min_width}}~{{imageConf.max_width}},高度介于{{imageConf.min_height}}~{{imageConf.max_height}}</div>
+			<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb,图片宽度介于{{imageConf.min_width}}~{{imageConf.max_width}},高度介于{{imageConf.min_height}}~{{imageConf.max_height}}</div>
 			<el-dialog :visible.sync="dialogVisible">
 				<img width="100%" :src="dialogImageUrl" alt="">
 			</el-dialog>

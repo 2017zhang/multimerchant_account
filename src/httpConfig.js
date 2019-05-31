@@ -285,6 +285,7 @@ const config = {
     // 用户组管理(角色列表)
     getRoleList: request + 'Account/roleList',//列表
     delRole: request +'Account/delRole',//删除
+    delAllAccount: request +'Account/delAllAccount',//批量删除
     getRoleDetail: request + 'Account/getRoleById', //详情
     saveRole: request + 'Account/updRole', //编辑
     addRole: request + 'Account/addRole', //添加
