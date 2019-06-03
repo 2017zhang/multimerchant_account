@@ -1,5 +1,4 @@
- // const request = 'http://sapi.shopsn.cn/';
- const request = "http://47.103.52.20:8521/";
+ const request = 'http://sapi.shopsn.cn/';
 // const imgRequest = "http://center.shopsn.cn/";
 //const request = 'http://www.b2b2c_sapi.com/';
 const imgRequest = "http://www.b2b2c_center.com/";
@@ -46,11 +45,6 @@ const config = {
     addGoodsAttr: request + 'GoodsAttr/addGoodsAttribute', //添加商品属性
     getGoodsSpec: request + 'GoodsSpec/getAddContentByGoodsAttribute', //获取商品规格
     addGoodsSpec: request + 'Goods/addSpecGoods', //添加商品规格
-
-    StoreSalesarea: request + 'StoreSalesarea/index ',  //添加销售区域页面加载11111111111111111111111111111111
-    addSalesArea: request + 'StoreSalesarea/addSalesArea',//添加地区
-    updateSalesArea: request + 'StoreSalesarea/updateSalesArea',//修改地区
-    deleteSalesArea: request + 'StoreSalesarea/deleteSalesArea',//删除地区
 
     // 修改商品
     getGoodsDetail: request + 'Goods/modifyGoods', //获取商品详情
@@ -291,7 +285,6 @@ const config = {
     // 用户组管理(角色列表)
     getRoleList: request + 'Account/roleList',//列表
     delRole: request +'Account/delRole',//删除
-    delAllAccount: request +'Account/delAllAccount',//批量删除
     getRoleDetail: request + 'Account/getRoleById', //详情
     saveRole: request + 'Account/updRole', //编辑
     addRole: request + 'Account/addRole', //添加

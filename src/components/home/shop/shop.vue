@@ -4,9 +4,9 @@
         <!-- 头部 -->
         <header-Top></header-Top>
         <!-- 内容 -->
-        <div class="content" >
+        <div class="content">
             <!-- 左边 -->
-            <left :list="$store.state.leftNav" ></left>
+            <left :list="$store.state.leftNav"></left>
             <!-- 右边 -->
             <iframe-Label></iframe-Label>
         </div>
