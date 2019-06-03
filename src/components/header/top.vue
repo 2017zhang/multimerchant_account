@@ -103,7 +103,8 @@
                     
                 }
                 this.$store.state.leftNav = filterData;
-                //console.log(filterData);
+                // console.log(filterData,888);
+                this.$store.state.leftNav[5]={title: "店铺销售区域", url: "shopscope"};
             },
             tab(index){
                 this.$store.state.leftNav = [];
