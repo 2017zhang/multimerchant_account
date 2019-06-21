@@ -254,7 +254,7 @@ const config = {
     * 8、 客服
     */
     // 客服类型
-    getServiceTypeList: request +'Service/typeList',//列表
+    // getServiceTypeList: request +'Service/typeList',//列表
     setServiceTypeUse: request +'Service/typeIsUse',//是否可用
     delServiceType: request +'Service/deletetype',//删除
     getServiceTypeDetail: request +'Service/getTypeDetailById',//详情

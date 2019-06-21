@@ -139,18 +139,18 @@
 					this.$message.error(err.data.message);
 				});
 			},
-			getClass() {
-				//获取客服类型
-            	this.$HTTP(this.$httpConfig.getServiceTypeList,{}).then((res) => {
-					if(!res.data.data) {
-						this.$layer.msg('暂无数据:(');
-						return;
-					}
-					this.classData = res.data.data;
-				}).catch((err) => {
-					console.log(err)
-				});
-			},
+			// getClass() {
+			// 	// //获取客服类型
+            // 	// this.$HTTP(this.$httpConfig.getServiceTypeList,{}).then((res) => {
+			// 	// 	if(!res.data.data) {
+			// 	// 		this.$layer.msg('暂无数据:(');
+			// 	// 		return;
+			// 	// 	}
+			// 	// 	this.classData = res.data.data;
+			// 	// }).catch((err) => {
+			// 	// 	console.log(err)
+			// 	// });
+			// },
 			submit() {
 				console.log(this.tool);
 				this.params.status = Number(this.params.status);
