@@ -99,7 +99,7 @@ export default {
 					this.$store.state.relInfo = '暂无数据';
 				}
 			}).catch((err) => {
-				this.$message.error(err.data.message);
+				// this.$message.error(err.data.message);
 			});
 		}
 	},
