@@ -1,10 +1,10 @@
- //const request = 'http://sapi.shopsn.cn/';
- const  request = 'http://api.shopsn.cn/agent/adminstore.php/';
- // const imgRequest = "http://center.shopsn.cn/";
- //const request = 'http://www.b2b2c_sapi.com/';
- const imgRequest = "http://www.b2b2c_center.com/";
- const uploadImage = 'upload.php/';
- const config = {
+ // const request = 'http://sapi.shopsn.cn/';
+ const request = 'http://api.shopsn.cn/agent/adminstore.php/';
+// const imgRequest = "http://center.shopsn.cn/";
+//const request = 'http://www.b2b2c_sapi.com/';
+const imgRequest = "http://www.b2b2c_center.com/";
+const uploadImage = 'upload.php/';
+const config = {
 
     // 0、登录
     login: request + 'Public/login', //登录

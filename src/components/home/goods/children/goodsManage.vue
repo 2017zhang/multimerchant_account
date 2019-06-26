@@ -188,98 +188,98 @@
             };
         },
 
-        methods: {
-            toShop(id) {
-                window.open('http://pcweb1.shopsn.cn/#/inroyaldrink/' + id);
-            },
-            delItem(id) {
-                this.$confirm('此操作将永久删除此商品，是否继续？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$HTTP(this.$httpConfig.delGoods, {id: id}, 'post').then((res) => {
-                        this.$message.success(res.data.message);
-                        this.getGoodsList();
-                    }).catch((err) => {
-                        this.$message.error(err);
-                    });
-                }).catch(() => {
-                    this.$message.info('已取消删除');
-                });
-            },
-            // 商品编辑
-            edit(item) {
-                this.$store.commit('clearIndex', [0]);
-                this.$store.commit('clearState', 0);
-                this.$router.push({
-                    name: 'goodsEdit',
-                    params: {
-                        id: item.id
-                    }
-                })
-            },
-            //全选和取消全选
-            allCheck: function () {
-                var list_selects = document.getElementsByName("list_select");
-                var checkBox = document.getElementsByName("all");
-                if (checkBox[0].checked == true) {
-                    for (var i = 0; i < list_selects.length; i++) {
-                        list_selects[i].checked = true;
-                    }
-                } else {
-                    for (var i = 0; i < list_selects.length; i++) {
-                        list_selects[i].checked = false;
-                    }
-                }
-            },
-            /*页面跳转*/
-            handleCurrentChange: function (currentPage) {
-                //	console.log(currentPage);
-                this.currentPage = currentPage;
-                this.getGoodsList();
-            },
-            /*得到默认所有列表数据*/
-            getGoodsList: function () {
-                this.$HTTP(this.$httpConfig.getGoodsList + '/p/' + this.currentPage, {
-                    p: this.currentPage
-                }, 'post').then((res) => {
-                    //		console.log(res)
-                    this.goodsData = res.data.data.data;
-                    this.page_size = parseInt(res.data.data.page_size);
-                    this.page = parseInt(res.data.data.page);
-                    this.$message.success(`${res.data.message}`);
-                }).catch((err) => {
-                    console.log(err)
-                });
-            },
-            log: function (data) {
-                //	console.log(data);
-            },
-            /*商口列表里商品数组中的商品==是否上架*/
-            goodsGoodsSheve: function (goods_id, isMark, index) {
-                //	console.log(goods_id, Number(isMark));
-                this.$HTTP(this.$httpConfig.setShelve, {
-                    id: goods_id,
-                    shelves: Number(isMark),
-                }, 'post').then((res) => {
-                    this.$layer.msg(res.data.message);
-                    this.isMarks[index] = isMark;
-                }).catch((err) => {
-                    console.log(err)
-                });
-            },
-            lookInfo(goodsId) {
-                /*this.$layer.iframe({
-                    content: {
-                        content: goodsDetail, //传递的组件对象
-                        parent: this, //当前的vue对象
-                        data: [goodsId] //props
-                    },
-                    area: ['800px', '600px'],
-                    title: "查看商品信息"
-                });*/
-            },
+	methods: {
+		toShop(id) {
+			window.open('http://b2b2c.shopsn.cn/#/inroyaldrink/' + id);
+		},
+		delItem(id) {
+			this.$confirm('此操作将永久删除此商品，是否继续？', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+				this.$HTTP(this.$httpConfig.delGoods, { id: id }, 'post').then((res) => {
+					this.$message.success(res.data.message);
+					this.getGoodsList();
+				}).catch((err) => {
+					this.$message.error(err);
+				});
+			}).catch(() => {
+				this.$message.info('已取消删除');
+			});
+		},
+		// 商品编辑
+		edit(item) {
+			this.$store.commit('clearIndex', [0]);
+			this.$store.commit('clearState', 0);
+			this.$router.push({
+				name: 'goodsEdit',
+				params: {
+					id: item.id
+				}
+			})
+		},
+		//全选和取消全选
+		allCheck: function () {
+			var list_selects = document.getElementsByName("list_select");
+			var checkBox = document.getElementsByName("all");
+			if (checkBox[0].checked == true) {
+				for (var i = 0; i < list_selects.length; i++) {
+					list_selects[i].checked = true;
+				}
+			} else {
+				for (var i = 0; i < list_selects.length; i++) {
+					list_selects[i].checked = false;
+				}
+			}
+		},
+		/*页面跳转*/
+		handleCurrentChange: function (currentPage) {
+		//	console.log(currentPage);
+			this.currentPage = currentPage;
+			this.getGoodsList();
+		},
+		/*得到默认所有列表数据*/
+		getGoodsList: function () {
+			this.$HTTP(this.$httpConfig.getGoodsList + '/p/' + this.currentPage, {
+				p: this.currentPage
+			}, 'post').then((res) => {
+		//		console.log(res)
+				this.goodsData = res.data.data.data;
+				this.page_size = parseInt(res.data.data.page_size);
+				this.page = parseInt(res.data.data.page);
+				this.$message.success(`${res.data.message}`);
+			}).catch((err) => {
+				console.log(err)
+			});
+		},
+		log: function (data) {
+		//	console.log(data);
+		},
+		/*商口列表里商品数组中的商品==是否上架*/
+		goodsGoodsSheve: function (goods_id, isMark, index) {
+		//	console.log(goods_id, Number(isMark));
+			this.$HTTP(this.$httpConfig.setShelve, {
+				id: goods_id,
+				shelves: Number(isMark),
+			}, 'post').then((res) => {
+				this.$layer.msg(res.data.message);
+				this.isMarks[index] = isMark;
+			}).catch((err) => {
+				console.log(err)
+			});
+		},
+		lookInfo(goodsId) {
+			/*this.$layer.iframe({
+				content: {
+					content: goodsDetail, //传递的组件对象
+					parent: this, //当前的vue对象
+					data: [goodsId] //props
+				},	
+				area: ['800px', '600px'],
+				title: "查看商品信息"
+			});*/
+		},
 
             //搜索
             search() {
