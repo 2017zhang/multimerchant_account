@@ -33,9 +33,9 @@ import './style/notes.css'
 
 //全局方法
 import isLogin from '../js/base';
-window.UEDITOR_CONFIG.serverUrl = 'http://www.b2b2c_center.com/php/controller.php'; //ueditor 上传图片URL
+window.UEDITOR_CONFIG.serverUrl = 'http://center.shopsn.cn/php/controller.php'; //ueditor 上传图片URL
 const user_id = sessionStorage.getItem('user_ID') || '',
-    URL = 'http://www.b2b2c_center.com';
+    URL = 'http://center.shopsn.cn/';
 //     load_wrap = true;
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;

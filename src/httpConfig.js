@@ -2,7 +2,7 @@
  const request = 'http://api.shopsn.cn/agent/adminstore.php/';
 // const imgRequest = "http://center.shopsn.cn/";
 //const request = 'http://www.b2b2c_sapi.com/';
-const imgRequest = "http://www.b2b2c_center.com/";
+const imgRequest = "http://center.shopsn.cn/";
 const uploadImage = 'upload.php/';
 const config = {
 
