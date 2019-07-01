@@ -106,7 +106,7 @@
 				this.queryData();
 			}
 
-			this.getClass();
+			//this.getClass();
 		},
 		methods: {
 			fn() {
