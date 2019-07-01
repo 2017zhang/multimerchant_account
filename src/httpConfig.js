@@ -13,7 +13,7 @@ const config = {
     SendMsg: request + 'SendVerificationCode/registerSendMsg',//发送验证码
     parseReqByPassword: request + 'ForgetThePassword/parseReqByPassword',//提交（忘记密码）
     exitLogon: request + 'Public/exitLogon',//退出登录
-    
+
 
     /*
     *  1、首页
@@ -102,7 +102,7 @@ const config = {
     getFreightCondition: request + 'FreightCondition/getFreightCondition', //获取自定义运费
     setFreightCondition: request + 'FreightCondition/setFreightCondition', //设置自定义运费
 
-    
+
     /*
      * 4、 交易
      */
@@ -248,17 +248,17 @@ const config = {
     delOperateClass: request + 'StoreBindClass/delete', //删除
     getGoodsClassSelect: request +'GoodsClassSelect/index',//所有经营类目列表
     addStoreBindClass: request +'StoreBindClass/add',//添加
-    
+
 
    /*
     * 8、 客服
     */
     // 客服类型
-    getServiceTypeList: request +'Service/typeList',//列表
+    // getServiceTypeList: request +'Service/typeList',//列表
     setServiceTypeUse: request +'Service/typeIsUse',//是否可用
     delServiceType: request +'Service/deletetype',//删除
     getServiceTypeDetail: request +'Service/getTypeDetailById',//详情
-    addServiceType: request +'Service/addtype' ,//添加和修改
+    addServiceType: request +'Service/addtype',//添加和修改
 
     // 客服
     getServiceManageList: request +'Service/manageList',//列表
@@ -267,6 +267,7 @@ const config = {
     delService: request + 'Service/delService',//删除
     getServiceDetail: request + 'Service/getDetailById', //详情
     addService: request + 'Service/addService', //添加和修改
+    addServiceConver: request + 'Service/admin_list', //管理员列表
 
     // 系统消息
     getSystemMsg: request +'SystemMsg/index',//列表
