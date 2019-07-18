@@ -90,7 +90,9 @@ export default {
       },
     }
   },
-  created() {},
+  created() {
+      console.log(111)
+  },
   methods: {
     submit() {
       console.log(1);
