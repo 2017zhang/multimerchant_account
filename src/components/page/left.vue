@@ -31,6 +31,7 @@ export default {
             }
             this.$set(this.status,index,true);
             this.$store.state.link = link;
+            console.log(this.$store.state.link);
         },
         to(link,index){
             for(var i = 0; i < this.state.length; i++){

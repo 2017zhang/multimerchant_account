@@ -67,7 +67,6 @@
 			}
 		},
 		created() {
-			
 			this.getClass();
 		},
 		methods: {

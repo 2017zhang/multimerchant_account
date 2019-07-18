@@ -3,7 +3,7 @@
 		<!-- 添加运费 -->
 		<div class="t_tab">
 			<h1 class="t_title">
-            <span v-if="!status" class="size16">添加运费设置</span>
+            <span v-if="!status" class="size16">添加运费设置111</span>
             <span v-else class="size16">修改运费设置</span>
             <div @click="to" class="t_m fr">返回运费设置列表</div>
         </h1>

@@ -117,6 +117,8 @@ const statistics = r => require(['@/components/reportForms/statistics.vue'],r);/
 const indent = r => require(['@/components/reportForms/indent.vue'],r);//统计 
 const salesDetail = r => require(['@/components/reportForms/salesDetail.vue'],r); //商家销售明细
 const industryAnalyst = r => require(['@/components/reportForms/industryAnalyst.vue'],r); // 行业统计
+const deliveryConfig  = r => require(['@/components/home/logistics/children/deliveryConfig.vue'],r);
+const deliveryList = r => require(['@/components/home/logistics/children/deliveryList.vue'],r)
 // 引入公共组件
 import cityThree from '../common/cityThree.vue'; //省市区三级联查
 Vue.component('city-three', cityThree);
@@ -284,6 +286,12 @@ const router = new Router({
                 path: '/addFreightTempletPostage',
                 name: 'addFreightTempletPostage',
                 component: addFreightTempletPostage
+            },
+            {
+                // 交付配置
+                path:'/deliveryConfig',
+                name:'deliveryConfig',
+                component:deliveryConfig
             },
             // { //商户中心-交易
             //     path: '/trade',
@@ -724,8 +732,8 @@ Router.prototype.initLocalRouters = function() {
 
                 index++;
             }
-            // console.log(allPrivilege)
-            // console.log(topMenu)
+             console.log(allPrivilege)
+             console.log(topMenu)
             router.addRoutes(topMenu);
         }
 
