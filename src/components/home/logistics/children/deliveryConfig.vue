@@ -12,7 +12,7 @@
 
         <el-form-item   >
           <span class="left-text" slot="label"><span class="redtext">*</span>是否开启配送:</span>
-          <el-radio-group v-model="form.is_open"  class="text" >
+          <el-radio-group v-model="form.is_open"  class="text"  prop="is_open">
             <el-radio label="开启"></el-radio>
             <el-radio label="关闭"></el-radio>
           </el-radio-group>
@@ -34,27 +34,27 @@
           </el-radio-group>
         </el-form-item>-->
 
-        <el-form-item  v-if="form.is_open != '关闭' ">
+        <el-form-item  v-if="form.is_open != '关闭' " >
           <span  slot="label" class="centext">运费计算方式:</span>
-          <el-radio-group v-model="form.freight_mode">
+          <el-radio-group v-model="form.freight_mode"  prop="freight_mode">
             <el-radio label="按距离"></el-radio>
             <el-radio label="固定值"></el-radio>
             <el-radio label="免费"></el-radio>
           </el-radio-group>
         </el-form-item>
        <div v-if="form.is_open != '关闭'">
-        <el-form-item  v-if="form.freight_mode != '固定值'"  v-show="form.freight_mode != '免费'">
+        <el-form-item  v-if="form.freight_mode != '固定值'"  v-show="form.freight_mode != '免费'"  prop="distance">
           <span  slot="label"><span class="righttext">运费:</span></span>
           <el-radio-group v-model="form.distance">
-           <el-input v-model="form.distance" placeholder="1.00"></el-input>
+           <el-input v-model="form.distance" placeholder="1.00" prop="distance"></el-input>
             <span class="gl">元(每公里)</span>
 
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-else="form.freight_mode == '固定值'" v-show="form.freight_mode != '免费'">
+        <el-form-item v-else="form.freight_mode == '固定值'" v-show="form.freight_mode != '免费'" prop="freight_money">
           <span  slot="label"><span class="righttext">运费:</span></span>
           <el-radio-group v-model="form.freight_money">
-            <el-input v-model="form.freight_money" placeholder="1.00"></el-input>
+            <el-input v-model="form.freight_money" placeholder="1.00" prop="freight_money"></el-input>
             <span class="gl">元</span>
           </el-radio-group>
         </el-form-item>
@@ -91,40 +91,61 @@ export default {
     }
   },
   created() {
-      console.log(111)
+
   },
   methods: {
     submit() {
       console.log(1);
     },
+
     onSubmit() {
-      if(this.form.freight_mode =="开启"){
-        this.form.freight_mode=0;
-      }
-      if(this.form.freight_mode =="关闭"){
+        console.log(this.form.is_open)
+        if(this.form.is_open =="开启"){
+        this.form.is_open=0;
+        switch (this.form.freight_mode) {
+            case "按距离":
+                this.form.freight_mode=0;
+                   this.form.distance
+                break;
+            case "固定值":
+                this.form.freight_mode=1;
+                  this.form.freight_money;
+                break;
+            case "免费":
+                this.form.freight_mode=2;
+                break;
+            default:;
+        }
+
+      }else{
+            this.form.is_open =1;
+        }
+
+     /* if(this.form.freight_mode =="关闭"){
         this.form.freight_mode=1;
       }
       if(this.form.freight_mode =="按距离"){
-        this.form.freight_mode=0;
+
       }
       if(this.form.freight_mode =="固定值"){
         this.form.freight_mode=1;
       }
       if(this.form.freight_mode =="免费"){
         this.form.freight_mode=2;
-      }
+      }*/
 
 
 
       this.$HTTP( this.$httpConfig.addDeliveryList ,this.form,
              'post').then((res)=> {
-               console.log(res.from.is_open ,+"---"+res.from.freight_mode+"--"+res.from.distance+"--"+res.from.freight_money);
+               /*console.log(res.from.is_open ,+"---"+res.from.freight_mode+"--"+res.from.distance+"--"+res.from.freight_money);*/
 
       }).catch((e) =>  {
                 console.log(e);
       })
-
       console.log('submit!');
+        this.$refs.form.resetFields();
+        this.$message.success('保存成功');
     }
   }
 };
