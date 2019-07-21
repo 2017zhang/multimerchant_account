@@ -20,6 +20,9 @@
         <el-input style="width: 200px;" v-model="params.keyWords" clearable></el-input>
         <el-button class="search-btn"  size="small" type="success">搜索</el-button>
       </div>-->
+      <!--
+      添加配送员信息页面
+      -->
       <el-table border :data="dataTable" style="width: 100%" max-width="900">
         <!--<el-table-column type="selection" width="55"></el-table-column>-->
         <el-table-column prop="id" width="55" label="ID">
@@ -28,9 +31,9 @@
         </el-table-column>
         <el-table-column show-overflow-tooltip width="150" prop="name" label="配送员姓名">
         </el-table-column>
-        <el-table-column width="70" prop="mobile" label="配送员手机号">
+        <el-table-column width="200" prop="mobile" label="配送员手机号">
         </el-table-column>
-        <el-table-column width="70" prop="add_time" label="添加时间">
+        <el-table-column width="200" prop="add_time" label="添加时间">
         </el-table-column>
         <!--<el-table-column width="130" label="开始时间" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -54,7 +57,7 @@
             <span>{{status[scope.$index]}}</span>
           </template>
         </el-table-column>-->
-        <el-table-column width="130" label="操作">
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="edit(scope.row.id)" size="mini" icon="el-icon-edit"></el-button>
             <el-button @click="deleteItem(scope.row.id)" size="mini" icon="el-icon-delete"></el-button>
@@ -83,6 +86,7 @@
           keyWords: '',
           page: 1
         },
+        list:[{name:"xxxx",add_time:'2017/08/09'}],
         status: [],
         isDef: ['拒绝', '通过', '审核中'],
         page_size: 0, //每页显示几个

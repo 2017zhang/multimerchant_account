@@ -261,7 +261,6 @@ import tradeManageVue from '../home/trade/children/tradeManage.vue';
 					this.$layer.msg('密码必须大于6位');
 					return false;
 				}
-				
 				this.$HTTP(this.$httpConfig.login,{
 					seller_name: this.user_name,
 					password: this.pass_word
