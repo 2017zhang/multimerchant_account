@@ -32,43 +32,14 @@
         </el-table-column>
         <el-table-column width="180" prop="add_time" label="添加时间">
         </el-table-column>
-        <!--<el-table-column width="130" label="开始时间" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <time-Plunge :timePlunge="scope.row.start_time"></time-Plunge>
-          </template>
-        </el-table-column>-->
-       <!-- <el-table-column width="130" label="结束时间" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <time-Plunge :timePlunge="scope.row.end_time"></time-Plunge>
-          </template>
-        </el-table-column>-->
-        <!--<el-table-column width="55" prop="panic_num" label="添加时间">
-        </el-table-column>-->
-      <!--  <el-table-column width="70" label="审核状态">
-          <template slot-scope="scope">
-            <span>{{isDef[scope.row.status]}}</span>
-          </template>
-        </el-table-column>-->
-        <!--<el-table-column width="70" label="状态">
-          <template slot-scope="scope">
-            <span>{{status[scope.$index]}}</span>
-          </template>
-        </el-table-column>-->
         <el-table-column width="200" label="操作">
           <template slot-scope="scope">
-            <el-button @click="edit(scope.row.id)" size="mini" icon="el-icon-edit"></el-button>
+            <!--<el-button @click="edit(scope.row.id)" size="mini" icon="el-icon-edit"></el-button>-->
             <el-button @click="deleteItem(scope.row.id)" size="mini" icon="el-icon-delete"></el-button>
           </template>
         </el-table-column>
       </el-table>
-      <!--<div class="Paging">
-        <div class="fl pil">删除</div>
-        <div class="Paging_r">
-          <el-pagination background layout="prev, pager, next,jumper" :page-size="page_size" @current-change="handleCurrentChange" :total="page">
-          </el-pagination>
 
-        </div>
-      </div>-->
     </div>
   </div>
 </template>
@@ -83,11 +54,7 @@
           keyWords: '',
           page: 1
         },
-        status: [],
-        isDef: ['拒绝', '通过', '审核中'],
-        page_size: 0, //每页显示几个
-        page: 0, //总页数
-        currentPage: 1, //当前页
+
       }
     },
     components: {
@@ -144,7 +111,7 @@
                   this.$message.error(res.data.message);
                 })
               },*/
-      edit: function (value) {
+      /*edit: function (value) {
         this.$router.push({
           name: 'addDeliveryList',
           params: {
@@ -152,7 +119,7 @@
             id: value
           }
         });
-      },
+      }*/
       deleteItem(value) {
         this.$confirm('此操作将永久删除此活动，是否继续？', '提示', {
           confirmButtonText: '确定',

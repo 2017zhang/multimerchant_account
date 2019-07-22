@@ -91,6 +91,7 @@ const config = {
     getFreightModelDetail: request + 'FreightMode/getFreightModelOne', //详情
     addFreightModel: request + 'FreightMode/getFreightModelAdd', //添加
     saveFreightModel: request + 'FreightMode/getFreightModelSave', //修改
+    getDeliveryList:request+'Delivery/getDeliveryConfig',//获取配送设置
     addDeliveryList:request+'Delivery/editDeliveryConfig',//配送设置
     getdeliveryListList:request+'Delivery/getDeliveryList',//获取配送员列表---------\
     adddeliveryListList:request+'Delivery/getAddDelivery',//添加配送员
