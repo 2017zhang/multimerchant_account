@@ -3,27 +3,28 @@
 		<!-- 添加收货地址 -->
 		<div class="t_tab">
 			<h1 class="t_title">
-				<span v-if="!status" class="size16">添加配送员</span>
-				<span v-else class="size16">修改配送员</span>
+				<span class="size16">添加配送员</span>
+				<span >修改配送员</span>
 				<div @click="to" class="t_m fr">返回配送员地址</div>
 			</h1>
-			<el-form ref="form" class="form" label-width="180px" :model="fromparams">
-				<el-form-item label="账号">
-					<el-input style="width: 600px;" v-model="fromparams.account" clearable></el-input>
+
+			<el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm">
+				<el-form-item label="账号" prop="account">
+					<el-input type="text" style="width: 600px;" v-model="ruleForm.account" autocomplete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="姓名">
-					<el-input style="width: 600px;" v-model="fromparams.name" clearable></el-input>
+				<el-form-item label="姓名" prop="name">
+					<el-input type="text" style="width: 600px;" v-model="ruleForm.name" autocomplete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="手机号">
-					<el-input style="width: 600px;" v-model="fromparams.mobile" clearable></el-input>
+				<el-form-item label="手机号" prop="mobile">
+					<el-input type="text" style="width: 600px;" v-model="ruleForm.mobile" autocomplete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="登陆密码">
-					<el-input style="width: 600px;" v-model="fromparams.password" clearable></el-input>
+				<el-form-item label="登陆密码" prop="password">
+					<el-input type="text" style="width: 600px;" v-model="ruleForm.password" autocomplete="off"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
 				</el-form-item>
 
-				<el-form-item>
-					<el-button type="success" @click="addDeliveryList">确认提交</el-button>
-				</el-form-item>
 			</el-form>
 		</div>
 	</div>
@@ -33,43 +34,88 @@
 	export default {
 		name: 'ship',
 		data() {
+			var validateaccount = (rule, value, callback) => {
+				if (value === '') {
+					callback(new Error('请输入账号'));
+				} else {
+					callback();
+				}
+			};
+			var validatename = (rule, value, callback) => {
+				if (value === '') {
+					callback(new Error('请输入账号'));
+				} else {
+					callback();
+				}
+			};
+			var validatemobile = (rule, value, callback) => {
+				if (value === '') {
+					callback(new Error('请输入姓名'));
+				} else {
+					callback();
+				}
+			};
+
+			var validatePass = (rule, value, callback) => {
+				if (value === '') {
+					callback(new Error('请输入密码'));
+				} else if (value.length >12 || value.length < 6 ) {
+					callback(new Error('密码长度在6-12之间'));
+				} else {
+					callback();
+				}
+			};
+
+
 			return {
-				fromparams: {
+				ruleForm: {
 					account:'',
 					name:'',
 					mobile:'',
 					password:''
 				},
-				params_status: false,
-				status: 0, //0代表是新增，1代表是修改
-				id: 0
-			}
-		},
-		mounted() {
+				rules: {
+					account: [
+						{validator: validateaccount, trigger: 'blur'}
+					],
+					name: [
+						{validator: validatename, trigger: 'blur'}
+					],
+					mobile: [
+						{validator: validatemobile, trigger: 'blur'}
+					],
+					password: [
+						{validator: validatePass, trigger: 'blur'}
+					]
+			 }
 
-			this.status = this.$route.params.status;
-			if(this.status) {
-				/*修改*/
-				this.id = this.$route.params.id;
-				this.queryData();
 			}
-		},
+			},
+
+
+
 
 		methods: {
-			addDeliveryList(){
-				this.$HTTP( this.$httpConfig.adddeliveryListList , this.fromparams,
-						'post').then((res)=> {
-
-				}).catch((e) =>  {
-					console.log(e);
-				})
-
+			submitForm(ruleForm) {
+				this.$refs[ruleForm].validate((valid) => {
+					if (valid) {
+						this.$HTTP( this.$httpConfig.adddeliveryListList , this.ruleForm,
+								'post').then((res)=> {
+							console.log(res.data.data);
+							this.$router.go(-1);
+						}).catch((e) =>  {
+							console.log(e);
+						})
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
 			},
-			getCityData(data){
-				this.params.prov = data.prov;
-				this.params.city = data.city;
-				this.params.dist = data.dist;
-			},
+
+
+
+
 			to() {
 				this.$router.back();
 			},

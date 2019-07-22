@@ -93,7 +93,8 @@ const config = {
     saveFreightModel: request + 'FreightMode/getFreightModelSave', //修改
     addDeliveryList:request+'Delivery/editDeliveryConfig',//配送设置
     getdeliveryListList:request+'Delivery/getDeliveryList',//获取配送员列表---------\
-    adddeliveryListList:request+'Delivery/getAddDelivery',//获取配送员列表
+    adddeliveryListList:request+'Delivery/getAddDelivery',//添加配送员
+    deleteDeliveryList:request+'Delivery/getDelDelivery',//删除配送员
 
     // 快递公司
     getExpressList: request + 'Express/freightList', //列表

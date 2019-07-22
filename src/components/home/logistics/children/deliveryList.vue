@@ -22,15 +22,15 @@
       </div>-->
       <el-table border :data="dataTable" style="width: 100%" max-width="900">
         <!--<el-table-column type="selection" width="55"></el-table-column>-->
-        <el-table-column prop="id" width="55" label="ID">
+        <el-table-column prop="id" width="100" label="ID">
         </el-table-column>
-        <el-table-column show-overflow-tooltip width="100" prop="account" label="配送员账号">
+        <el-table-column show-overflow-tooltip width="190" prop="account" label="配送员账号">
         </el-table-column>
-        <el-table-column show-overflow-tooltip width="150" prop="name" label="配送员姓名">
+        <el-table-column show-overflow-tooltip width="190" prop="name" label="配送员姓名">
         </el-table-column>
-        <el-table-column width="70" prop="mobile" label="配送员手机号">
+        <el-table-column width="180" prop="mobile" label="配送员手机号">
         </el-table-column>
-        <el-table-column width="70" prop="add_time" label="添加时间">
+        <el-table-column width="180" prop="add_time" label="添加时间">
         </el-table-column>
         <!--<el-table-column width="130" label="开始时间" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -54,21 +54,21 @@
             <span>{{status[scope.$index]}}</span>
           </template>
         </el-table-column>-->
-        <el-table-column width="130" label="操作">
+        <el-table-column width="200" label="操作">
           <template slot-scope="scope">
             <el-button @click="edit(scope.row.id)" size="mini" icon="el-icon-edit"></el-button>
             <el-button @click="deleteItem(scope.row.id)" size="mini" icon="el-icon-delete"></el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div class="Paging">
+      <!--<div class="Paging">
         <div class="fl pil">删除</div>
         <div class="Paging_r">
           <el-pagination background layout="prev, pager, next,jumper" :page-size="page_size" @current-change="handleCurrentChange" :total="page">
           </el-pagination>
 
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -115,59 +115,64 @@
         this.currentPage = currentPage;
         /*this.getData();*/
       },
+      //获取列表数据
       getDeliveryList() {
-        console.log(12321);
-        this.$HTTP(this.$httpConfig.getdeliveryListList,{}).then((res) => {
-          console.log("sssss"+res);
+        this.$HTTP(this.$httpConfig.getdeliveryListList, {}).then((res) => {
           this.dataTable = res.data.data;
-        })
-
-
-        /*var now = Math.round(new Date().getTime() / 1000);
-        this.params.page = this.currentPage;
-        this.$HTTP(this.$httpConfig.getPanicList, this.params, 'post').then((res) => {
-          this.dataTable = res.data.data;
-          for (var i in this.dataTable) {
-            if (this.dataTable[i].start_time > now) {
-              this.status[i] = '未开始';
-            } else if (this.dataTable[i].start_time < now && this.dataTable[i].end_time > now) {
-              this.status[i] = '进行中';
-            } else {
-              this.status[i] = '已结束';
-            }
-          }
-          this.page_size = 10;
-          this.page = Number(res.data.data.count);
-          this.$message.success(res.data.message);
-        }).catch((res) => {
-          this.$message.error(res.data.message);
-        })*/
+        }).catch((err) => {
+          this.$message.error(err);
+        });
       },
-    /*  edit: function (value) {
+        /*
+                var now = Math.round(new Date().getTime() / 1000);
+                this.params.page = this.currentPage;
+                this.$HTTP(this.$httpConfig.getPanicList, this.params, 'post').then((res) => {
+                  this.dataTable = res.data.data;
+                  for (var i in this.dataTable) {
+                    if (this.dataTable[i].start_time > now) {
+                      this.status[i] = '未开始';
+                    } else if (this.dataTable[i].start_time < now && this.dataTable[i].end_time > now) {
+                      this.status[i] = '进行中';
+                    } else {
+                      this.status[i] = '已结束';
+                    }
+                  }
+                  this.page_size = 10;
+                  this.page = Number(res.data.data.count);
+                  this.$message.success(res.data.message);
+                }).catch((res) => {
+                  this.$message.error(res.data.message);
+                })
+              },*/
+      edit: function (value) {
         this.$router.push({
-          name: 'addPanicBuying',
+          name: 'addDeliveryList',
           params: {
             status: 1,
             id: value
           }
         });
-      },*/
-    /*  deleteItem(value) {
+      },
+      deleteItem(value) {
         this.$confirm('此操作将永久删除此活动，是否继续？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$HTTP(this.$httpConfig.delPanic, { id: value }, 'post').then((res) => {
+          this.$HTTP(this.$httpConfig.deleteDeliveryList, { id: value }, 'post').then((res) => {
             this.$message.success(res.data.message);
-            this.getData();
+            this.dataTable.forEach((item,index)=>{
+              if(item.id == value){
+                this.dataTable.splice(index,1)
+              }
+            })
           }).catch((err) => {
             this.$message.error(err);
           });
         }).catch(() => {
           this.$message.info('已取消删除');
         });
-      }*/
+      }
     }
 
   }
