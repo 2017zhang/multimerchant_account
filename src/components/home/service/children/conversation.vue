@@ -227,6 +227,7 @@
                 border-bottom: 1px solid #d6d6d8;
                 span{
                     width: 100%;
+                    line-height: 4.2rem;
                     display: inline-block;
                     font-size: 12px;
                     text-align: center;
