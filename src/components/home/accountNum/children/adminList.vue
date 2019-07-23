@@ -12,7 +12,6 @@
 				<div class="notes_content">
 					<p>列表中展示的是 '店铺管理员'，仅可登录并管理店铺后台</p>
 					<p>状态 ：控制子账号的使用状态，状态为 "禁用"，表示此子账号不允许登录店铺后台</p>
-					<p>如果您的账号权限为超级管理员，则不能进行操作！</p>
 				</div>
 			</div>
 			<el-table ref="multipleTable" :data="accountList" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">

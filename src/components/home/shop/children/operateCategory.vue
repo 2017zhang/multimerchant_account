@@ -9,9 +9,7 @@
             <div class="notes-box">
                 <div class="notes_title">温馨提示</div>
                 <div class="notes_content">
-                    <p>非特殊会员等级 : 会员等级按照累计交易次数或累计消费金额的变化自动升级</p>
-                    <p>特殊会员等级的会员不会随着累计交易次数或累计消费金额的变化而变化</p>
-                    <p>是否启用 : 是, 则会员等级可供使用; 否 : 则会员等级不可用</p>
+                    <p>经营类目须总后台审核</p>
                 </div>
             </div>
             <h1 class="t_title">

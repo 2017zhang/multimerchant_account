@@ -1,7 +1,8 @@
- const request = 'http://sapi.shopsn.cn/';
+ // const request = 'http://sapi.shopsn.cn/';
+ const request = 'http://api.shopsn.cn/agent/adminstore.php/';
 // const imgRequest = "http://center.shopsn.cn/";
 //const request = 'http://www.b2b2c_sapi.com/';
-const imgRequest = "http://www.b2b2c_center.com/";
+const imgRequest = "http://center.shopsn.cn/";
 const uploadImage = 'upload.php/';
 const config = {
 
@@ -12,7 +13,16 @@ const config = {
     SendMsg: request + 'SendVerificationCode/registerSendMsg',//发送验证码
     parseReqByPassword: request + 'ForgetThePassword/parseReqByPassword',//提交（忘记密码）
     exitLogon: request + 'Public/exitLogon',//退出登录
-    
+
+    /**
+     * 这是网络请求，postman调试接口
+     * http://api.shopsn.cn/agent/adminstore.php/
+     * * 这是请求地址，接口文档上的是接口和方法名称
+     * 拼起来才是一个完整请求路径
+     * 参数：是在请求后台接口的时候要返回给后台的参数，有就发送，没有就不发。参数类型：必选（是，否）是：这个参数必须要传     否：这个参数可以不用传
+     * 返回参数说明：这是在你请求成功的时候后台给你的返回值
+      */
+
 
     /*
     *  1、首页
@@ -81,6 +91,11 @@ const config = {
     getFreightModelDetail: request + 'FreightMode/getFreightModelOne', //详情
     addFreightModel: request + 'FreightMode/getFreightModelAdd', //添加
     saveFreightModel: request + 'FreightMode/getFreightModelSave', //修改
+    getDeliveryList:request+'Delivery/getDeliveryConfig',//获取配送设置
+    addDeliveryList:request+'Delivery/editDeliveryConfig',//配送设置
+    getdeliveryListList:request+'Delivery/getDeliveryList',//获取配送员列表---------\
+    adddeliveryListList:request+'Delivery/getAddDelivery',//添加配送员
+    deleteDeliveryList:request+'Delivery/getDelDelivery',//删除配送员
 
     // 快递公司
     getExpressList: request + 'Express/freightList', //列表
@@ -101,7 +116,7 @@ const config = {
     getFreightCondition: request + 'FreightCondition/getFreightCondition', //获取自定义运费
     setFreightCondition: request + 'FreightCondition/setFreightCondition', //设置自定义运费
 
-    
+
     /*
      * 4、 交易
      */
@@ -247,13 +262,13 @@ const config = {
     delOperateClass: request + 'StoreBindClass/delete', //删除
     getGoodsClassSelect: request +'GoodsClassSelect/index',//所有经营类目列表
     addStoreBindClass: request +'StoreBindClass/add',//添加
-    
+
 
    /*
     * 8、 客服
     */
     // 客服类型
-    getServiceTypeList: request +'Service/typeList',//列表
+    // getServiceTypeList: request +'Service/typeList',//列表
     setServiceTypeUse: request +'Service/typeIsUse',//是否可用
     delServiceType: request +'Service/deletetype',//删除
     getServiceTypeDetail: request +'Service/getTypeDetailById',//详情
@@ -266,6 +281,7 @@ const config = {
     delService: request + 'Service/delService',//删除
     getServiceDetail: request + 'Service/getDetailById', //详情
     addService: request + 'Service/addService', //添加和修改
+    addServiceConver: request + 'Service/admin_list', //管理员列表
 
     // 系统消息
     getSystemMsg: request +'SystemMsg/index',//列表
@@ -285,7 +301,6 @@ const config = {
     // 用户组管理(角色列表)
     getRoleList: request + 'Account/roleList',//列表
     delRole: request +'Account/delRole',//删除
-    delAllAccount: request +'Account/delAllAccount',//批量删除
     getRoleDetail: request + 'Account/getRoleById', //详情
     saveRole: request + 'Account/updRole', //编辑
     addRole: request + 'Account/addRole', //添加

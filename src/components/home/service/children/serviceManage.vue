@@ -15,28 +15,28 @@
             <el-table border :data="dataTable" style="width: 100%" max-width="900">
                 <el-table-column fixed prop="id" width="50" label="ID">
                 </el-table-column>
-                <el-table-column label="客服类型">
-                    <template slot-scope="scope">
-                        <span v-for="item in serviceType" :key="item.id">
-                            <span v-if="item.id == scope.row.servicetype_id">{{item.name}}</span>
-                        </span>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column label="客服类型">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span v-for="item in serviceType" :key="item.id">-->
+                            <!--<span v-if="item.id == scope.row.servicetype_id">{{item.name}}</span>-->
+                        <!--</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
                 <el-table-column width="200" label="客服名称">
                     <template slot-scope="scope">
                         <span title="编辑可查看全名" id="name-single">{{scope.row.name}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="tool" label="客服工具">
-                </el-table-column>
-                <el-table-column prop="account" label="客服类账号">
-                </el-table-column>
-                <el-table-column label="是否主客服">
-                    <template slot-scope="scope">
-                        <el-switch v-model="isMain[scope.$index]" @click.native="setMain(scope.row.id,isMain[scope.$index],scope.$index)" active-color="#13ce66" inactive-color="#ff4949">
-                        </el-switch>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column prop="tool" label="客服工具">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column prop="account" label="客服类账号">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column label="是否主客服">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<el-switch v-model="isMain[scope.$index]" @click.native="setMain(scope.row.id,isMain[scope.$index],scope.$index)" active-color="#13ce66" inactive-color="#ff4949">-->
+                        <!--</el-switch>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
                 <el-table-column label="是否显示">
                     <template slot-scope="scope">
                         <el-switch v-model="isStatus[scope.$index]" @click.native="setStatus(scope.row.id,isStatus[scope.$index])" active-color="#13ce66" inactive-color="#ff4949">
@@ -67,7 +67,7 @@ export default {
         }
     },
     mounted() {
-        
+
         this.getType();
         this.getData();
     },

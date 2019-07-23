@@ -8,42 +8,42 @@
             <div class="t_m fr" @click="to">返回客服列表</div>
         </h1>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="logistics_x">
-				<tr>
-					<td align="right" class="black"><b>*</b>客服类型：</td>
-					<td>
-						<el-select v-model="params.servicetype_id" filterable placeholder="请选择">
-							<el-option v-for="item in classData" :key="item.id" :label="item.name" :value="item.id">
-							</el-option>
-						</el-select>
-						<span class="notes">如果没有您需要的客服类型，您可以点此<i @click="toAdd">添加客服类型</i></span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right" class="black"><b>*</b>客服名称： </td>
-					<td>
-						<el-input style="width: 400px;" v-model="params.name" clearable></el-input>
-						<span class="notes">客服与用户在线聊天时显示的名称，为保证页面美观度，建议客服名称不要超过4个字</span>
-					</td>
-				</tr>
-				<tr>
-					<td align="right" class="black"><b>*</b>客服工具：</td>
-					<td>
-						<el-select v-model="params.tool" placeholder="请选择">
-							<el-option v-for="item in options" :key="item" :label="item" :value="item">
-							</el-option>
-						</el-select>
-					</td>
-				</tr>
+				<!--<tr>-->
+					<!--<td align="right" class="black"><b>*</b>客服类型：</td>-->
+					<!--<td>-->
+						<!--<el-select v-model="params.servicetype_id" filterable placeholder="请选择">-->
+							<!--<el-option v-for="item in classData" :key="item.id" :label="item.name" :value="item.id">-->
+							<!--</el-option>-->
+						<!--</el-select>-->
+						<!--<span class="notes">如果没有您需要的客服类型，您可以点此<i @click="toAdd">添加客服类型</i></span>-->
+					<!--</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td align="right" class="black"><b>*</b>客服名称： </td>-->
+					<!--<td>-->
+						<!--<el-input style="width: 400px;" v-model="params.name" clearable></el-input>-->
+						<!--<span class="notes">客服与用户在线聊天时显示的名称，为保证页面美观度，建议客服名称不要超过4个字</span>-->
+					<!--</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td align="right" class="black"><b>*</b>客服工具：</td>-->
+					<!--<td>-->
+						<!--<el-select v-model="params.tool" placeholder="请选择">-->
+							<!--<el-option v-for="item in options" :key="item" :label="item" :value="item">-->
+							<!--</el-option>-->
+						<!--</el-select>-->
+					<!--</td>-->
+				<!--</tr>-->
 				<tr>
 					<td align="right" class="black"><b>*</b>客服帐号：</td>
 					<td>
-						<el-input 
-							style="width: 400px;" 
-							v-model.number="params.account" 
-							onkeypress="return event.keyCode>=48&&event.keyCode<=57"
-							clearable>
-						</el-input>
-						<span class="notes">客服工具是 QQ，则客服账号输入QQ号码；客服工具是旺旺，则客服账号输入旺旺号码</span>
+						<!--<el-select style="width: 400px;" v-model="params.tool" placeholder="请选择" @change="fn">-->
+							<!--<el-option v-for="(item, key) in options" :key="key.id" :value="item.seller_name">-->
+							<!--</el-option>-->
+						<!--</el-select>-->
+						<el-select style="width: 400px;" v-model="params.seller_name" placeholder="请选择" @change="fn">
+							<el-option v-for="(item, key) in options" :key="key" :value="item.seller_name">{{item.seller_name}}</el-option>
+						</el-select>
 					</td>
 				</tr>
 				<tr>
@@ -78,18 +78,25 @@
 				status: 0, //0代表是新增，1代表是修改
 				classData: {}, // 一级分类
 				params: {
-					servicetype_id: '',
-					name: '',
-					account: '',
 					status: 0,
-					tool: '',
-					sort: 0
+					// tool: '',
+					sort: 0,
+					user_id:''
 				},
-				options: ['QQ', '旺旺'],
+				options: '',
 				id: 0
 			}
 		},
 		created() {
+			this.$HTTP(this.$httpConfig.addServiceConver, {
+
+			}).then((res) => {
+				console.log(res);
+				this.options = res.data.data;
+				console.log(this.options);
+			}).catch((err) => {
+				console.log(err);
+			})
 		},
 		mounted() {
 			this.status = this.$route.params.status;
@@ -98,10 +105,18 @@
 				this.id = this.$route.params.id;
 				this.queryData();
 			}
-			
-			this.getClass();
+
+			//this.getClass();
 		},
 		methods: {
+			fn() {
+				console.log(this.params.seller_name);
+				this.options.forEach((item,index)=>{
+					if(item.seller_name = this.params.seller_name){
+						this.params.user_id = item.user_id
+					}
+				})
+			},
 			setCode(event){
 				// console.log(event)
 				return event.keyCode>=48&&event.keyCode<=57
@@ -114,8 +129,9 @@
 				this.$router.push('/addservicetype');
 			},
 			queryData() {
-				
+
 				this.$HTTP(this.$httpConfig.getServiceDetail,{service_id : this.id}).then((res)=>{
+					console.log(res);
 					this.params = res.data.data;
 					this.params.status = res.data.data.status==1?true:false;
 					this.$message.success(res.data.message);
@@ -123,19 +139,20 @@
 					this.$message.error(err.data.message);
 				});
 			},
-			getClass() {
-				//获取客服类型
-            	this.$HTTP(this.$httpConfig.getServiceTypeList,{}).then((res) => {
-					if(!res.data.data) {
-						this.$layer.msg('暂无数据:(');
-						return;
-					}
-					this.classData = res.data.data;
-				}).catch((err) => {
-					console.log(err)
-				});
-			},
+			// getClass() {
+			// 	// //获取客服类型
+            // 	// this.$HTTP(this.$httpConfig.getServiceTypeList,{}).then((res) => {
+			// 	// 	if(!res.data.data) {
+			// 	// 		this.$layer.msg('暂无数据:(');
+			// 	// 		return;
+			// 	// 	}
+			// 	// 	this.classData = res.data.data;
+			// 	// }).catch((err) => {
+			// 	// 	console.log(err)
+			// 	// });
+			// },
 			submit() {
+				console.log(this.tool);
 				this.params.status = Number(this.params.status);
 				if(this.status) {
 					this.params.service_id = this.id;
@@ -149,6 +166,7 @@
 					this.$message.error(err.data.message);
 				})
 			}
+
 		}
 	}
 </script>
@@ -166,11 +184,12 @@
 			}
 		}
 	}
-	
+
 	.el-switch {
+		height: 20px;
 		.el-switch__core {
 			width: 35px!important;
-			height: 16px;
+			height: 20px;
 			.el-switch__button {
 				width: 11px;
 				height: 11px;

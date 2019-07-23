@@ -253,6 +253,10 @@ export default {
 				this.$layer.msg('商品名称异常，请尽量输入中文符号');
 				return false;
 			}
+			// if (!/^[\^[a-zA-Z\u4e00-\u9fa5]+$/.test(this.title)) {
+			// 	this.$layer.msg('商品名称异常，请尽量输入中文符号');
+			// 	return false;
+			// }
 			dataJson['title'] = this.title;
 			dataJson['detail'] = this.getUEContent();
 			dataJson['description'] = this.description;

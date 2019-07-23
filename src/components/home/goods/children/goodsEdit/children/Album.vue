@@ -45,6 +45,7 @@ export default {
 		};
 	},
 	created() {
+		this.imageList()
 	},
 	props:{
 		s:''
