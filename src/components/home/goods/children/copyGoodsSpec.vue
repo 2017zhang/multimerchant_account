@@ -86,7 +86,7 @@ export default {
       class_id: 0, // 第一级分类
       class_two: 0, // 第二级分类
       class_three: 0, // 第三级分类编号
-      classData: {}, // 一级分类
+      classData: {}, // 一级分类数据
       classByTwo: [], // 二级分类数据
       classByThree: [], // 三级分类数据
       names: [], //所有的操作项
@@ -120,7 +120,6 @@ export default {
         .then(res => {
           console.log(res.data.data, "获取商品详情页面细节数据");
           let thereId = res.data.data.class_id;
-          //	console.log(thereId);
           this.class_id = thereId.class_one;
           this.class_two = thereId.class_two;
           this.class_three = thereId.class_three;
@@ -148,7 +147,6 @@ export default {
             return;
           }
           this.classData = res.data.data;
-          console.log(this.classData, "获取分类的数据");
         })
         .catch(err => {
           console.log(err);
@@ -319,15 +317,10 @@ export default {
         console.log(list, "hahaha");
         // 注：修改时永远也只有1个，所以取list[0]即可
         this.$HTTP(this.$httpConfig.copyGoodsSpecItem, {
-          spec: [
-            {
-              id: Number(list[0].id),
-              class_id: this.class_id,
-              class_two: this.class_two,
-              class_three: this.class_three,
-              item: list[0].type
-            }
-          ]
+          id: Number(list[0].id),
+          class_id: this.class_id,
+          class_two: this.class_two,
+          class_three: this.class_three
         })
           .then(res => {
             this.$message.success("" + res.data.message);
