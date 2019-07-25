@@ -14,6 +14,15 @@ const config = {
     parseReqByPassword: request + 'ForgetThePassword/parseReqByPassword',//提交（忘记密码）
     exitLogon: request + 'Public/exitLogon',//退出登录
 
+    /**
+     * 这是网络请求，postman调试接口
+     * http://api.shopsn.cn/agent/adminstore.php/
+     * * 这是请求地址，接口文档上的是接口和方法名称
+     * 拼起来才是一个完整请求路径
+     * 参数：是在请求后台接口的时候要返回给后台的参数，有就发送，没有就不发。参数类型：必选（是，否）是：这个参数必须要传     否：这个参数可以不用传
+     * 返回参数说明：这是在你请求成功的时候后台给你的返回值
+      */
+
 
     /*
     *  1、首页
@@ -82,7 +91,11 @@ const config = {
     getFreightModelDetail: request + 'FreightMode/getFreightModelOne', //详情
     addFreightModel: request + 'FreightMode/getFreightModelAdd', //添加
     saveFreightModel: request + 'FreightMode/getFreightModelSave', //修改
+    getDeliveryList:request+'Delivery/getDeliveryConfig',//获取配送设置
     addDeliveryList:request+'Delivery/editDeliveryConfig',//配送设置
+    getdeliveryListList:request+'Delivery/getDeliveryList',//获取配送员列表---------\
+    adddeliveryListList:request+'Delivery/getAddDelivery',//添加配送员
+    deleteDeliveryList:request+'Delivery/getDelDelivery',//删除配送员
 
     // 快递公司
     getExpressList: request + 'Express/freightList', //列表

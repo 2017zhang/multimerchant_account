@@ -18,11 +18,13 @@ const addGoodsType = r => require(['@/components/home/goods/children/addGoodsTyp
 const goodsSpec = r => require(['@/components/home/goods/children/goodsSpec'], r); //商户中心-商品规格
 const addGoodsSpec = r => require(['@/components/home/goods/children/addGoodsSpec'], r); //商户中心-添加商品规格
 const updateGoodsSpec = r => require(['@/components/home/goods/children/updateGoodsSpec'], r); //商户中心-添加商品规格
+const copyGoodsSpec = r => require(['@/components/home/goods/children/copyGoodsSpec'], r); //商户中心-复制商品规格属性
 const goodsAttribute = r => require(['@/components/home/goods/children/goodsAttribute'], r); //商户中心-商品属性
 const addGoodsAttribute = r => require(['@/components/home/goods/children/addGoodsAttribute'], r); //商户中心-商品属性
 const logistics = r => require(['@/components/home/logistics/logistics'], r); //商户中心-物流
 const shipAddress = r => require(['@/components/home/logistics/children/shipAddress'], r); //商户中心-物流-发货地址
 const addAddress = r => require(['@/components/home/logistics/children/addAddress'], r); //商户中心-物流-添加发货地址
+
 const freightFit = r => require(['@/components/home/logistics/children/freightFit'], r); //商户中心-物流-运费设置列表
 const addFreight = r => require(['@/components/home/logistics/children/addFreightFit'], r); //商户中心-物流-添加运费设置
 const expressList = r => require(['@/components/home/logistics/children/expressList'], r); //商户中心-物流-快递公司列表
@@ -118,7 +120,8 @@ const indent = r => require(['@/components/reportForms/indent.vue'],r);//统计
 const salesDetail = r => require(['@/components/reportForms/salesDetail.vue'],r); //商家销售明细
 const industryAnalyst = r => require(['@/components/reportForms/industryAnalyst.vue'],r); // 行业统计
 const deliveryConfig  = r => require(['@/components/home/logistics/children/deliveryConfig.vue'],r);
-const deliveryList = r => require(['@/components/home/logistics/children/deliveryList.vue'],r)
+const deliveryList = r => require(['@/components/home/logistics/children/deliveryList.vue'],r);//--------
+const addDeliveryList = r => require(['@/components/home/logistics/children/addDeliveryList'], r); //商户中心-物流-添加配送员
 // 引入公共组件
 import cityThree from '../common/cityThree.vue'; //省市区三级联查
 Vue.component('city-three', cityThree);
@@ -226,6 +229,11 @@ const router = new Router({
                 path: '/updateGoodsSpec',
                 name: 'updateGoodsSpec',
                 component: updateGoodsSpec
+            },
+            {//商品中心－商品规格设定
+                path:'/copyGoodsSpec',
+                name:'copyGoodsSpec',
+                component:copyGoodsSpec
             },
             // { //商户中心-商品属性
             //     path: '/goodsAttribute',
@@ -398,6 +406,12 @@ const router = new Router({
                 path: '/addCoupon',
                 name: 'addCoupon',
                 component: addCoupon
+            },
+            //----------------------------
+            {
+                path: '/addDeliveryList',
+                name: 'addDeliveryList',
+                component: addDeliveryList
             },
             { //商户中心-促销-发放优惠券
                 path: '/couponGrant',
