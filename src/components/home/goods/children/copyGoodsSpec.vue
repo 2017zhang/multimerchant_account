@@ -35,7 +35,6 @@
         <el-select v-else>没有数据</el-select>
 
         <el-select
-          @change="getList()"
           v-if="classByThree.length !== 0"
           v-model="class_three"
           filterable
@@ -118,7 +117,7 @@ export default {
         id: this.receiveData.id
       })
         .then(res => {
-          console.log(res.data.data, "获取商品详情页面细节数据");
+          // console.log(res.data.data, "获取商品详情页面细节数据");
           let thereId = res.data.data.class_id;
           this.class_id = thereId.class_one;
           this.class_two = thereId.class_two;
@@ -305,7 +304,7 @@ export default {
     },
 
     submit() {
-      
+      // debugger
       let itemsArray = [];
       let params = [];
       let index = this.namesIndex;
@@ -319,7 +318,7 @@ export default {
         // 注：修改时永远也只有1个，所以取list[0]即可，可以在form data查看传入的参数
         this.$HTTP(this.$httpConfig.copyGoodsSpecItem, {
           id: parseInt(list[0].id),
-          class_id: this.class_id,
+          class_one: this.class_id,
           class_two: this.class_two,
           class_three: this.class_three
         })
