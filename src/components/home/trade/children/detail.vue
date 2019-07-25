@@ -9,7 +9,7 @@
             <div class="center">
                 <div class="center-top">
                     <div class="left">
-                        <div class="status">当前订单状态</div>
+                        <div class="status">当前订单状态111</div>
                         <div class="detail">
                             <div class="button">
                                 <el-button size="small" type="success">{{$store.state.orderStatus[order_data.order_status]}}</el-button>
@@ -92,7 +92,7 @@
             </el-table>
             <table width="100%" cellspacing="0" cellpadding="0" class="logistics_x" v-if="order_data.order_status == 1">
                 <tr>
-                    <td width="9%" align="right" class="black">
+                    <td width="13%" align="right" class="black">
                         <b>*</b>物流公司名称： </td>
                     <td>
                         <el-select v-model="express_id" placeholder="请选择" style="width: 250px;height: 40px;">
@@ -101,6 +101,17 @@
                         </el-select>
                     </td>
                 </tr>
+
+                <tr v-if="express_id==25">
+                    <td align="right" class="black">
+                        <b>*</b>预计送达时间(小时)：</td>
+                    <td>
+                        <el-input v-model="deliveryTime" clearable style="width: 250px;height: 40px;">
+                        </el-input>
+                    </td>
+                </tr>
+
+
                 <tr>
                     <td align="right" class="black">
                         <b>*</b>运单号码： </td>
@@ -133,11 +144,12 @@ export default {
             order_number: '',
             address: {},
             goods:[],
+            deliveryTime:'', // 送达时间
         }
     },
     created() {
         this.getOrderData();
-      
+
         OrderStatus.getInstance(this.$store).orderState(this.$httpConfig.getOrderAllStatus);;
     },
     methods: {
@@ -182,11 +194,27 @@ export default {
                 });
                 return;
             }
-            this.$HTTP(this.$httpConfig.setOrderSendGoods,{
+
+            if(this.express_id == 25 && this.deliveryTime == ''){
+                this.$message({
+                    duration:1000,
+                    type:'error',
+                    message: '请输入预计送达时间'
+                });
+                return;
+            }
+
+            var data = {
                 id:this.order_data.id,
                 exp_id:this.express_id,
                 express_id: this.order_number
-            }).then((res) => {
+            }
+
+            if(this.deliveryTime != '' && this.express_id == 25){
+                data.service_time = this.deliveryTime
+            }
+
+            this.$HTTP(this.$httpConfig.setOrderSendGoods,data).then((res) => {
                 this.$message({
                     duration:1000,
                     type:'success',
@@ -198,7 +226,7 @@ export default {
             }).catch((res) => {
                 this.$message.error(res.data.message);
             });
-            
+
         }
     }
 }
