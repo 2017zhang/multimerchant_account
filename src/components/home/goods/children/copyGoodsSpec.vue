@@ -166,7 +166,6 @@ export default {
         goods_class_id: parseInt(this.class_id)
       })
         .then(res => {
-          console.log(res, "获取分类");
           if (!res.data.data) {
             this.$layer.msg(res.data.message);
             return;
@@ -306,6 +305,7 @@ export default {
     },
 
     submit() {
+      
       let itemsArray = [];
       let params = [];
       let index = this.namesIndex;
@@ -313,11 +313,12 @@ export default {
       for (let i in list) {
         itemsArray.push(list[i]);
       }
+      console.log(list,'listArrray');
       if (this.isUpdate) {
         console.log(list, "hahaha");
-        // 注：修改时永远也只有1个，所以取list[0]即可
+        // 注：修改时永远也只有1个，所以取list[0]即可，可以在form data查看传入的参数
         this.$HTTP(this.$httpConfig.copyGoodsSpecItem, {
-          id: Number(list[0].id),
+          id: parseInt(list[0].id),
           class_id: this.class_id,
           class_two: this.class_two,
           class_three: this.class_three
