@@ -100,10 +100,12 @@ export default {
     };
   },
   created() {
+    //父组件通过this.$router.push传递参数，子组件通过this.$route.(params,query)接收参数
     this.type = this.$route.params.type;
     this.getClass();
+    //这里的receivedData是一个对象不是数组;
     this.receiveData = this.$route.params.info;
-    //	console.log(this.receiveData);
+    // 这个if条件不会执行
     if (this.receiveData.length != 0) {
       this.isUpdate = 1;
       this.getInfo();
@@ -116,6 +118,7 @@ export default {
         id: this.receiveData.id
       })
         .then(res => {
+          console.log(res.data.data, "获取商品详情页面细节数据");
           let thereId = res.data.data.class_id;
           //	console.log(thereId);
           this.class_id = thereId.class_one;
@@ -145,6 +148,7 @@ export default {
             return;
           }
           this.classData = res.data.data;
+          console.log(this.classData, "获取分类的数据");
         })
         .catch(err => {
           console.log(err);
@@ -164,7 +168,7 @@ export default {
         goods_class_id: parseInt(this.class_id)
       })
         .then(res => {
-          console.log(res,'获取分类');
+          console.log(res, "获取分类");
           if (!res.data.data) {
             this.$layer.msg(res.data.message);
             return;
@@ -314,7 +318,7 @@ export default {
       if (this.isUpdate) {
         console.log(list, "hahaha");
         // 注：修改时永远也只有1个，所以取list[0]即可
-        this.$HTTP(this.$httpConfig.saveGoodsSpecItem, {
+        this.$HTTP(this.$httpConfig.copyGoodsSpecItem, {
           spec: [
             {
               id: Number(list[0].id),
