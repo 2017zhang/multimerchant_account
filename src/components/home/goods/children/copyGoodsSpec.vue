@@ -3,7 +3,7 @@
   <div class="spec">
     <div class="g_att">
       <h1 class="t_title">
-        <span class="size16">商品规格选择</span>
+        <span class="size16">分类选择</span>
         <el-button class="back" type="success" @click="back">返回列表</el-button>
       </h1>
       <div class="goods_classify">
@@ -55,16 +55,6 @@
         >添加商品规格</el-button>
       </div>
       <div class="center" v-if="names.length != 0">
-        <el-tabs
-          v-model="namesIndex"
-          type="border-card"
-          class="goods_spec_list"
-          @tab-click="handleTabEdit"
-        >
-          <el-tab-pane v-for="(item,key) in names" :key="key" :label="item.name" :name="item.id">
-            <el-table :data="item.items" style="width: 100%"></el-table>
-          </el-tab-pane>
-        </el-tabs>
         <div class="button_submit">
           <el-button @click="submit" type="success">确认提交</el-button>
         </div>
@@ -80,7 +70,7 @@ export default {
   name: "spec",
   data() {
     return {
-      value: true,
+      value: false,
       class_id: 0, // 第一级分类
       class_two: 0, // 第二级分类
       class_three: 0, // 第三级分类编号
@@ -116,7 +106,7 @@ export default {
         id: this.receiveData.id
       })
         .then(res => {
-          console.log(res.data.data, "获取商品详情页面细节数据");
+          // console.log(res.data.data, "获取商品详情页面细节数据");
           let thereId = res.data.data.class_id;
           this.class_id = thereId.class_one;
           this.class_two = thereId.class_two;
@@ -300,6 +290,10 @@ export default {
     },
 
     submit() {
+<<<<<<< HEAD
+=======
+      // debugger
+>>>>>>> 25d451c9a67a27887169d6470f0cc6e7c85311cb
       let itemsArray = [];
       let params = [];
       let index = this.namesIndex;
@@ -308,13 +302,22 @@ export default {
       for (let i in list) {
         itemsArray.push(list[i]);
       }
+<<<<<<< HEAD
       
+=======
+      console.log(list, "listArrray");
+>>>>>>> 25d451c9a67a27887169d6470f0cc6e7c85311cb
       if (this.isUpdate) {
         console.log(list, "hahaha");
         // 注：修改时永远也只有1个，所以取list[0]即可，可以在form data查看传入的参数
         this.$HTTP(this.$httpConfig.copyGoodsSpecItem, {
+<<<<<<< HEAD
           id: parseInt(itemsArray[0].items.id),
           class_id: this.class_id,
+=======
+          id: parseInt(list[0].id),
+          class_one: this.class_id,
+>>>>>>> 25d451c9a67a27887169d6470f0cc6e7c85311cb
           class_two: this.class_two,
           class_three: this.class_three
         })
@@ -389,9 +392,7 @@ export default {
   }
   .center {
     margin: 10px;
-    .goods_spec_list {
-      min-height: 300px;
-    }
+
     .button_submit {
       width: 100%;
       text-align: center;
