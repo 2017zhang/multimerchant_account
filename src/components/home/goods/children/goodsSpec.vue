@@ -34,7 +34,7 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button size="mini" type="success" @click="edit(scope.row)">编辑</el-button>
-              <el-button size="mini" type="success" @click="copy(scope.row)">复制</el-button>
+              <!-- <el-button size="mini" type="success" @click="copy(scope.row)">复制</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -103,14 +103,14 @@ export default {
         }
       });
     },
-    copy(item) {
-      this.$router.push({
-        name: "copyGoodsSpec",
-        params: {
-          info: item
-        }
-      });
-    },
+    // copy(item) {
+    //   this.$router.push({
+    //     name: "copyGoodsSpec",
+    //     params: {
+    //       info: item
+    //     }
+    //   });
+    // },
     add(item) {
       this.$router.push({
         name: "addGoodsSpec",
