@@ -33,9 +33,7 @@
           ></el-option>
         </el-select>
         <el-select v-else>没有数据</el-select>
-
         <el-select
-          @change="getList()"
           v-if="classByThree.length !== 0"
           v-model="class_three"
           filterable
@@ -171,7 +169,6 @@ export default {
             return;
           }
           this.classByTwo = res.data.data;
-          //	console.log(this.classByThree)
         })
         .catch(err => {
           console.log(err);
@@ -212,7 +209,7 @@ export default {
             return;
           }
           this.classByThree = res.data.data;
-          // console.log(this.classByTwo)
+          console.log(this.classByThree, "3333333");
         })
         .catch(err => {
           console.log(err);
@@ -241,9 +238,7 @@ export default {
     /*当第三个分类选择完之后 ,立即 获取数据*/
     getList() {
       this.$HTTP(this.$httpConfig.getGoodsSpecGroup, {
-        class_one: this.class_id,
-        class_two: this.class_two,
-        class_three: this.class_three
+           spec_id: this.class_id
       })
         .then(res => {
           if (!res.data.data) {
@@ -305,20 +300,20 @@ export default {
     },
 
     submit() {
-      
       let itemsArray = [];
       let params = [];
       let index = this.namesIndex;
-      let list = this.names[index].items;
+      let list=this.names;
+      // let list = this.names[index].items;
       for (let i in list) {
         itemsArray.push(list[i]);
       }
-      console.log(list,'listArrray');
+      
       if (this.isUpdate) {
         console.log(list, "hahaha");
         // 注：修改时永远也只有1个，所以取list[0]即可，可以在form data查看传入的参数
         this.$HTTP(this.$httpConfig.copyGoodsSpecItem, {
-          id: parseInt(list[0].id),
+          id: parseInt(itemsArray[0].items.id),
           class_id: this.class_id,
           class_two: this.class_two,
           class_three: this.class_three
