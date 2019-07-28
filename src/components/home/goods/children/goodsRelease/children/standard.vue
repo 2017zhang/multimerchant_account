@@ -1,165 +1,230 @@
 <template>
-	<div class="standard">
-		<div class="notes-box">
-			<div class="notes_title">温馨提示</div>
-			<div class="notes_content">
-				<p>必须添加商品规格才能在移动端和PC端显示商品</p>
-			</div>
-		</div>
-		<div class="specification">
-			<p class="goods_spec">商品规格</p>
-			<div class="g_size" v-for="(item, index) in $store.state.spec_data.group" :key="index">
-				<span class="fl">{{item.name}}：</span>
-				<ul class="fl">
-					<li v-for="(spec, indexByItem) in $store.state.spec_data.children" v-if="index == spec.spec_id" :key="spec.id" :class="{color:status[indexByItem]}" @click="tab1(indexByItem, spec, index)">{{spec.item}}</li>
-				</ul>
-			</div>
-		</div>
-		<div class="g_edit">
-		</div>
-		<div class="tijiao">
-			<span @click="submit">确认提交</span>
-		</div>
-	</div>
+  <div class="standard">
+    <div class="notes-box">
+      <div class="notes_title">温馨提示</div>
+      <div class="notes_content">
+        <p>必须添加商品规格才能在移动端和PC端显示商品</p>
+      </div>
+    </div>
+    <div class="specification">
+      <p class="goods_spec">商品规格</p>
+      <div class="g_size" v-for="(item, index) in $store.state.spec_data.group" :key="index">
+        <span class="fl">
+          {{item.name}}：
+          <!-- <input placeholder="规格值名称" class="edit_input" v-model="item.spec_name" /> -->
+        </span>
+        <ul class="fl">
+          <li
+            v-for="(spec, indexByItem) in $store.state.spec_data.children"
+            v-if="index == spec.spec_id"
+            :key="spec.id"
+            :class="{color:status[indexByItem]}"
+            @click="tab1(indexByItem, spec, index)"
+          >{{spec.item}}</li>
+          <div class="edit_btn">
+            <div v-if="sure">
+              <el-button type="info" plain @click="addStyle">＋添加规格值</el-button>
+            </div>
+            <div v-if="btn">
+              <input placeholder="规格值名称" class="edit_input" v-model="item.spec_name" />
+              <el-button size="mini" type="primary" @click="confirm(item)">确认</el-button>
+              <el-button size="mini" type="danger" @click="cancel">取消</el-button>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <div class="g_edit"></div>
+    <div class="tijiao">
+      <span @click="submit">确认提交</span>
+    </div>
+  </div>
 </template>
 <script>
 // import "../../../../../../../js/jquery.form"
 export default {
-	name: "standard",
-	data() {
-		return {
-			status: [false],
-			specResult: [],
-			inputList: {}
-		};
-	},
-	methods: {
-		//提交
-		submit() {
-			// let item = {};
-			// $("#myForm input").each(function(index, item){
-			//     eval($(item).attr('name')+ ' = '+ $(item).val())
-			// }) 
-			// let data = $("#myForm").formToArray();
-			// console.log(data)
-			let that = this;
-			let inputList = {};
-			let flag = false;
-			let tmp = {};
-			let key;
-		//	console.log($('#spec_input_tab tr'))
-			$('#spec_input_tab tr').each(function (index, ele) {
-				//  console.log(ele);
-				$(ele).find('input').each(function (index, ele) {
-					// console.log(ele)
-					key = $(ele).attr("data-key");
-					let name = $(ele).attr("name");
-					let val = $(ele).val();
-					tmp[name] = val;
-					console.log(val);
-					inputList[key] = {};
-					if (val === '') {
-						flag = true;
-					}
-				});
-				if (typeof key !== "undefined") {
-					inputList[key] = tmp;
-				}
-				tmp = {};
-			});
-		//	console.log(inputList)
-			if (flag === true) {
-				
-				this.$message({
-					duration: 1000,
-					type: 'error',
-					message: '规格信息错误'
-				});
-			} else {
-				this.$HTTP(this.$httpConfig.addGoodsSpec, { item: inputList }, 'post').then(res => {
-					this.$message({
-						duration: 1000,
-						message: res.data.message
-					});
-					this.$emit('selectTab');
-					this.$store.state.tab_state = 2;
-					this.$emit('getParameter');
-					if (!this.$store.state.tab_Index[2]) {
-						this.$store.state.tab_Index.push(2);
-					}
-					console.log(res)
-				}).catch((err) => {
-					console.log(err);
-				});
-			}
-		},
-		//选择规格
-		tab1(index, spec, specGroupId) {
-		//	console.log(spec)
-			this.specResult[specGroupId] = [];
-			if (this.status[index] === true) {
-				this.$set(this.status, index, false);
-			} else {
-				this.$set(this.status, index, true);
-			}
-			// console.log(this.specResult);
-			for (let i = 0; i < this.status.length; i++) {
-				if (this.status[i] === true) {
-					if (this.$store.state.spec_data.children[i].spec_id == specGroupId) {
-						this.specResult[specGroupId].push(this.$store.state.spec_data.children[i].id)
-					}
-				}
-			}
-		//	console.log(this.specResult)
-			this.getSpecItem();
-		},
-		/**
-		 * 合并单元格
-		 */
-		mergeCell(id) {
-			var tab = document.getElementById(id); //要合并的tableID
-			var maxCol = 2, val, count, start;  //maxCol：合并单元格作用到多少列
-			if (tab != null) {
-				for (var col = maxCol - 1; col >= 0; col--) {
-					count = 1;
-					val = "";
-					for (var i = 0; i < tab.rows.length; i++) {
-						if (val == tab.rows[i].cells[col].innerHTML) {
-							count++;
-						} else {
-							if (count > 1) { //合并
-								start = i - count;
-								tab.rows[start].cells[col].rowSpan = count;
-								for (var j = start + 1; j < i; j++) {
-									tab.rows[j].cells[col].style.display = "none";
-								}
-								count = 1;
-							}
-							val = tab.rows[i].cells[col].innerHTML;
-						}
-					}
-					if (count > 1) { //合并，最后几行相同的情况下
-						start = i - count;
-						tab.rows[start].cells[col].rowSpan = count;
-						for (var j = start + 1; j < i; j++) {
-							tab.rows[j].cells[col].style.display = "none";
-						}
-					}
-				}
-			}
-		},
-		//获取规格项
-		getSpecItem() {
-			this.$HTTP(this.$httpConfig.getGoodsSpec, { spec: this.specResult }, 'post').then(res => {
-				$('.g_edit').html('');
-				$('.g_edit').append(res.data.data);
-				let id = 'spec_input_tab';
-				this.mergeCell(id);
-			}).catch((err) => {
-				console.log(err);
-			});
-		}
-	}
+  name: "standard",
+  data() {
+    return {
+      status: [false],
+      specResult: [],
+      inputList: {},
+      sure: true,
+      btn: false,
+      spec_name: ""
+    };
+  },
+  methods: {
+    //提交
+    submit() {
+      // let item = {};
+      // $("#myForm input").each(function(index, item){
+      //     eval($(item).attr('name')+ ' = '+ $(item).val())
+      // })
+      // let data = $("#myForm").formToArray();
+      // console.log(data)
+      let that = this;
+      let inputList = {};
+      let flag = false;
+      let tmp = {};
+      let key;
+      //	console.log($('#spec_input_tab tr'))
+      $("#spec_input_tab tr").each(function(index, ele) {
+        //  console.log(ele);
+        $(ele)
+          .find("input")
+          .each(function(index, ele) {
+            // console.log(ele)
+            key = $(ele).attr("data-key");
+            let name = $(ele).attr("name");
+            let val = $(ele).val();
+            tmp[name] = val;
+            console.log(val);
+            inputList[key] = {};
+            if (val === "") {
+              flag = true;
+            }
+          });
+        if (typeof key !== "undefined") {
+          inputList[key] = tmp;
+        }
+        tmp = {};
+      });
+      //	console.log(inputList)
+      if (flag === true) {
+        this.$message({
+          duration: 1000,
+          type: "error",
+          message: "规格信息错误"
+        });
+      } else {
+        this.$HTTP(this.$httpConfig.addGoodsSpec, { item: inputList }, "post")
+          .then(res => {
+            this.$message({
+              duration: 1000,
+              message: res.data.message
+            });
+            this.$emit("selectTab");
+            this.$store.state.tab_state = 2;
+            this.$emit("getParameter");
+            if (!this.$store.state.tab_Index[2]) {
+              this.$store.state.tab_Index.push(2);
+            }
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
+    //选择规格
+    tab1(index, spec, specGroupId) {
+      //	console.log(spec)
+      this.specResult[specGroupId] = [];
+      if (this.status[index] === true) {
+        this.$set(this.status, index, false);
+      } else {
+        this.$set(this.status, index, true);
+      }
+      // console.log(this.specResult);
+      for (let i = 0; i < this.status.length; i++) {
+        if (this.status[i] === true) {
+          if (this.$store.state.spec_data.children[i].spec_id == specGroupId) {
+            this.specResult[specGroupId].push(
+              this.$store.state.spec_data.children[i].id
+            );
+          }
+        }
+      }
+      //	console.log(this.specResult)
+      this.getSpecItem();
+    },
+    /**
+     * 合并单元格
+     */
+    mergeCell(id) {
+      var tab = document.getElementById(id); //要合并的tableID
+      var maxCol = 2,
+        val,
+        count,
+        start; //maxCol：合并单元格作用到多少列
+      if (tab != null) {
+        for (var col = maxCol - 1; col >= 0; col--) {
+          count = 1;
+          val = "";
+          for (var i = 0; i < tab.rows.length; i++) {
+            if (val == tab.rows[i].cells[col].innerHTML) {
+              count++;
+            } else {
+              if (count > 1) {
+                //合并
+                start = i - count;
+                tab.rows[start].cells[col].rowSpan = count;
+                for (var j = start + 1; j < i; j++) {
+                  tab.rows[j].cells[col].style.display = "none";
+                }
+                count = 1;
+              }
+              val = tab.rows[i].cells[col].innerHTML;
+            }
+          }
+          if (count > 1) {
+            //合并，最后几行相同的情况下
+            start = i - count;
+            tab.rows[start].cells[col].rowSpan = count;
+            for (var j = start + 1; j < i; j++) {
+              tab.rows[j].cells[col].style.display = "none";
+            }
+          }
+        }
+      }
+    },
+    //获取编辑调用的接口
+    confirm(item) {
+      this.$HTTP(this.$httpConfig.confirmGoodsItem, {
+        spec_id: Number(item.id),
+        item: item.spec_name
+      }).then(res => {
+        if (res.data.status === 1) {
+          this.$HTTP(
+            this.$httpConfig.getGoodsSpecInfo,
+            { id: this.$store.state.three_class_id },
+            "post"
+          ).then(res => {
+            this.$store.state.spec_data = res.data.data;
+          });
+        }
+      });
+      this.btn = true;
+      this.sure = false;
+    },
+    //取消
+    cancel() {
+      this.btn = false;
+      this.sure = true;
+    },
+    addStyle() {
+      this.btn = true;
+      this.sure = false;
+    },
+    //获取规格项
+    getSpecItem() {
+      this.$HTTP(
+        this.$httpConfig.getGoodsSpec,
+        { spec: this.specResult },
+        "post"
+      )
+        .then(res => {
+          $(".g_edit").html("");
+          $(".g_edit").append(res.data.data);
+          let id = "spec_input_tab";
+          this.mergeCell(id);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
 };
 </script>
 <style>
@@ -264,6 +329,20 @@ export default {
       text-align: center;
       cursor: pointer;
     }
+  }
+  .edit_btn {
+    display: inline-block;
+    margin: 1px;
+    line-height: 50px;
+  }
+  .edit_input {
+    vertical-align: middle;
+    height: 26px;
+    line-height: 10px;
+    border-radius: 5px;
+    border: 1px solid #dbdbdb;
+    width: 140px;
+    margin:10px
   }
 }
 </style>

@@ -72,7 +72,7 @@ const config = {
   saveGoodsSpecItem: request + 'GoodsSpecItem/saveSpecItem', //保存
   copyGoodsSpecItem: request + 'GoodsSpecItem/copySpecialItem',//复制
   getGoodsSpecItemDetail: request + 'GoodsSpecItem/editSpecItem',//详情
-
+  confirmGoodsItem: request + 'GoodsSpecItem/addItem',//添加商品
 
   /*
    * 3、 物流模块
