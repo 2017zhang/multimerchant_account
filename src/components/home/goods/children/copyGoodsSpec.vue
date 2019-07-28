@@ -290,8 +290,8 @@ export default {
     },
 
     submit() {
-<<<<<<< HEAD
-=======
+
+
 <<<<<<< HEAD
 =======
       // debugger
