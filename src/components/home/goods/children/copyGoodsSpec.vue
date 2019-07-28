@@ -290,6 +290,13 @@ export default {
     },
 
     submit() {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+      // debugger
+>>>>>>> 25d451c9a67a27887169d6470f0cc6e7c85311cb
+>>>>>>> ae294409bd6346a924b5e5ec11d934b7b3b57923
       let itemsArray = [];
       let params = [];
       let index = this.namesIndex;
@@ -298,13 +305,29 @@ export default {
       for (let i in list) {
         itemsArray.push(list[i]);
       }
+<<<<<<< HEAD
       
+=======
+<<<<<<< HEAD
+      
+=======
+      console.log(list, "listArrray");
+>>>>>>> 25d451c9a67a27887169d6470f0cc6e7c85311cb
+>>>>>>> ae294409bd6346a924b5e5ec11d934b7b3b57923
       if (this.isUpdate) {
         console.log(list, "hahaha");
         // 注：修改时永远也只有1个，所以取list[0]即可，可以在form data查看传入的参数
         this.$HTTP(this.$httpConfig.copyGoodsSpecItem, {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ae294409bd6346a924b5e5ec11d934b7b3b57923
           id: parseInt(itemsArray[0].items.id),
           class_id: this.class_id,
+=======
+          id: parseInt(list[0].id),
+          class_one: this.class_id,
+>>>>>>> 25d451c9a67a27887169d6470f0cc6e7c85311cb
           class_two: this.class_two,
           class_three: this.class_three
         })
