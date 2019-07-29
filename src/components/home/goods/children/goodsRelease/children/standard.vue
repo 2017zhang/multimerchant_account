@@ -9,9 +9,7 @@
     <div class="specification">
       <p class="goods_spec">商品规格</p>
       <div class="g_size" v-for="(item, index) in $store.state.spec_data.group" :key="index">
-        <span class="fl">
-          {{item.name}}：
-        </span>
+        <span class="fl">{{item.name}}：</span>
         <ul class="fl">
           <li
             v-for="(spec, indexByItem) in $store.state.spec_data.children"
@@ -332,23 +330,16 @@ export default {
   .edit_btn {
     display: inline-block;
     margin: 1px;
-    position: absolute;
-    right: 10%;
     line-height: 50px;
+    padding: 1px;
   }
   .edit_input {
     vertical-align: middle;
-    height: 26px;
+    margin: 10px;
     line-height: 10px;
     border-radius: 5px;
     border: 1px solid #dbdbdb;
-    width: 140px;
-    margin:10px;
-    height:20px;
-    line-height: 10px;
-    border-radius: 5px;
-		border: 1px solid #dbdbdb;
-		width: 70px
+    height: 26px;
   }
 }
 </style>
