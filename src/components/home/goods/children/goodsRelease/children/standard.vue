@@ -21,7 +21,12 @@
           >{{spec.item}}</li>
           <div class="edit_btn">
             <div v-if="!item.btn">
-              <el-button style="margin-left:20px" type="info" plain @click="addStyle(item,index)">＋添加规格值</el-button>
+              <el-button
+                style="margin-left:20px"
+                type="info"
+                plain
+                @click="addStyle(item,index)"
+              >＋添加规格值</el-button>
             </div>
             <div v-if="item.btn">
               <input placeholder="规格值名称" class="edit_input" v-model="item.spec_name" />
@@ -189,11 +194,19 @@ export default {
             { id: this.$store.state.three_class_id },
             "post"
           ).then(res => {
-            this.$store.state.spec_data = res.data.data;
+            if (
+              item.spec_name == null ||
+              item.spec_name == undefined ||
+              item.spec_name == ""
+            ) {
+              this.$message("输入信息不能为空");
+              return "";
+            } else {
+              this.$store.state.spec_data = res.data.data;
+            }
           });
         }
       });
-      this.btn = true;
     },
     //取消
     cancel(item, index) {
