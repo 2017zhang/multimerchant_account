@@ -11,7 +11,6 @@
       <div class="g_size" v-for="(item, index) in $store.state.spec_data.group" :key="index">
         <span class="fl">
           {{item.name}}：
-          <!-- <input placeholder="规格值名称" class="edit_input" v-model="item.spec_name" /> -->
         </span>
         <ul class="fl">
           <li
