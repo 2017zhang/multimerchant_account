@@ -9,14 +9,10 @@
     <div class="specification">
       <p class="goods_spec">商品规格</p>
       <div class="g_size" v-for="(item, index) in $store.state.spec_data.group" :key="index">
-<<<<<<< HEAD
         <span class="fl">
           {{item.name}}：
           <!-- <input placeholder="规格值名称" class="edit_input" v-model="item.spec_name" /> -->
         </span>
-=======
-        <span class="fl">{{item.name}}：</span>
->>>>>>> ae294409bd6346a924b5e5ec11d934b7b3b57923
         <ul class="fl">
           <li
             v-for="(spec, indexByItem) in $store.state.spec_data.children"
@@ -25,7 +21,6 @@
             :class="{color:status[indexByItem]}"
             @click="tab1(indexByItem, spec, index)"
           >{{spec.item}}</li>
-<<<<<<< HEAD
           <div class="edit_btn">
             <div v-if="sure">
               <el-button type="info" plain @click="addStyle">＋添加规格值</el-button>
@@ -37,14 +32,6 @@
             </div>
           </div>
         </ul>
-=======
-        </ul>		    
-        <div class="edit_btn">
-					 <input placeholder="规格值名称" class="edit_input" />
-          <el-button size="mini" type="primary">确认</el-button>
-          <el-button size="mini" type="danger">取消</el-button>
-        </div>
->>>>>>> ae294409bd6346a924b5e5ec11d934b7b3b57923
       </div>
     </div>
     <div class="g_edit"></div>
@@ -61,14 +48,10 @@ export default {
     return {
       status: [false],
       specResult: [],
-<<<<<<< HEAD
       inputList: {},
       sure: true,
       btn: false,
       spec_name: ""
-=======
-      inputList: {}
->>>>>>> ae294409bd6346a924b5e5ec11d934b7b3b57923
     };
   },
   methods: {
@@ -196,7 +179,6 @@ export default {
         }
       }
     },
-<<<<<<< HEAD
     //获取编辑调用的接口
     confirm(item) {
       this.$HTTP(this.$httpConfig.confirmGoodsItem, {
@@ -225,8 +207,6 @@ export default {
       this.btn = true;
       this.sure = false;
     },
-=======
->>>>>>> ae294409bd6346a924b5e5ec11d934b7b3b57923
     //获取规格项
     getSpecItem() {
       this.$HTTP(
@@ -364,8 +344,8 @@ export default {
     border-radius: 5px;
     border: 1px solid #dbdbdb;
     width: 140px;
-    margin:10px
-    height: 20px;
+    margin:10px;
+    height:20px;
     line-height: 10px;
     border-radius: 5px;
 		border: 1px solid #dbdbdb;
