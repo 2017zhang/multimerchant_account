@@ -18,7 +18,7 @@ const addGoodsType = r => require(['@/components/home/goods/children/addGoodsTyp
 const goodsSpec = r => require(['@/components/home/goods/children/goodsSpec'], r); //商户中心-商品规格
 const addGoodsSpec = r => require(['@/components/home/goods/children/addGoodsSpec'], r); //商户中心-添加商品规格
 const updateGoodsSpec = r => require(['@/components/home/goods/children/updateGoodsSpec'], r); //商户中心-添加商品规格
-const copyGoodsSpec = r => require(['@/components/home/goods/children/copyGoodsSpec'], r); //商户中心-复制商品规格属性
+// const copyGoodsSpec = r => require(['@/components/home/goods/children/copyGoodsSpec'], r); //商户中心-复制商品规格属性
 const goodsAttribute = r => require(['@/components/home/goods/children/goodsAttribute'], r); //商户中心-商品属性
 const addGoodsAttribute = r => require(['@/components/home/goods/children/addGoodsAttribute'], r); //商户中心-商品属性
 const logistics = r => require(['@/components/home/logistics/logistics'], r); //商户中心-物流
@@ -230,11 +230,11 @@ const router = new Router({
                 name: 'updateGoodsSpec',
                 component: updateGoodsSpec
             },
-            {//商品中心－商品规格设定
-                path:'/copyGoodsSpec',
-                name:'copyGoodsSpec',
-                component:copyGoodsSpec
-            },
+            // {//商品中心－商品规格设定
+            //     path:'/copyGoodsSpec',
+            //     name:'copyGoodsSpec',
+            //     component:copyGoodsSpec
+            // },
             // { //商户中心-商品属性
             //     path: '/goodsAttribute',
             //     name: 'goodsAttribute',
