@@ -12,6 +12,7 @@
         <span class="fl">{{item.name}}：</span>
         <ul class="fl">
           <li
+            style="margin:2px"
             v-for="(spec, indexByItem) in $store.state.spec_data.children"
             v-if="index == spec.spec_id"
             :key="spec.id"
@@ -19,13 +20,13 @@
             @click="tab1(indexByItem, spec, index)"
           >{{spec.item}}</li>
           <div class="edit_btn">
-            <div v-if="sure">
-              <el-button type="info" plain @click="addStyle">＋添加规格值</el-button>
+            <div v-if="!item.btn">
+              <el-button style="margin-left:20px" type="info" plain @click="addStyle(item,index)">＋添加规格值</el-button>
             </div>
-            <div v-if="btn">
+            <div v-if="item.btn">
               <input placeholder="规格值名称" class="edit_input" v-model="item.spec_name" />
-              <el-button size="mini" type="primary" @click="confirm(item)">确认</el-button>
-              <el-button size="mini" type="danger" @click="cancel">取消</el-button>
+              <el-button size="mini" type="primary" @click="confirm(item,index)">确认</el-button>
+              <el-button size="mini" type="danger" @click="cancel(item,index)">取消</el-button>
             </div>
           </div>
         </ul>
@@ -38,7 +39,8 @@
   </div>
 </template>
 <script>
-// import "../../../../../../../js/jquery.form"
+//import "../../../../../../../js/jquery.form"
+import Vue from "vue";
 export default {
   name: "standard",
   data() {
@@ -46,7 +48,6 @@ export default {
       status: [false],
       specResult: [],
       inputList: {},
-      sure: true,
       btn: false,
       spec_name: ""
     };
@@ -193,16 +194,14 @@ export default {
         }
       });
       this.btn = true;
-      this.sure = false;
     },
     //取消
-    cancel() {
-      this.btn = false;
-      this.sure = true;
+    cancel(item, index) {
+      item.btn = false;
+      Vue.set(this.$store.state.spec_data.group[index], "btn", false);
     },
-    addStyle() {
-      this.btn = true;
-      this.sure = false;
+    addStyle(item, index) {
+      Vue.set(this.$store.state.spec_data.group[index], "btn", true);
     },
     //获取规格项
     getSpecItem() {
