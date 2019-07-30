@@ -46,6 +46,7 @@
 <script>
 //import "../../../../../../../js/jquery.form"
 import Vue from "vue";
+import qs from "qs";
 export default {
   name: "standard",
   data() {
@@ -186,8 +187,6 @@ export default {
     confirm(item) {
       if (item.spec_name) {
         var str = item.spec_name.replace(/\s+/g, "");
-        // var str = item.spec_name.replace(/(^\s*)|(\s*$)/g, ""); //去除空格;
-        // var str = item.spec_name;
         if (str == "") {
           this.$message("输入信息不能为空");
           return "";
@@ -202,7 +201,6 @@ export default {
                 { id: this.$store.state.three_class_id },
                 "post"
               ).then(res => {
-                console.log(str);
                 this.$store.state.spec_data = res.data.data;
               });
             }
@@ -233,9 +231,77 @@ export default {
           $(".g_edit").append(res.data.data);
           let id = "spec_input_tab";
           this.mergeCell(id);
+          this.$nextTick(() => {
+            this.addUploadImg();
+          });
         })
         .catch(err => {
           console.log(err);
+        });
+    },
+    addUploadImg() {
+      let _this = this;
+      $(".uploadBtn").on("change", function(e) {
+        _this.uploadImg(e.target.files[0], e.target);
+      });
+    },
+    addUploadImg() {
+      let _this = this;
+      $(".uploadBtn").on("change", function(e) {
+        _this.uploadImg(e.target.files[0], e.target);
+      });
+    },
+    uploadImg(file, _dom) {
+      const loading = this.$loading({
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
+      this.axios
+        .post(
+          this.$store.state.image_api_url + "FileUpload/getGoodsImageConfig",
+          qs.stringify({})
+        )
+        .then(res => {
+          if (res.data.status == 0) {
+            this.$layer.msg(data.message);
+            loading.close();
+            return;
+          }
+          let data = res.data.data;
+          this.imageConf = data.config;
+          this.imageToken = data.token;
+          this.sToken = data.s_token;
+
+          var formData = new FormData();
+          formData.append("fileData", file);
+          formData.append("imageToken", this.imageToken);
+          formData.append("sessionToken", this.sToken);
+          this.axios
+            .post(
+              this.$store.state.image_api_url +
+                "FileUpload/uploadImageToLocal/",
+              formData
+            )
+            .then(res => {
+              let _data = res.data;
+              if (_data.status == 1) {
+                this.$message.success(_data.message);
+                $(_dom)
+                  .siblings("input[type='hidden']")
+                  .val(_data.data);
+                $(_dom)
+                  .parent()
+                  .siblings(".showImg")
+                  .find("img")
+                  .attr("src", this.URL + _data.data);
+                loading.close();
+              } else {
+                this.$message.warning(_data.message);
+                loading.close();
+              }
+            });
         });
     }
   }
@@ -253,7 +319,22 @@ export default {
   border-bottom: 1px solid #ddd;
   text-align: center;
   vertical-align: inherit;
+  position: relative;
 }
+.g_edit .table tr td span {
+  background: #088be6;
+  display: inline-block;
+  color: #ffffff;
+  font-size: 12px;
+  border-radius: 4px;
+  line-height: 24px;
+  width: 58px;
+  height: 24px;
+  position: relative;
+  bottom: -1px;
+  z-index: -1;
+}
+
 .g_edit .table tr td b {
   font-weight: bold;
   color: #333;
@@ -262,6 +343,27 @@ export default {
   padding-left: 5px;
   height: 32px;
   border: 1px solid #cccccc;
+}
+.uploadBtn {
+  width: 58px;
+  height: 24px;
+  border: none;
+  background: #088be6;
+  color: #ffffff;
+  font-size: 12px;
+  border-radius: 4px;
+  opacity: 0;
+  position: absolute;
+}
+.uploadImg {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  opacity: 0;
 }
 </style>
 
@@ -330,7 +432,11 @@ export default {
   }
   .g_edit {
     margin-bottom: 25px;
+    span {
+      background: red;
+    }
   }
+
   .tijiao {
     height: 32px;
     border-radius: 6px;
