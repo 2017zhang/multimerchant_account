@@ -184,29 +184,31 @@ export default {
     },
     //获取编辑调用的接口
     confirm(item) {
-      this.$HTTP(this.$httpConfig.confirmGoodsItem, {
-        spec_id: Number(item.id),
-        item: item.spec_name
-      }).then(res => {
-        if (res.data.status === 1) {
-          this.$HTTP(
-            this.$httpConfig.getGoodsSpecInfo,
-            { id: this.$store.state.three_class_id },
-            "post"
-          ).then(res => {
-            if (
-              item.spec_name == null ||
-              item.spec_name == undefined ||
-              item.spec_name == ""
-            ) {
-              this.$message("输入信息不能为空");
-              return "";
-            } else {
-              this.$store.state.spec_data = res.data.data;
-            }
-          });
+      if (item.spec_name) {
+        var str = item.spec_name.replace(/(^\s*)|(\s*$)/g, ""); //去除空格;
+        if (str == "" || str == undefined || str == null) {
+          this.$message("输入信息不能为空");
+          return "";
         }
-      });
+      } else if (!item.spec_name) {
+        this.$message("输入信息不能为空");
+        return "";
+      } else {
+        this.$HTTP(this.$httpConfig.confirmGoodsItem, {
+          spec_id: Number(item.id),
+          item: item.spec_name
+        }).then(res => {
+          if (res.data.status === 1) {
+            this.$HTTP(
+              this.$httpConfig.getGoodsSpecInfo,
+              { id: this.$store.state.three_class_id },
+              "post"
+            ).then(res => {
+              this.$store.state.spec_data = res.data.data;
+            });
+          }
+        });
+      }
     },
     //取消
     cancel(item, index) {
