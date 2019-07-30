@@ -185,29 +185,32 @@ export default {
     //获取编辑调用的接口
     confirm(item) {
       if (item.spec_name) {
-        var str = item.spec_name.replace(/(^\s*)|(\s*$)/g, ""); //去除空格;
-        if (str == "" || str == undefined || str == null) {
+        var str = item.spec_name.replace(/\s+/g, "");
+        // var str = item.spec_name.replace(/(^\s*)|(\s*$)/g, ""); //去除空格;
+        // var str = item.spec_name;
+        if (str == "") {
           this.$message("输入信息不能为空");
           return "";
+        } else {
+          this.$HTTP(this.$httpConfig.confirmGoodsItem, {
+            spec_id: Number(item.id),
+            item: str
+          }).then(res => {
+            if (res.data.status === 1) {
+              this.$HTTP(
+                this.$httpConfig.getGoodsSpecInfo,
+                { id: this.$store.state.three_class_id },
+                "post"
+              ).then(res => {
+                console.log(str);
+                this.$store.state.spec_data = res.data.data;
+              });
+            }
+          });
         }
-      } else if (!item.spec_name) {
+      } else {
         this.$message("输入信息不能为空");
         return "";
-      } else {
-        this.$HTTP(this.$httpConfig.confirmGoodsItem, {
-          spec_id: Number(item.id),
-          item: item.spec_name
-        }).then(res => {
-          if (res.data.status === 1) {
-            this.$HTTP(
-              this.$httpConfig.getGoodsSpecInfo,
-              { id: this.$store.state.three_class_id },
-              "post"
-            ).then(res => {
-              this.$store.state.spec_data = res.data.data;
-            });
-          }
-        });
       }
     },
     //取消
