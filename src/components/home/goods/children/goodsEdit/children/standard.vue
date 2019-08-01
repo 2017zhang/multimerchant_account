@@ -78,7 +78,9 @@ export default {
   },
   methods: {
     getData(data) {
+      console.log(data);
       if (this.spec_data && this.s == 2) return;
+      console.log(12323)
       this.spec_data = data;
       let item_id = data.item_id;
       this.group = data.specList.group;
@@ -102,6 +104,7 @@ export default {
           }
         }
       }
+      console.log(this.select_list);
       this.getSpecItem();
     },
     //提交
@@ -345,13 +348,15 @@ export default {
             item: str
           }).then(res => {
             if (res.data.status === 1) {
-              this.$HTTP(
-                this.$httpConfig.getGoodsSpecInfo,
-                { id: this.$store.state.three_class_id},
-                "post"
-              ).then(res => {
-                this.$store.state.spec_data = res.data.data;
-              });
+              this.$HTTP(this.$httpConfig.getGoodsSpecDetail, {
+                class_three: this.$store.state.three_class_id_tow,
+                goods_id: this.$route.params.id
+              }, 'post').then(res => {
+                this.spec_data = "";
+                this.getData(res.data.data);
+              }).catch((err) => {
+                console.log(err);
+              })
             }
           });
         }
