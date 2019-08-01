@@ -73,6 +73,7 @@ const config = {
   copyGoodsSpecItem: request + 'GoodsSpecItem/copySpecialItem',//复制
   getGoodsSpecItemDetail: request + 'GoodsSpecItem/editSpecItem',//详情
   confirmGoodsItem: request + 'GoodsSpecItem/addItem',//添加商品
+  setGoodsImages: request + "GoodsImages/setGoodsImages", //设置商品主图
 
   /*
    * 3、 物流模块
