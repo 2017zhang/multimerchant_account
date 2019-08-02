@@ -101,7 +101,7 @@
 			setMainImg(item,index){
 				console.log(item)
 				var url = [];
-				url.push(item.url.substring(24));
+				url.push(item.url.substring(23));
 				this.$HTTP(this.$httpConfig.setGoodsImages,{pic_url:url}).then((res)=>{
 					if(res.data.status == 1){
 						this.$message.success(res.data.message);
