@@ -245,12 +245,6 @@ export default {
         _this.uploadImg(e.target.files[0], e.target);
       });
     },
-    addUploadImg() {
-      let _this = this;
-      $(".uploadBtn").on("change", function(e) {
-        _this.uploadImg(e.target.files[0], e.target);
-      });
-    },
     uploadImg(file, _dom) {
       const loading = this.$loading({
         lock: true,
