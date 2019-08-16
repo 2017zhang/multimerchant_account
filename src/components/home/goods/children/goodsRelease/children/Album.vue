@@ -235,7 +235,7 @@
 			},
 			// 添加图片
 			addPicture() {
-				this.$HTTP(this.$httpConfig.saveGoodsImg, {pic_url: this.uploadFile}).then((res) => {
+				this.$HTTP(this.$httpConfig.addGoodsPic, {pic_url: this.uploadFile}).then((res) => {
 					this.$message.success(res.data.message);
 					this.$emit('selectTab');
 					this.$store.state.tab_state = 3;
