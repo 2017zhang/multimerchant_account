@@ -86,6 +86,7 @@ export default {
             console.log(val);
             inputList[key] = {};
             if (val === "") {
+              console.log(val,name)
               flag = true;
             }
           });

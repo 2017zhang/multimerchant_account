@@ -70,7 +70,7 @@
 			};
 		},
 		created() {
-			this.imageList();
+			//this.imageList();
 		},
 		props: {
 			s: ''

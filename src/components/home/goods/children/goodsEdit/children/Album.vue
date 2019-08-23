@@ -177,7 +177,7 @@
 						//	console.log('del2', this.uploadFile)
 						this.$message.success(res.data.message);
 					}
-					let index = this.uploadFile.indexOf(newUrl);
+					// let index = this.uploadFile.indexOf(newUrl);
 					this.uploadFile.splice(index, 1);
 					this.fileList.splice(index, 1);
 
