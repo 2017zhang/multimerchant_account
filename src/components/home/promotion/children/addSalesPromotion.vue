@@ -3,8 +3,8 @@
 	<div class="classify">
 		<div class="g_att">
 			<h1 class="t_title">
-	          <span v-if="!status" class="size16">添加商品促销活动</span>
-            	<span v-else class="size16">修改商品促销活动</span>
+	          <span v-if="!status" class="size16">添加商品促销活动11</span>
+            	<span v-else class="size16">修改商品促销活动22</span>
 	          <div @click="to" class="t_m fr">返回满赠列表</div>
 	        </h1>
 			<el-form class="form" label-width="180px" :model="params">
@@ -32,6 +32,8 @@
 					</el-select>
 				</el-form-item>
 				<select-one-goods v-on:sendGoodsData="getGoodsData" :sendUpdateData="updateGoods" :sendStatus="status"></select-one-goods>
+
+				<select-one-goods v-on:sendGoodsData="getGoodsData1" :giveFlag="giveFlag" :sendUpdateData="updateGoods1" :sendStatus="status"></select-one-goods>
 				<el-form-item label="活动描述">
 					<UE :defaultMsg="params.description" :config="config" ref="ue"></UE>
 				</el-form-item>
@@ -53,6 +55,7 @@
 					initialFrameWidth: null,
 					initialFrameHeight: 350
 				},
+				giveFlag:true,
 				params: {
 					name: '',
 					full: 0,
@@ -72,9 +75,11 @@
 				},
 				multipleSelection: [],
 				hasCityId: null, //已存在/选中的数据，只有ID
+				hasCityId1:null,
 				status: 0, //0代表是新增，1代表是修改
 				id:0,
 				updateGoods: [],
+				updateGoods1: [],
 				page_size: 0, //每页显示几个
 				page: 0, //总页数
 				currentPage: 1, //当前页
@@ -99,7 +104,7 @@
 		created() {
 		},
 		mounted() {
-			
+
 			this.getRange();
 			this.status = this.$route.params.status;
 			if(this.status) {
@@ -111,6 +116,9 @@
 		methods: {
 			getGoodsData(data){
 				this.hasCityId = data;
+			},
+			getGoodsData1(data){
+				this.hasCityId1 = data;
 			},
 			tam2time(value) {
 				var time = new Date(Number(value)*1000);
@@ -133,8 +141,11 @@
 					this.params = res.data.data;
 					this.params.start_time = this.tam2time(this.params.start_time);
 					this.params.end_time = this.tam2time(this.params.end_time);
+					this.hasCityId = res.data.data.goods.goods_id;
+					this.hasCityId1 = res.data.data.give_goods.goods_id;
 					this.$refs.ue.editor.setContent(this.params.description);
 					this.updateGoods.push(res.data.data.goods);
+					this.updateGoods1.push(res.data.data.give_goods);
 					this.$message.success(res.data.message);
 				})
 				.catch((err) => {
@@ -156,7 +167,8 @@
 				var that = this;
 				this.params.goods_id = this.hasCityId;
 				this.params.description = this.$refs.ue.getUEContent();
-				// console.log(this.params);
+				this.params.give_goods_id = this.hasCityId1;
+				 console.log(this.params);
 				if(this.status) {
 					this.$HTTP(this.$httpConfig.saveFullGift,this.params).then((res) => {
 						this.$message.success(res.data.message + ",即将跳转回列表页面");
@@ -202,14 +214,14 @@
 		margin-top: 20px;
 	}
 	/*名称项超出隐藏*/
-	
+
 	#name-single {
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
 	}
 	/*表格内容居中*/
-	
+
 	.el-table th>.cell,
 	.el-table .cell {
 		text-align: center;

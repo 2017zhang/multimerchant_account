@@ -10,7 +10,6 @@ var HTTP = function(API_URL,params){
             if (res.data.status == 10001) {
                 window.parent.location.hash = '#/login';
             }else if (res.data.status == 1) {
-                console.log(res.data.data);
                 resolve(res);
             } else {
                 Message.error(res.data.message);

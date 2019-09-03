@@ -116,7 +116,7 @@ const combinationOrderDetail = r => require(['@/components/home/trade/children/c
 const packageReturn = r => require(['@/components/home/trade/packageReturn/packageReturn.vue'],r); // 套餐退货列表
 const packageRetumitem = r => require(['@/components/home/trade/packageReturn/packageRetumitem.vue'],r); //套餐退货详情
 const statistics = r => require(['@/components/reportForms/statistics.vue'],r);//报表
-const indent = r => require(['@/components/reportForms/indent.vue'],r);//统计 
+const indent = r => require(['@/components/reportForms/indent.vue'],r);//统计
 const salesDetail = r => require(['@/components/reportForms/salesDetail.vue'],r); //商家销售明细
 const industryAnalyst = r => require(['@/components/reportForms/industryAnalyst.vue'],r); // 行业统计
 const deliveryConfig  = r => require(['@/components/home/logistics/children/deliveryConfig.vue'],r);
@@ -199,7 +199,7 @@ const router = new Router({
             //     name: 'imgageSpace',
             //     component: imgageSpace
             // },
-            
+
             // { //商户中心-图片空间-查看广告图
             //     path: '/Picturelist',
             //     name: 'Picturelist',
@@ -219,7 +219,7 @@ const router = new Router({
             //     path: '/goodsSpec',
             //     name: 'goodsSpec',
             //     component: goodsSpec
-            // }, 
+            // },
             { //商户中心-添加商品规格
                 path: '/addGoodsSpec',
                 name: 'addGoodsSpec',
@@ -746,8 +746,6 @@ Router.prototype.initLocalRouters = function() {
 
                 index++;
             }
-             console.log(allPrivilege)
-             console.log(topMenu)
             router.addRoutes(topMenu);
         }
 
@@ -755,6 +753,6 @@ Router.prototype.initLocalRouters = function() {
     //router.beforeEach((to,from,next)=>{
     //	console.log(arguments)
     //	next();
-    //}) 
+    //})
 router.initLocalRouters();
 export default router

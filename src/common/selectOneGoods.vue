@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-form-item v-if="!status" v-show="hasCityData.length==0">
-            <el-button type="success" @click.native="select">选择商品</el-button>
+            <el-button type="success" @click.native="select">{{giveFlag ? '选择赠送商品' : '选择商品'}}</el-button>
             <el-dialog title="商品列表" :visible.sync="dialogTableVisible">
                 <el-table @current-change="handleSelectionChange" tooltip-effect="dark" ref="multipleTable" :data="girdData" highlight-current-row width="700" height="300">
                     <el-table-column label="商品名称" width="300px" show-overflow-tooltip>
@@ -20,7 +20,7 @@
             </el-dialog>
         </el-form-item>
         <el-form-item v-else v-show="updateGoods.length == 0">
-            <el-button type="success" @click.native="select">选择商品</el-button>
+            <el-button type="success" @click.native="select">{{giveFlag ? '选择赠送商品' : '选择商品'}}</el-button>
             <el-dialog title="商品列表" :visible.sync="dialogTableVisible">
                 <el-table @current-change="handleSelectionChange" tooltip-effect="dark" ref="multipleTable" :data="girdData" highlight-current-row width="700" height="300">
                     <el-table-column label="商品名称" width="300px" show-overflow-tooltip>
@@ -38,7 +38,7 @@
                 </div>
             </el-dialog>
         </el-form-item>
-        <el-form-item label="已选择的优惠商品">
+        <el-form-item :label="listTitle">
             <el-table v-if="!status" :data="hasCityData" border style="width: 70%;">
                 <el-table-column prop="id" label="ID">
                 </el-table-column>
@@ -91,11 +91,13 @@ export default {
             page: 0, //总页数
             currentPage: 1, //当前页
             isSelected:'',
+            listTitle:''
         }
     },
     props: {
         sendStatus: '',
-        sendUpdateData: ''
+        sendUpdateData: '',
+        giveFlag:false
     },
     watch: {
         sendStatus() {
@@ -106,6 +108,12 @@ export default {
         }
     },
     mounted() {
+        console.log(this.giveFlag,222);
+        if(this.giveFlag){
+            this.listTitle = '已选择赠送产品';
+        }else {
+            this.listTitle = '已选择优惠产品';
+        }
     },
     methods: {
         /*翻页*/
@@ -134,6 +142,7 @@ export default {
         },
         // 修改时的删除
         deleteItem2(id) {
+            console.log(this.giveFlag,222)
             if (this.updateGoods[0].goods_id == id) {
                 this.updateGoods = [];
                 delete this.hasCityId;
