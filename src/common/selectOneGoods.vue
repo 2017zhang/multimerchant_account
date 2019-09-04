@@ -153,6 +153,7 @@ export default {
             let groupId = this.multipleSelection.id;
             this.hasCityId = groupId;
             if (this.status) {
+                this.multipleSelection.goods_id = this.multipleSelection.id;
                 this.updateGoods.push(this.multipleSelection);
                 this.sendDataUp();
             } else {

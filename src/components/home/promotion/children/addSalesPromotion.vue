@@ -149,7 +149,30 @@
 				this.$HTTP(this.$httpConfig.getFullGiftDetail,{id: this.id}).then((res) => {
 					res.data.data.give_count = res.data.data.give_goods.give_count;
 					res.data.data.give_num = res.data.data.give_goods.give_num;
-					this.params = res.data.data;
+					this.params.id = res.data.data.id;
+					this.params.full = res.data.data.full;
+					this.params.expression = res.data.data.expression;
+					this.params.description = res.data.data.description;
+					this.params.start_time = res.data.data.start_time;
+					this.params.end_time = res.data.data.end_time;
+					this.params.group = res.data.data.group;
+					this.params.goods_id = res.data.data.goods_id;
+					this.params.give_num = res.data.data.give_num;
+					this.params.give_count = res.data.data.give_count;
+					this.params.name = res.data.data.name;
+					// params: {
+					// 	name: '',
+					// 			full: 0,
+					// 			expression: 0,
+					// 			description: '',
+					// 			start_time: '',
+					// 			end_time: '',
+					// 			group: [],
+					// 			goods_id: 0,
+					// 			give_num:"",
+					// 			give_count:''
+					// },
+					console.log(this.params);
 					this.params.start_time = this.tam2time(this.params.start_time);
 					this.params.end_time = this.tam2time(this.params.end_time);
 					this.hasCityId = res.data.data.goods.goods_id;
