@@ -18,7 +18,7 @@
 					<el-input style="width: 600px;" v-model="params.full" clearable></el-input> 元
 				</el-form-item>
 				<el-form-item label="赠送商品总数量">
-					<el-input style="width: 600px;" v-model="params.give_num" clearable></el-input>
+					<el-input style="width: 600px;" v-model="params.give_count" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="开始时间">
 					<el-date-picker :picker-options="pickerOptions1" v-model="params.start_time" type="date" value-format="yyyy-MM-dd" placeholder="选择日期">
@@ -39,7 +39,7 @@
 				<select-one-goods v-on:sendGoodsData="getGoodsData1" :giveFlag="giveFlag" :sendUpdateData="updateGoods1" :sendStatus="status"></select-one-goods>
 
 				<el-form-item label="一次赠送商品个数">
-					<el-input style="width: 600px;" v-model="params.give_count" clearable></el-input>
+					<el-input style="width: 600px;" v-model="params.give_num" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="活动描述">
 					<UE :defaultMsg="params.description" :config="config" ref="ue"></UE>
