@@ -188,7 +188,7 @@
 						}, 1000);
 						this.$message.success(res.data.message);
 					}).catch((err) => {
-						this.$message.error(err);
+						this.$message.error(err.data.message);
 					})
 				}else{
 					this.$HTTP(this.$httpConfig.addFullGift,this.params).then((res) => {
@@ -198,7 +198,7 @@
 						}, 1000);
 						this.$message.success(res.data.message);
 					}).catch((err) => {
-						this.$message.error(err);
+						this.$message.error(err.data.message);
 					})
 				}
 			},
