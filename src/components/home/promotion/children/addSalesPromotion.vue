@@ -3,8 +3,8 @@
 	<div class="classify">
 		<div class="g_att">
 			<h1 class="t_title">
-	          <span v-if="!status" class="size16">添加商品促销活动11</span>
-            	<span v-else class="size16">修改商品促销活动22</span>
+	          <span v-if="!status" class="size16">添加商品促销活动</span>
+            	<span v-else class="size16">修改商品促销活动</span>
 	          <div @click="to" class="t_m fr">返回满赠列表</div>
 	        </h1>
 			<el-form class="form" label-width="180px" :model="params">
@@ -16,6 +16,9 @@
 				</el-form-item>
 				<el-form-item label="满赠价格">
 					<el-input style="width: 600px;" v-model="params.full" clearable></el-input> 元
+				</el-form-item>
+				<el-form-item label="赠送商品总数量">
+					<el-input style="width: 600px;" v-model="params.give_num" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="开始时间">
 					<el-date-picker :picker-options="pickerOptions1" v-model="params.start_time" type="date" value-format="yyyy-MM-dd" placeholder="选择日期">
@@ -34,6 +37,10 @@
 				<select-one-goods v-on:sendGoodsData="getGoodsData" :sendUpdateData="updateGoods" :sendStatus="status"></select-one-goods>
 
 				<select-one-goods v-on:sendGoodsData="getGoodsData1" :giveFlag="giveFlag" :sendUpdateData="updateGoods1" :sendStatus="status"></select-one-goods>
+
+				<el-form-item label="一次赠送商品个数">
+					<el-input style="width: 600px;" v-model="params.give_count" clearable></el-input>
+				</el-form-item>
 				<el-form-item label="活动描述">
 					<UE :defaultMsg="params.description" :config="config" ref="ue"></UE>
 				</el-form-item>
@@ -64,7 +71,9 @@
 					start_time: '',
 					end_time: '',
 					group: [],
-					goods_id: 0
+					goods_id: 0,
+					give_num:"",
+					give_count:''
 				},
 				group: [],
 				girdData: [],
@@ -138,6 +147,8 @@
 			},
 			queryData(){
 				this.$HTTP(this.$httpConfig.getFullGiftDetail,{id: this.id}).then((res) => {
+					res.data.data.give_count = res.data.data.give_goods.give_count;
+					res.data.data.give_num = res.data.data.give_goods.give_num;
 					this.params = res.data.data;
 					this.params.start_time = this.tam2time(this.params.start_time);
 					this.params.end_time = this.tam2time(this.params.end_time);
