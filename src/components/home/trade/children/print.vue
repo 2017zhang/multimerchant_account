@@ -44,8 +44,10 @@
                             <td>{{item.goods_id}}</td>
                             <td>{{item.title}}</td>
                             <td>{{item.goods_num}}</td>
-                            <td>￥{{item.goods_price}}</td>
-                            <td>￥{{item.goods_num*item.goods_price | keepTwoNum}}</td>
+                            <td v-if="item.goods_price != '0.00'">￥{{item.goods_price}}</td>
+                            <td v-else style="color: #d02629;">赠品</td>
+                            <td v-if="item.goods_price != '0.00'">￥{{item.goods_num*item.goods_price | keepTwoNum}}</td>
+                            <td v-else>无</td>
                         </tr>
                         <tr>
                             <td colspan="5">
@@ -101,6 +103,12 @@ export default {
             this.$HTTP(this.$httpConfig.getOrderDetail, { id: this.$route.params.order_id }).then((res) => {
                 this.order_data = res.data.data.order;
                 this.goods = res.data.data.goods;
+                this.goods.forEach((item,index)=>{
+                    if(item.goods_price == '0.00'){
+                        this.goods.splice(index,1);
+                        this.goods.push(item)
+                    }
+                })
                 this.address = res.data.data.receive;
             }).catch((res) => {
                 this.$message.error(res.data.message);

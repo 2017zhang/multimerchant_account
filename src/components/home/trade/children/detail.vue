@@ -9,10 +9,12 @@
             <div class="center">
                 <div class="center-top">
                     <div class="left">
-                        <div class="status">当前订单状态111</div>
+                        <div class="status">当前订单状态</div>
                         <div class="detail">
                             <div class="button">
-                                <el-button size="small" type="success">{{$store.state.orderStatus[order_data.order_status]}}</el-button>
+                                <el-button size="small" type="success">
+                                    {{$store.state.orderStatus[order_data.order_status]}}
+                                </el-button>
                             </div>
                             <ul class="info">
                                 <li>1.买家已付款，请尽快发货，否则买家有权申请退款。</li>
@@ -55,7 +57,7 @@
                                 <span class="right" v-if="order_data.hasOwnProperty('delivery_time')">{{order_data.delivery_time|formatDate}}</span>
                                 <span class="right" v-else>N/A</span>
                             </li>
-                             <li>
+                            <li>
                                 <span class="left">运费：</span>
                                 <span class="right">{{order_data.shipping_monery}}</span>
                             </li>
@@ -88,12 +90,17 @@
                 <el-table-column prop="goods_num" label="发货数量">
                 </el-table-column>
                 <el-table-column prop="goods_price" label="价格">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.goods_price != '0.00'">{{scope.row.goods_price}}</span>
+                        <span v-else style="color: #d02629;">赠品</span>
+                    </template>
                 </el-table-column>
             </el-table>
             <table width="100%" cellspacing="0" cellpadding="0" class="logistics_x" v-if="order_data.order_status == 1">
                 <tr>
                     <td width="13%" align="right" class="black">
-                        <b>*</b>物流公司名称： </td>
+                        <b>*</b>物流公司名称：
+                    </td>
                     <td>
                         <el-select v-model="express_id" placeholder="请选择" style="width: 250px;height: 40px;">
                             <el-option v-for="item in typeList" :key="item.name" :label="item.name" :value="item.id">
@@ -104,7 +111,8 @@
 
                 <tr v-if="express_id==25">
                     <td align="right" class="black">
-                        <b>*</b>预计送达时间(小时)：</td>
+                        <b>*</b>预计送达时间(小时)：
+                    </td>
                     <td>
                         <el-input v-model="deliveryTime" clearable style="width: 250px;height: 40px;">
                         </el-input>
@@ -114,7 +122,8 @@
 
                 <tr>
                     <td align="right" class="black">
-                        <b>*</b>运单号码： </td>
+                        <b>*</b>运单号码：
+                    </td>
                     <td>
                         <el-input v-model="order_number" clearable style="width: 250px;height: 40px;">
                         </el-input>
@@ -131,248 +140,287 @@
     </div>
 </template>
 <script>
-import returnDetailsVue from './returnDetails.vue';
-import {OrderStatus} from '../../../../.././es-2015/order-status';
-export default {
-    name: 'delivery',
-    data() {
-        return {
-            express_id: '',
-            typeList: [],
-            order_data: {},
-            order_source: ['PC端', 'APP端', 'WAP端'],
-            order_number: '',
-            address: {},
-            goods:[],
-            deliveryTime:'', // 送达时间
-        }
-    },
-    created() {
-        this.getOrderData();
+    import returnDetailsVue from './returnDetails.vue';
+    import {OrderStatus} from '../../../../.././es-2015/order-status';
 
-        OrderStatus.getInstance(this.$store).orderState(this.$httpConfig.getOrderAllStatus);;
-    },
-    methods: {
-        //获取快递列表
-        getExpressList() {
-            this.$HTTP(this.$httpConfig.getExpressOpened,{}).then((res) => {
-                this.typeList = res.data.data;
-            }).catch((res) => {
-                this.$message.error(res.data.message);
-            });
+    export default {
+        name: 'delivery',
+        data() {
+            return {
+                express_id: '',
+                typeList: [],
+                order_data: {},
+                order_source: ['PC端', 'APP端', 'WAP端'],
+                order_number: '',
+                address: {},
+                goods: [],
+                deliveryTime: '', // 送达时间
+            }
         },
-        //获取订单详情
-        getOrderData() {
-            this.$HTTP(this.$httpConfig.getOrderDetail,{id: this.$route.params.order_id}).then((res) => {
-                this.order_data = res.data.data.order;
-                this.goods = res.data.data.goods;
-                this.address = res.data.data.receive;
-                if (this.order_data.order_status ==1 ) {
-                    this.getExpressList();
+        created() {
+            this.getOrderData();
+
+            OrderStatus.getInstance(this.$store).orderState(this.$httpConfig.getOrderAllStatus);
+            ;
+        },
+        methods: {
+            //获取快递列表
+            getExpressList() {
+                this.$HTTP(this.$httpConfig.getExpressOpened, {}).then((res) => {
+                    this.typeList = res.data.data;
+                }).catch((res) => {
+                    this.$message.error(res.data.message);
+                });
+            },
+            //获取订单详情
+            getOrderData() {
+                this.$HTTP(this.$httpConfig.getOrderDetail, {id: this.$route.params.order_id}).then((res) => {
+                    this.order_data = res.data.data.order;
+                    this.goods = res.data.data.goods;
+
+                    this.goods.forEach((item, index) => {
+                        if (item.goods_price == '0.00') {
+                            this.goods.splice(index, 1);
+                            this.goods.push(item)
+                        }
+                    })
+
+                    this.address = res.data.data.receive;
+                    if (this.order_data.order_status == 1) {
+                        this.getExpressList();
+                    }
+                }).catch((res) => {
+                    this.$message.error(res.data.message);
+                });
+            },
+            to() {
+                this.$router.back();
+            },
+            delivery() {
+                if (!this.express_id) {
+                    this.$message({
+                        duration: 1000,
+                        type: 'error',
+                        message: '选择物流公司'
+                    });
+                    return;
                 }
-            }).catch((res) => {
-                this.$message.error(res.data.message);
-            });
-        },
-        to() {
-            this.$router.back();
-        },
-        delivery(){
-            if(!this.express_id){
-                this.$message({
-                    duration:1000,
-                    type:'error',
-                    message: '选择物流公司'
+                ;
+                if (!/^\d+$/.test(this.order_number)) {
+                    this.$message({
+                        duration: 1000,
+                        type: 'error',
+                        message: '请输入正确的运单号码'
+                    });
+                    return;
+                }
+
+                if (this.express_id == 25 && this.deliveryTime == '') {
+                    this.$message({
+                        duration: 1000,
+                        type: 'error',
+                        message: '请输入预计送达时间'
+                    });
+                    return;
+                }
+
+                var data = {
+                    id: this.order_data.id,
+                    exp_id: this.express_id,
+                    express_id: this.order_number
+                }
+
+                if (this.deliveryTime != '' && this.express_id == 25) {
+                    data.service_time = this.deliveryTime
+                }
+
+                this.$HTTP(this.$httpConfig.setOrderSendGoods, data).then((res) => {
+                    this.$message({
+                        duration: 1000,
+                        type: 'success',
+                        message: res.data.message
+                    });
+                    setTimeout(() => {
+                        this.$router.push({name: "tradeManage"});
+                    }, 1500)
+                }).catch((res) => {
+                    this.$message.error(res.data.message);
                 });
-                return;
-            };
-            if(!/^\d+$/.test(this.order_number)){
-                this.$message({
-                    duration:1000,
-                    type:'error',
-                    message: '请输入正确的运单号码'
-                });
-                return;
+
             }
-
-            if(this.express_id == 25 && this.deliveryTime == ''){
-                this.$message({
-                    duration:1000,
-                    type:'error',
-                    message: '请输入预计送达时间'
-                });
-                return;
-            }
-
-            var data = {
-                id:this.order_data.id,
-                exp_id:this.express_id,
-                express_id: this.order_number
-            }
-
-            if(this.deliveryTime != '' && this.express_id == 25){
-                data.service_time = this.deliveryTime
-            }
-
-            this.$HTTP(this.$httpConfig.setOrderSendGoods,data).then((res) => {
-                this.$message({
-                    duration:1000,
-                    type:'success',
-                    message: res.data.message
-                });
-                setTimeout(() => {
-					this.$router.push({name :"tradeManage"});
-			    },1500)
-            }).catch((res) => {
-                this.$message.error(res.data.message);
-            });
-
         }
     }
-}
 </script>
 <style lang="less" scoped>
-.deliver-goods {
-  width: 1042px;
-  .t_tab {
-    margin-bottom: 80px;
-    .t_title {
-      color: #333;
-      border-bottom: 1px solid #dddddd;
-      overflow: hidden;
-      margin-bottom: 22px;
-      line-height: 50px;
-      span {
-        float: left;
-        color: #333;
-      }
-      .t_m {
-        background: url(../../../../assets/return.jpg) no-repeat 10px #ff9f24;
-        width: 135px;
-        height: 32px;
-        border: 1px solid #ff920b;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: normal;
-        cursor: pointer;
-        color: #fff;
-        line-height: 32px;
-        text-indent: 32px;
-      }
-    }
-    .center {
-      border: 1px solid #eee;
-      box-sizing: border-box;
-      .center-top {
-        display: flex;
-        flex-direction: row;
-        .left {
-          display: flex;
-          flex-direction: column;
-          border-right: 1px solid #eee;
-          padding: 20px;
-          width: 70%;
-          .status {
-            padding: 0 0 15px 0;
-            font-size: 15px;
-            font-weight: bold;
-            border-bottom: 1px dotted #eee;
-            color: #333;
-          }
-          .detail {
-            .button {
-              padding: 25px;
-            }
-            .info {
-              padding-left: 25px;
-              li {
-                display: flex;
-                flex-direction: row;
-                padding-bottom: 5px;
-                color: #333;
-              }
-            }
-          }
-        }
-        .right {
-          width: 30%;
-          .store {
-            color: #666;
-            padding: 10px;
-            border-bottom: 1px dotted #eee;
-            font-size: 15px;
-            font-weight: bold;
-          }
-          .info {
-            padding: 20px;
-            li {
-              padding-top: 10px;
-              display: flex;
-              flex-direction: row;
-              span.left {
-                color: #888;
-                width: 30%;
-                padding: 0;
-                border: none;
-              }
-              span.right {
-                color: #666;
-                width: 70%;
-                padding: 0;
-              }
-            }
-          }
-        }
-      }
-      ul.center-bottom {
-        li.center-info {
-          .title {
-            background-color: #fafafa;
-            padding: 10px;
-            border: 1px solid #eee;
-            border-left: none;
-            border-right: none;
-          }
-          ul {
-            padding: 20px;
-            li {
-              padding-left: 30px;
-              padding-bottom: 10px;
-              span.left {
-                width: 50px;
+    .deliver-goods {
+        width: 1042px;
 
-                color: #888;
-              }
-              span.right {
-                color: #666;
-                padding-left: 10px;
-              }
+        .t_tab {
+            margin-bottom: 80px;
+
+            .t_title {
+                color: #333;
+                border-bottom: 1px solid #dddddd;
+                overflow: hidden;
+                margin-bottom: 22px;
+                line-height: 50px;
+
+                span {
+                    float: left;
+                    color: #333;
+                }
+
+                .t_m {
+                    background: url(../../../../assets/return.jpg) no-repeat 10px #ff9f24;
+                    width: 135px;
+                    height: 32px;
+                    border: 1px solid #ff920b;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    font-weight: normal;
+                    cursor: pointer;
+                    color: #fff;
+                    line-height: 32px;
+                    text-indent: 32px;
+                }
             }
-          }
+
+            .center {
+                border: 1px solid #eee;
+                box-sizing: border-box;
+
+                .center-top {
+                    display: flex;
+                    flex-direction: row;
+
+                    .left {
+                        display: flex;
+                        flex-direction: column;
+                        border-right: 1px solid #eee;
+                        padding: 20px;
+                        width: 70%;
+
+                        .status {
+                            padding: 0 0 15px 0;
+                            font-size: 15px;
+                            font-weight: bold;
+                            border-bottom: 1px dotted #eee;
+                            color: #333;
+                        }
+
+                        .detail {
+                            .button {
+                                padding: 25px;
+                            }
+
+                            .info {
+                                padding-left: 25px;
+
+                                li {
+                                    display: flex;
+                                    flex-direction: row;
+                                    padding-bottom: 5px;
+                                    color: #333;
+                                }
+                            }
+                        }
+                    }
+
+                    .right {
+                        width: 30%;
+
+                        .store {
+                            color: #666;
+                            padding: 10px;
+                            border-bottom: 1px dotted #eee;
+                            font-size: 15px;
+                            font-weight: bold;
+                        }
+
+                        .info {
+                            padding: 20px;
+
+                            li {
+                                padding-top: 10px;
+                                display: flex;
+                                flex-direction: row;
+
+                                span.left {
+                                    color: #888;
+                                    width: 30%;
+                                    padding: 0;
+                                    border: none;
+                                }
+
+                                span.right {
+                                    color: #666;
+                                    width: 70%;
+                                    padding: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                ul.center-bottom {
+                    li.center-info {
+                        .title {
+                            background-color: #fafafa;
+                            padding: 10px;
+                            border: 1px solid #eee;
+                            border-left: none;
+                            border-right: none;
+                        }
+
+                        ul {
+                            padding: 20px;
+
+                            li {
+                                padding-left: 30px;
+                                padding-bottom: 10px;
+
+                                span.left {
+                                    width: 50px;
+
+                                    color: #888;
+                                }
+
+                                span.right {
+                                    color: #666;
+                                    padding-left: 10px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .order-details {
+                margin-top: 20px;
+
+                .goods-img {
+                    width: 60px;
+                    height: 60px;
+                }
+            }
+
+            .logistics_x {
+                padding-bottom: 80px;
+
+                tr {
+                    td {
+                        padding: 10px 0;
+
+                        b {
+                            color: #ff0000;
+                        }
+
+                        .notes {
+                            padding-left: 15px;
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-    .order-details {
-      margin-top: 20px;
-      .goods-img {
-        width: 60px;
-        height: 60px;
-      }
-    }
-    .logistics_x {
-      padding-bottom: 80px;
-      tr {
-        td {
-          padding: 10px 0;
-          b {
-            color: #ff0000;
-          }
-          .notes {
-            padding-left: 15px;
-          }
-        }
-      }
-    }
-  }
-}
 </style>

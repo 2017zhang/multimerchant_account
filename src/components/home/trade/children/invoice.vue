@@ -60,7 +60,7 @@
                             <div class="fl ping">{{order_status[Number(item.order_status)+1]}}</div>
                         </div>
                         <ul>
-                            <li v-for="values in goods" :key="values.id">
+                            <li v-for="(values,index1) in goods" :key="index1">
                                 <div class="shop" v-if="values.id == item.id">
                                     <div class="shop_name">
                                         <img :src="URL + values.pic_url" alt="" class="shop_img">
@@ -69,7 +69,8 @@
                                             <!-- <span>4171</span> -->
                                         </span>
                                     </div>
-                                    <div class="fl ping">{{values.price_sum}}</div>
+                                    <div v-if="values.goods_price != '0.00'" class="fl ping">{{values.goods_price}}</div>
+                                    <div v-else class="fl ping" style="color: #d02629">赠品</div>
                                     <div class="fl ping">{{values.goods_num}}</div>
                                     <div class="fl ping">{{values.user_name}}</div>
                                     <div class="fl ping">{{$store.state.orderStatus[goods.status]}}</div>
@@ -218,6 +219,14 @@ export default {
                 }
                 this.orderData = res.data.data.data;
                 this.goods = res.data.data.goods;
+
+                this.goods.forEach((item,index)=>{
+                    if(item.goods_price == '0.00'){
+                        this.goods.splice(index,1);
+                        this.goods.push(item)
+                    }
+                })
+
             }).catch((err) => {
                 console.log(err);
             })
