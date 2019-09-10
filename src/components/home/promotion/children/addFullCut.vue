@@ -164,7 +164,8 @@ export default {
 					}, 1000);
 					this.$message.success(res.data.message);
 				}).catch((err) => {
-					this.$message.error(err);
+          this.$message.error(err);
+          console.log('err');
 				})
 			} else {
 				this.$HTTP(this.$httpConfig.addFullCut, this.params, 'post').then((res) => {
