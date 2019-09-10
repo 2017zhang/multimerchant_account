@@ -175,7 +175,7 @@ export default {
 					}, 1000);
 					this.$message.success(res.data.message);
 				}).catch((err) => {
-					this.$message.error(err);
+					this.$message.error(err.data.message);
 				})
 			}
 		},
