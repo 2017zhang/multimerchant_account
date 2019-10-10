@@ -90,7 +90,7 @@
                 <template slot-scope="scope">
                   <el-input
                     @change="getPrice(scope.$index,scope.row.discount,scope.row.id)"
-                    v-model.number="scope.row.discount"
+                    v-model="scope.row.discount"
                     clearable
                   ></el-input>
                 </template>
