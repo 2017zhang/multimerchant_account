@@ -52,7 +52,7 @@
             </tr>
             <tr>
                 <td align="right" class="black border_right">类型：</td>
-                <td colspan="5" class="space">{{goodsData.type == 1 ? "退货退款" : (goodsData.type == 2 ? "仅退款" : '换货')}}
+                <td colspan="5" class="space">{{goodsData.type == 1 ? "退货退款" : (goodsData.type == 2 ? "仅退款" : (goodsData.type == 3 ? '换货' : '' ))}}
                 </td>
             </tr>
             <tr>
@@ -68,7 +68,7 @@
             </tr>
         </table>
         <div class="submit">
-            <el-button @click="submit" type="success">确认提交{{goodsData.type}}</el-button>
+            <el-button @click="submit" type="success">确认提交</el-button>
         </div>
     </div>
 </template>

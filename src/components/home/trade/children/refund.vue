@@ -44,6 +44,8 @@
                             <span class="black order_time">订单号: {{item.order_sn_id}}
                                 <!-- &nbsp;&nbsp;成交时间: <time-Plunge :timePlunge="item.over_time"></time-Plunge> -->
                             </span>
+                            <span style="margin-left: 15px" class="black order_time">类型：{{item.type == 1 ? "退货退款" : (item.type == 2 ? "仅退款" : (item.type==3 ? "换货" : ''))}}</span>
+                            <span v-if="item.status == 4" class="black order_time" style="color: #d02629; margin-left: 15px">退款已完成</span>
                         </div>
                         <ul>
                             <li>
@@ -62,12 +64,15 @@
                                     <div class="fl ping">{{refundOrderStatus[item.status]}}</div>
                                     <div class="fl ping">{{isReceive[item.is_receive]}}</div>
                                     <div class="fl ping">
-                                        <el-button type="success" size="mini" @click="operation(item.id,'t')">同意
+                                        <el-button :disabled="item.status == 4 ? true : false" :style="item.status == 4 ? disabledBtn : ''" type="success" size="mini"
+                                                   @click="operation(item.id,'t')">同意
                                         </el-button>
-                                        <el-button type="danger" size="mini" @click="operation(item.id,'j')">拒绝
+                                        <el-button :disabled="item.status == 4 ? true : false" :style="item.status == 4 ? disabledBtn : ''" type="danger" size="mini" @click="operation(item.id,'j')">拒绝
                                         </el-button>
-                                        <el-button type="primary" size="mini" @click="see(item)">查看</el-button>
-                                        <el-button v-if="item.type != 3" type="primary" size="mini" @click="refund(item)">退款</el-button>
+                                        <el-button :disabled="item.status == 4 ? true : false" :style="item.status == 4 ? disabledBtn : ''" type="primary" size="mini" @click="see(item)">查看</el-button>
+                                        <el-button :disabled="item.status == 4 ? true : false" :style="item.status == 4 ? disabledBtn : ''" v-if="item.type != 3" type="primary" size="mini"
+                                                   @click="refund(item)">退款
+                                        </el-button>
                                     </div>
                                 </div>
                             </li>
@@ -99,6 +104,10 @@
                 currentPage: 1, //当前页
                 page_size: 0, //每页显示多少条数据
                 returnList: {},
+                disabledBtn: {
+                    backgroundColor: '#cbcaca !important',
+                    border: '1px solid #cbcaca !important'
+                },
                 refundOrderStatus: [
                     '审核中',
                     '审核失败',
@@ -140,9 +149,9 @@
             /* 同意 O(∩_∩)O or 拒绝  */
             operation(id, s) {
                 let status = s === 't' ? 2 : 1;
-                if(s == 't'){
+                if (s == 't') {
                     var content = '是否同意该用户的退款要求'
-                }else {
+                } else {
                     var content = '是否拒绝该用户的退款要求'
                 }
 
@@ -166,47 +175,47 @@
                 }).catch(() => {
 
                 });
-        },
-        //搜索退款/货订单
-        search() {
-            this.$HTTP(this.$httpConfig.getRefundList + '/p/' + this.currentPage, {
-                order_id: this.order_id,
-                user_id: this.user_id,
-            }).then((res) => {
-                this.page_size = parseInt(res.data.data.page_size);
-                this.page = parseInt(res.data.data.page);
-                if (res.data.data == '') {
-                    this.$message({
-                        duration: 1000,
-                        type: 'error',
-                        message: '暂无数据！'
-                    });
-                    return;
-                }
-                this.returnList = res.data.data.data;
-            }).catch((err) => {
-                console.log(err);
-            })
-        },
-        //查看
-        see(item) {
-            this.$router.push({
-                name: 'returnDetails',
-                params: {
-                    id: item.id
-                }
-            });
-        },
-        /*页面跳转*/
-        handleCurrentChange: function (currentPage) {
-            this.currentPage = currentPage;
-            this.search();
-        },
-    }
-    ,
-    components: {
-        timePlunge
-    }
+            },
+            //搜索退款/货订单
+            search() {
+                this.$HTTP(this.$httpConfig.getRefundList + '/p/' + this.currentPage, {
+                    order_id: this.order_id,
+                    user_id: this.user_id,
+                }).then((res) => {
+                    this.page_size = parseInt(res.data.data.page_size);
+                    this.page = parseInt(res.data.data.page);
+                    if (res.data.data == '') {
+                        this.$message({
+                            duration: 1000,
+                            type: 'error',
+                            message: '暂无数据！'
+                        });
+                        return;
+                    }
+                    this.returnList = res.data.data.data;
+                }).catch((err) => {
+                    console.log(err);
+                })
+            },
+            //查看
+            see(item) {
+                this.$router.push({
+                    name: 'returnDetails',
+                    params: {
+                        id: item.id
+                    }
+                });
+            },
+            /*页面跳转*/
+            handleCurrentChange: function (currentPage) {
+                this.currentPage = currentPage;
+                this.search();
+            },
+        }
+        ,
+        components: {
+            timePlunge
+        }
     }
 </script>
 <style lang="less">
