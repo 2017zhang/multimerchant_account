@@ -18,7 +18,7 @@
                         <el-input v-model="order_id" clearable style="width: 200px;height: 40px;">
                         </el-input>
                     </td>
-                    <td width="6%" align="right"> 买家帐号： </td>
+                    <td width="6%" align="right"> 买家帐号：</td>
                     <td width="20%">
                         <el-input v-model="user_id" clearable style="width: 200px;height: 40px;">
                         </el-input>
@@ -59,13 +59,15 @@
                                     <div class="fl ping">
                                         <time-Plunge :timePlunge="item.create_time"></time-Plunge>
                                     </div>
-                                    <div class="fl ping" >{{refundOrderStatus[item.status]}}</div>
-                                    <div class="fl ping" >{{isReceive[item.is_receive]}}</div>
+                                    <div class="fl ping">{{refundOrderStatus[item.status]}}</div>
+                                    <div class="fl ping">{{isReceive[item.is_receive]}}</div>
                                     <div class="fl ping">
-                                        <el-button type="success" size="mini" @click="operation(item.id,'t')">同意</el-button>
-                                        <el-button type="danger" size="mini" @click="operation(item.id,'j')">拒绝</el-button>
+                                        <el-button type="success" size="mini" @click="operation(item.id,'t')">同意
+                                        </el-button>
+                                        <el-button type="danger" size="mini" @click="operation(item.id,'j')">拒绝
+                                        </el-button>
                                         <el-button type="primary" size="mini" @click="see(item)">查看</el-button>
-                                        <el-button type="primary" size="mini" @click="refund(item)">退款</el-button>
+                                        <el-button v-if="item.type != 3" type="primary" size="mini" @click="refund(item)">退款</el-button>
                                     </div>
                                 </div>
                             </li>
@@ -73,7 +75,8 @@
                     </div>
                     <div class="Paging">
                         <div class="Paging_r">
-                            <el-pagination background layout="total,prev, pager, next,jumper" @current-change="handleCurrentChange" :page-size="page_size" :total="page">
+                            <el-pagination background layout="total,prev, pager, next,jumper"
+                                           @current-change="handleCurrentChange" :page-size="page_size" :total="page">
                             </el-pagination>
                         </div>
                     </div>
@@ -83,68 +86,90 @@
     </div>
 </template>
 <script>
-import timePlunge from '@/components/page/time';
-export default {
-    name: 'refund',
-    data() {
-        return {
-            order_id: '',
-            refundNum: '',
-            user_id: '',
-            page: 0, //共多少页
-            currentPage: 1, //当前页
-            page_size: 0, //每页显示多少条数据
-            returnList: {},
-            refundOrderStatus: [
-                '审核中',
-                '审核失败',
-                '审核通过',
-                '退货中', 
-                '退货完成',
-            ],
+    import timePlunge from '@/components/page/time';
 
-            isReceive: [
-                '未收到货',
-                '已收到货'
-            ],
-        }
-    },
-    created() {
-        this.search();
-    },
-    methods: {
-        //退款
-        refund(item) {
-            this.$HTTP(this.$httpConfig.setRefundMoney,{id: item.id}).then(res => {
-                    this.$message({
-                        duration: 1000,
-                        type: 'success',
-                        message: res.data.message
-                    });
-            }).catch(err => {
-                console.log(err);
-            })
+    export default {
+        name: 'refund',
+        data() {
+            return {
+                order_id: '',
+                refundNum: '',
+                user_id: '',
+                page: 0, //共多少页
+                currentPage: 1, //当前页
+                page_size: 0, //每页显示多少条数据
+                returnList: {},
+                refundOrderStatus: [
+                    '审核中',
+                    '审核失败',
+                    '审核通过',
+                    '退货中',
+                    '退货完成',
+                ],
+
+                isReceive: [
+                    '未收到货',
+                    '已收到货'
+                ],
+            }
         },
-        /* 同意 O(∩_∩)O or 拒绝  */
-        operation(id, s) {
-            let status = s === 't' ? 2 : 1;
-            this.$HTTP(this.$httpConfig.setRefundStatus,{
-                id: id,
-                status: status,
-            }).then(res => {
-                this.$message({
-                    duration: 1000,
-                    type: 'success',
-                    message: res.data.message
+        created() {
+            this.search();
+        },
+        methods: {
+            //退款
+            refund(item) {
+
+                this.$confirm('是否进行退款操作', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    this.$HTTP(this.$httpConfig.setRefundMoney, {id: item.id}).then(res => {
+                        this.$message({
+                            duration: 1000,
+                            type: 'success',
+                            message: res.data.message
+                        });
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }).catch(() => {
+
                 });
-                this.search();
-            }).catch(err => {
-                console.log(err);
-            })
+            },
+            /* 同意 O(∩_∩)O or 拒绝  */
+            operation(id, s) {
+                let status = s === 't' ? 2 : 1;
+                if(s == 't'){
+                    var content = '是否同意该用户的退款要求'
+                }else {
+                    var content = '是否拒绝该用户的退款要求'
+                }
+
+                this.$confirm(content, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    this.$HTTP(this.$httpConfig.setRefundStatus, {
+                        id: id,
+                        status: status,
+                    }).then(res => {
+                        this.$message({
+                            duration: 1000,
+                            type: 'success',
+                            message: res.data.message
+                        });
+                        this.search();
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }).catch(() => {
+
+                });
         },
         //搜索退款/货订单
         search() {
-            this.$HTTP(this.$httpConfig.getRefundList+ '/p/' + this.currentPage,{
+            this.$HTTP(this.$httpConfig.getRefundList + '/p/' + this.currentPage, {
                 order_id: this.order_id,
                 user_id: this.user_id,
             }).then((res) => {
@@ -177,236 +202,270 @@ export default {
             this.currentPage = currentPage;
             this.search();
         },
-    },
+    }
+    ,
     components: {
         timePlunge
     }
-}
+    }
 </script>
 <style lang="less">
-.el-button + .el-button {
-  margin-left: 3px;
-}
-.t_tab {
-  .t_title {
-    color: #333;
-    border-bottom: 1px solid #dddddd;
-    overflow: hidden;
-    margin-bottom: 22px;
-    line-height: 50px;
-    span {
-      float: left;
-      color: #333;
+    .el-button + .el-button {
+        margin-left: 3px;
     }
-  }
-}
+
+    .t_tab {
+        .t_title {
+            color: #333;
+            border-bottom: 1px solid #dddddd;
+            overflow: hidden;
+            margin-bottom: 22px;
+            line-height: 50px;
+
+            span {
+                float: left;
+                color: #333;
+            }
+        }
+    }
 </style>
 
 <style lang="less" scoped>
-.tradeManage {
-  width: 1042px;
-  .bold {
-    font-weight: bold;
-  }
-  .black {
-    color: #333;
-  }
-  .t_tab {
-    .order_list {
-      .order_minute {
-        border-left: 1px solid #ddd;
-        border-right: 1px solid #ddd;
-        border-top: 1px solid #ddd;
-        margin-top: 15px;
-        width: 100%;
-        overflow: hidden;
-        .m_t {
-          margin-top: 25px;
-          width: 100%;
+    .tradeManage {
+        width: 1042px;
+
+        .bold {
+            font-weight: bold;
         }
-        .col {
-          border: none;
-          background-color: #f9fafa;
-          overflow: hidden;
-          border-bottom: 1px solid #ddd;
-          .black {
+
+        .black {
             color: #333;
-            font-size: 12px;
-            // text-align: center;
-            font-weight: 600;
-            float: left;
-          }
-          .hm {
-            line-height: 40px;
-          }
         }
-        .order_z {
-          .order_number {
-            background-color: #f9fafa;
-            overflow: hidden;
-            padding-left: 20px;
-            border-bottom: 1px solid #ddd;
-            border-top: 1px solid #ddd;
-            height: 40px;
-            margin-top: 15px;
-            .minute_g {
-              width: 5%;
-              float: left;
-              input {
-                display: block;
-                margin: auto;
-                margin-top: 14px;
-                width: 20px;
-              }
-            }
 
-            .order_time {
-              display: inline-block;
-              height: 100%;
-              line-height: 40px;
-            }
-          }
-          ul {
-            li {
-              .shop {
-                width: 100%;
-                overflow: hidden;
-                background-color: #fff;
-                height: 88px;
-                border-bottom: 1px solid #ddd;
-                .shop_img {
-                  width: 58px;
-                  height: 58px;
-                  border: 1px solid #ddd;
-                  float: left;
-                  margin-top: 12px;
-                  margin-left: 20px;
-                }
-                .minute_g {
-                  width: 5%;
-                  float: left;
-                  input {
-                    display: block;
-                    margin: auto;
-                    margin-top: 14px;
-                    width: 20px;
-                  }
-                }
-                .shop_name {
-                  width: 23%;
-                  float: left;
-                  padding-left: 32px;
-                  .name {
-                    display: block;
-                    float: left;
-                    padding-left: 25px;
-                    padding-top: 20px;
-                    span {
-                      width: 150px;
-                      overflow: hidden;
-                      line-height: 25px;
-                      height: 25px;
+        .t_tab {
+            .order_list {
+                .order_minute {
+                    border-left: 1px solid #ddd;
+                    border-right: 1px solid #ddd;
+                    border-top: 1px solid #ddd;
+                    margin-top: 15px;
+                    width: 100%;
+                    overflow: hidden;
+
+                    .m_t {
+                        margin-top: 25px;
+                        width: 100%;
                     }
-                  }
-                }
-                .ping {
-                  width: 9%;
-                  // line-height: 88px;
-                  padding-top: 30px;
-                  text-align: center;
-                }
-                .ping:last-child {
-                  width: 25%;
-                }
-                .danj {
-                  width: 24%;
-                  line-height: 88px;
-                  text-align: center;
-                  span {
-                    border: 1px solid #dddddd;
-                    color: #666666;
-                    width: 40px;
-                    line-height: 22px;
-                    text-align: center;
-                    display: block;
-                    border-radius: 4px;
-                    float: left;
-                    margin-right: 15px;
-                    margin-top: 30px;
-                    cursor: pointer;
-                  }
-                  span:nth-child(1) {
-                    margin-left: 20px;
-                  }
-                }
-                .caozu {
-                  width: 15%;
-                  line-height: 88px;
-                  text-align: center;
-                }
-              }
-            }
-          }
-        }
-        .Paging {
-          width: 100%;
-          height: 50px;
-          border-bottom: 1px solid #ddd;
-          .Paging_r {
-            float: right;
-            padding: 10px;
-          }
-        }
 
-        .col div {
-          height: 40px;
-          text-align: center;
-          line-height: 40px;
-          width: 11%;
+                    .col {
+                        border: none;
+                        background-color: #f9fafa;
+                        overflow: hidden;
+                        border-bottom: 1px solid #ddd;
+
+                        .black {
+                            color: #333;
+                            font-size: 12px;
+                            // text-align: center;
+                            font-weight: 600;
+                            float: left;
+                        }
+
+                        .hm {
+                            line-height: 40px;
+                        }
+                    }
+
+                    .order_z {
+                        .order_number {
+                            background-color: #f9fafa;
+                            overflow: hidden;
+                            padding-left: 20px;
+                            border-bottom: 1px solid #ddd;
+                            border-top: 1px solid #ddd;
+                            height: 40px;
+                            margin-top: 15px;
+
+                            .minute_g {
+                                width: 5%;
+                                float: left;
+
+                                input {
+                                    display: block;
+                                    margin: auto;
+                                    margin-top: 14px;
+                                    width: 20px;
+                                }
+                            }
+
+                            .order_time {
+                                display: inline-block;
+                                height: 100%;
+                                line-height: 40px;
+                            }
+                        }
+
+                        ul {
+                            li {
+                                .shop {
+                                    width: 100%;
+                                    overflow: hidden;
+                                    background-color: #fff;
+                                    height: 88px;
+                                    border-bottom: 1px solid #ddd;
+
+                                    .shop_img {
+                                        width: 58px;
+                                        height: 58px;
+                                        border: 1px solid #ddd;
+                                        float: left;
+                                        margin-top: 12px;
+                                        margin-left: 20px;
+                                    }
+
+                                    .minute_g {
+                                        width: 5%;
+                                        float: left;
+
+                                        input {
+                                            display: block;
+                                            margin: auto;
+                                            margin-top: 14px;
+                                            width: 20px;
+                                        }
+                                    }
+
+                                    .shop_name {
+                                        width: 23%;
+                                        float: left;
+                                        padding-left: 32px;
+
+                                        .name {
+                                            display: block;
+                                            float: left;
+                                            padding-left: 25px;
+                                            padding-top: 20px;
+
+                                            span {
+                                                width: 150px;
+                                                overflow: hidden;
+                                                line-height: 25px;
+                                                height: 25px;
+                                            }
+                                        }
+                                    }
+
+                                    .ping {
+                                        width: 9%;
+                                        // line-height: 88px;
+                                        padding-top: 30px;
+                                        text-align: center;
+                                    }
+
+                                    .ping:last-child {
+                                        width: 25%;
+                                    }
+
+                                    .danj {
+                                        width: 24%;
+                                        line-height: 88px;
+                                        text-align: center;
+
+                                        span {
+                                            border: 1px solid #dddddd;
+                                            color: #666666;
+                                            width: 40px;
+                                            line-height: 22px;
+                                            text-align: center;
+                                            display: block;
+                                            border-radius: 4px;
+                                            float: left;
+                                            margin-right: 15px;
+                                            margin-top: 30px;
+                                            cursor: pointer;
+                                        }
+
+                                        span:nth-child(1) {
+                                            margin-left: 20px;
+                                        }
+                                    }
+
+                                    .caozu {
+                                        width: 15%;
+                                        line-height: 88px;
+                                        text-align: center;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .Paging {
+                        width: 100%;
+                        height: 50px;
+                        border-bottom: 1px solid #ddd;
+
+                        .Paging_r {
+                            float: right;
+                            padding: 10px;
+                        }
+                    }
+
+                    .col div {
+                        height: 40px;
+                        text-align: center;
+                        line-height: 40px;
+                        width: 11%;
+                    }
+
+                    .col div:nth-child(1) {
+                        width: 21%;
+                    }
+
+                    .col div:last-child {
+                        width: 24%;
+                    }
+
+                    .all {
+                        outline: 0 none;
+                        vertical-align: middle;
+                        text-indent: 5px;
+                        border: 1px solid blue;
+                        display: block;
+                        margin: auto;
+                        margin-top: 14px;
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+            }
+
+            .Commodity-management {
+                background-color: #f6f6f6;
+                border: 1px solid #dddddd;
+                margin-top: 15px;
+                line-height: 50px;
+
+                tr {
+                    td {
+                        input {
+                            border: 1px solid #ddd;
+                            line-height: 29px;
+                            height: 29px;
+                            color: #999;
+                            text-indent: 5px;
+                        }
+
+                        select {
+                            width: 140px;
+                            border: 1px solid #ddd;
+                            line-height: 29px;
+                            height: 29px;
+                            color: #999;
+                        }
+                    }
+                }
+            }
         }
-        .col div:nth-child(1) {
-          width: 21%;
-        }
-        .col div:last-child {
-          width: 24%;
-        }
-        .all {
-          outline: 0 none;
-          vertical-align: middle;
-          text-indent: 5px;
-          border: 1px solid blue;
-          display: block;
-          margin: auto;
-          margin-top: 14px;
-          width: 20px;
-          height: 20px;
-        }
-      }
     }
-    .Commodity-management {
-      background-color: #f6f6f6;
-      border: 1px solid #dddddd;
-      margin-top: 15px;
-      line-height: 50px;
-      tr {
-        td {
-          input {
-            border: 1px solid #ddd;
-            line-height: 29px;
-            height: 29px;
-            color: #999;
-            text-indent: 5px;
-          }
-          select {
-            width: 140px;
-            border: 1px solid #ddd;
-            line-height: 29px;
-            height: 29px;
-            color: #999;
-          }
-        }
-      }
-    }
-  }
-}
 </style>
