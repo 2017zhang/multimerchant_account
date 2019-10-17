@@ -47,14 +47,15 @@
                 </td>
             </tr>
             <tr>
-                <td align="right" class="black border_right">退货理由：</td>
-                <td colspan="5" class="space">{{goodsData.tuihuo_case}}</td>
+                <td align="right" class="black border_right">类型：</td>
+                <td colspan="5" class="space">{{goodsData.type == 1 ? "退货退款" : (goodsData.type == 2 ? "仅退款" : (goodsData.type == 3 ? '换货' : '' ))}}
+                </td>
             </tr>
             <tr>
                 <td align="right" class="black border_right">退款说明：</td>
                 <td colspan="5" class="space">{{goodsData.explain}}</td>
             </tr>
-            <tr>
+            <tr v-if="goodsData.type != 2">
                 <td align="right" class="black border_right">是否收到货：</td>
                 <td colspan="5" class="space">
                     <el-radio v-model="radio" label="1">已收到</el-radio>
@@ -95,10 +96,15 @@ export default {
             })
         },
         submit() {
+
+            if (this.goodsData.type == 2) {
+                this.radio = 1
+            }
             this.$HTTP(this.$httpConfig.packageReturn,{
                 id: this.goodsData.id,
                 content: this.goodsData.content,
                 is_receive: this.radio,
+                type: this.goodsData.type
             }).then(res => {
                     this.$message({
                         duration: 1000,

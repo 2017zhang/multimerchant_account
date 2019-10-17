@@ -44,6 +44,8 @@
                             <span class="black order_time">订单号: {{item.order_sn_id}}
                                 <!-- &nbsp;&nbsp;成交时间: <time-Plunge :timePlunge="item.over_time"></time-Plunge> -->
                             </span>
+                            <span style="margin-left: 15px" class="black order_time">类型：{{item.type == 1 ? "退货退款" : (item.type == 2 ? "仅退款" : (item.type==3 ? "换货" : ''))}}</span>
+                            <span v-if="item.status == 4" class="black order_time" style="color: #d02629; margin-left: 15px">退款已完成</span>
                         </div>
                         <ul>
                             <li>
@@ -62,10 +64,10 @@
                                     <div class="fl ping" >{{refundOrderStatus[item.status]}}</div>
                                     <div class="fl ping" >{{isReceive[item.is_receive]}}</div>
                                     <div class="fl ping">
-                                        <el-button type="success" size="mini" @click="operation(item.id,'t')">同意</el-button>
-                                        <el-button type="danger" size="mini" @click="operation(item.id,'j')">拒绝</el-button>
-                                        <el-button type="primary" size="mini" @click="see(item)">查看</el-button>
-                                        <el-button type="primary" size="mini" @click="refund(item)">退款</el-button>
+                                        <el-button :disabled="item.status == 4 ? true : false" :style="item.status == 4 ? disabledBtn : ''" type="success" size="mini" @click="operation(item.id,'t')">同意</el-button>
+                                        <el-button :disabled="item.status == 4 ? true : false" :style="item.status == 4 ? disabledBtn : ''" type="danger" size="mini" @click="operation(item.id,'j')">拒绝</el-button>
+                                        <el-button :disabled="item.status == 4 ? true : false" :style="item.status == 4 ? disabledBtn : ''" type="primary" size="mini" @click="see(item)">查看</el-button>
+                                        <el-button :disabled="item.status == 4 ? true : false" :style="item.status == 4 ? disabledBtn : ''" v-if="item.type != 3" type="primary" size="mini" @click="refund(item)">退款</el-button>
                                     </div>
                                 </div>
                             </li>
@@ -95,11 +97,15 @@ export default {
             currentPage: 1, //当前页
             page_size: 0, //每页显示多少条数据
             returnList: {},
+            disabledBtn: {
+                backgroundColor: '#cbcaca !important',
+                border: '1px solid #cbcaca !important'
+            },
             refundOrderStatus: [
                 '审核中',
                 '审核失败',
                 '审核通过',
-                '退货中', 
+                '退货中',
                 '退货完成',
             ],
 
@@ -135,24 +141,38 @@ export default {
                 })
             }).catch(() => {
             });
-            
+
         },
         /* 同意 O(∩_∩)O or 拒绝  */
         operation(id, s) {
             let status = s === 't' ? 2 : 1;
-            this.$HTTP(this.$httpConfig.PackageReturnJudgment,{
-                id: id,
-                status: status,
-            }).then(res => {
-                this.$message({
-                    duration: 1000,
-                    type: 'success',
-                    message: res.data.message
-                });
-                this.search();
-            }).catch(err => {
-                console.log(err);
-            })
+            if (s == 't') {
+                var content = '是否同意该用户的退款要求'
+            } else {
+                var content = '是否拒绝该用户的退款要求'
+            }
+
+            this.$confirm(content, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(() => {
+                this.$HTTP(this.$httpConfig.PackageReturnJudgment,{
+                    id: id,
+                    status: status,
+                }).then(res => {
+                    this.$message({
+                        duration: 1000,
+                        type: 'success',
+                        message: res.data.message
+                    });
+                    this.search();
+                }).catch(err => {
+                    console.log(err);
+                })
+            }).catch(() => {
+
+            });
+
         },
         //搜索退款/货订单
         search() {
