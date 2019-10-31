@@ -6,6 +6,7 @@ const login = r => require(['@/components/logoIn/logoIn'], r); //登录
 const home = r => require(['@/components/home/home'], r); //商户中心入口
 const index = r => require(['@/components/home/index/index'], r); //商户中心
 const goods = r => require(['@/components/home/goods/goods'], r); //商户中心-商品
+const askQuestion = r => require(['@/components/home/goods/children/askQuestion'], r); //商户中心-咨询问答
 const goodsManage = r => require(['@/components/home/goods/children/goodsManage'], r); //商户中心-商品管理
 const goodsRelease = r => require(['@/components/home/goods/children/goodsRelease/goodsRelease'], r); //商户中心-发布商品
 const goodsEdit = r => require(['@/components/home/goods/children/goodsEdit/goodsEdit'], r); //商户中心-编辑商品
@@ -158,6 +159,11 @@ const router = new Router({
                 path: '/info',
                 name: 'info',
                 component: info
+            },
+            { //商户中心-咨询问答
+                path: '/askQuestion',
+                name: 'askQuestion',
+                component: askQuestion
             },
             // { //商户中心
             //     path: '/index',

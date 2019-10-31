@@ -39,7 +39,7 @@
         },
 
         created(){
-
+            // debugger;
             let topMenu = sessionStorage.getItem('topPrivilege'); 
             //console.log(topMenu)
             if (topMenu == null) {
@@ -73,6 +73,7 @@
                 })
             },
             filterRouter(index){
+                // debugger;
                 let leftNav = [];
                 let filterData = [];
                 let routerId = '';
@@ -102,6 +103,7 @@
                         })
                     
                 }
+                // debugger;
                 this.$store.state.leftNav = filterData;
                 //console.log(filterData);
             },
