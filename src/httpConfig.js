@@ -40,6 +40,7 @@ const config = {
   setShelve: request + 'Goods/isShelve', //商品上、下架切换
   getConsultQuestion: request + 'goods/getConsultQuestion', //商品咨询
   consultReply: request + 'goods/consultReply', //商品咨询回复
+  checkReply: request + 'goods/checkReply', //商品咨询查看
 
   // 发布商品
   getBrandList: request + 'Brand/getBrandList', //获取品牌列表

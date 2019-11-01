@@ -1,141 +1,197 @@
 <template>
     <div class="consult_wrapper">
-        <h6>商品咨询</h6>
-        <h5>查看全部咨询</h5>
-        <div class="cousult">
-            <input type="text" placeholder="请发表你的观点" v-model="inputValue" />
-        </div>
-        <div class="footter">
-            <div class="com" v-for="(item,index) in dataList" :key="index">
-                <span>Q</span>
-                <div class="question">{{item.content}}</div>
-                <div class="time_top">{{item.create_time|formatDate}}</div>
-                <!-- <div class="answer" @click="answer(item)">我来回答</div> -->
-                <div class="btn" @click="handleSubmit(item,index)">提交</div>
+        <div class="listWrapper" v-if="showListData">
+            <h6>
+                商品咨询-列表
+                <span>(共{{dataList.length}}条记录)</span>
+            </h6>
+            <el-table
+                ref="multipleTable"
+                :data="dataList"
+                tooltip-effect="dark"
+                style="width: 100%"
+                @selection-change="handleSelectionChange(dataList)"
+            >
+                <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column label="编号" width="120">
+                    <template slot-scope="scope">{{ scope.row.id }}</template>
+                </el-table-column>
+                <el-table-column prop="goods_name" label="商品名称" width="120"></el-table-column>
+                <el-table-column prop="user_name" label="咨询人"></el-table-column>
+                <el-table-column prop="content" label="咨询问题"></el-table-column>
+                <el-table-column prop="create_time" label="咨询时间"></el-table-column>
+                <el-table-column label="状态">
+                    <template slot-scope="scope">{{scope.row.status==0?'未回复':'已回复'}}</template>
+                </el-table-column>
+                <el-table-column prop="operate" label="操作" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <el-button
+                            size="mini"
+                            @click="handleSelect(scope.$index, scope.row)"
+                        >{{scope.row.status==0?'回复':'查看'}}</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="listWrapper">
+                <div class="page_one"></div>
             </div>
         </div>
+        <div class="itemWrapper" v-if="showItemData">
+            <h6>商品咨询内页</h6>
+            <div class="goods_name">
+                <h5>商品名称:</h5>
+                <span>{{getReturnData.goods_name}}</span>
+            </div>
+
+            <h4>{{getReturnData.user_name}}</h4>
+            <div class="askReply">
+                <h4>问:</h4>
+                <h5>{{getReturnData.content}}</h5>
+                <span>{{getAskTime|formatDate}}</span>
+            </div>
+            <div class="askReply">
+                <h4>回复:</h4>
+                <h5>{{getReturnData.reply}}</h5>
+                <span>{{getReturnData.create_time|formatDate}}</span>
+            </div>
+        </div>
+        <reply-question
+            v-if="showItem"
+            @close="close"
+            :dataList="dataList"
+            :receivedData="receivedData"
+        ></reply-question>
+        <el-pagination background layout="prev, pager, next" :total="1000" @size-change='change'></el-pagination>
     </div>
 </template>
 
 <script>
 import qs from "qs";
+import ReplyQuestion from "./replyQuestion";
 export default {
     data() {
         return {
             dataList: [],
-            btnClick: false,
-            inputValue: ""
+            getReplyTime: "",
+            getInputValue: "",
+            getReturnData: "",
+            getAskTime: "",
+            itemTimeData: {},
+            dataListTransfer: [],
+            showItem: false,
+            showListData: true,
+            showItemData: false,
+            receivedData: "",
+            multipleSelection: []
         };
     },
+
     methods: {
-        answer(item) {
-            this.btnClick = true;
-            this.getDataInfo(item);
+        change(){
+            console.log(1);
         },
-        handleSubmit(item, index) {
-            if (this.inputValue) {
-                this.inputValue = this.inputValue.replace(/\s*/g, "");
-            } else if (
-                this.inputValue == "" ||
-                this.inputValue == undefined ||
-                this.inputValue == null
-            ) {
-                alert("请先选择你要提问的问题");
-                return;
-            }
-            this.$HTTP(this.$httpConfig.consultReply, {
-                id: item.id,
-                content: this.inputValue
-            })
-                .then(res => {
-                    if (res.data.status) {
-                        this.$message({
-                            message: res.data.message,
-                            type: "success"
-                        });
-                    }
-                    this.inputValue = "";
-                })
-                .catch(err => {
-                    console.error(err);
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
+        handleSelect(val1, val2) {
+            // debugger;
+            if (val2.status == 0) {
+                this.showItem = true;
+                this.receivedData = val2;
+            } else {
+                this.$HTTP(this.$httpConfig.checkReply, {
+                    consultation_id: val2.id
+                }).then(res => {
+                    this.getReturnData = res.data.data;
                 });
+                this.showItemData = true;
+                this.showListData = false;
+            }
+        },
+
+        close(value, time) {
+            this.getInputValue = value;
+            this.getReplyTime = time;
+            console.log(value, time, 111);
+            this.showItem = false;
         }
     },
     mounted() {
         this.$HTTP(this.$httpConfig.getConsultQuestion, {})
             .then(res => {
                 this.dataList = res.data.data;
+                for (let i = 0; i < this.dataList.length; i++) {
+                    this.getAskTime = this.dataList[i].create_time;
+                }
             })
             .catch(err => {
                 console.error(err);
             });
+    },
+    components: {
+        ReplyQuestion
     }
 };
 </script>
-
+<style lang="less">
+.el-pagination {
+    margin-left: 30%;
+    margin-top: 15px;
+}
+</style>
 <style lang="less" scoped>
 .consult_wrapper {
     padding: 20px;
     height: 100%;
     overflow-y: auto;
-    h6 {
-        border-bottom: 1px solid #e8e8e8;
-        padding: 10px 0;
-    }
-    h5 {
-        padding: 10px 0;
-    }
-    .cousult {
-        display: flex;
-        input {
-            border: 1px solid #e8e8e8;
-            width: 500px;
-            height: 30px;
-            border-radius: 6px;
-        }
-        .btn {
-            width: 60px;
-            height: 14px;
-            background: #ff6100;
-            text-align: center;
-            line-height: 14px;
-            cursor: pointer;
-            color: #fff;
+    .listWrapper {
+        h6 {
+            border-bottom: 1px solid #e8e8e8;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #333;
+            span {
+                font-size: 12px;
+                color: #a4a5a7;
+                margin-left: 6px;
+            }
         }
     }
-    .footter {
-        .com {
+    .itemWrapper {
+        h6 {
+            border-bottom: 1px solid #e8e8e8;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+        .goods_name {
             display: flex;
-            position: relative;
-            padding: 10px;
-            .question {
+            align-items: center;
+            margin-top: 10px;
+            span {
                 margin-left: 10px;
             }
-            .time_top {
-                position: absolute;
-                left: 220px;
+        }
+        h4 {
+            font-size: 14px;
+            color: #333;
+            margin-top: 20px;
+        }
+        .askReply {
+            display: flex;
+            align-items: baseline;
+            margin: 5px 0;
+            h4 {
+                color: #f7bc0a;
             }
-
-            .answer {
-                position: absolute;
-                left: 400px;
-                width: 60px;
-                height: 14px;
-                background: #ff6100;
-                text-align: center;
-                line-height: 14px;
-                cursor: pointer;
-                color: #fff;
+            h5 {
+                margin-left: 10px;
+                color: #333;
+                font-size: 14px;
             }
-            .btn {
-                position: absolute;
-                left: 500px;
-                background: #ff6100;
-                text-align: center;
-                line-height: 10px;
-                cursor: pointer;
-                color: #fff;
-                height: 10px;
+            span {
+                margin-left: 20px;
+                font-size: 14px;
             }
         }
     }
