@@ -7,7 +7,7 @@
             </h6>
             <el-table
                 ref="multipleTable"
-                :data="dataList"
+                :data="dataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange(dataList)"
@@ -61,7 +61,15 @@
             :dataList="dataList"
             :receivedData="receivedData"
         ></reply-question>
-        <el-pagination background layout="prev, pager, next" :total="1000" @size-change='change'></el-pagination>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="pagesize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="dataList.length"
+        ></el-pagination>
     </div>
 </template>
 
@@ -82,16 +90,37 @@ export default {
             showListData: true,
             showItemData: false,
             receivedData: "",
-            multipleSelection: []
+            multipleSelection: [],
+            currentPage: 1,
+            pagesize: 10,
+            currentPageList: []
         };
     },
 
     methods: {
-        change(){
+        change() {
             console.log(1);
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
+        },
+        handleSizeChange(val) {
+            this.pagesize = val;
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            console.log(`当前页: ${val}`);
+            // this.$HTTP(this.$httpConfig.getConsultQuestion, {
+            //     page: `${val}`
+            // })
+            //     .then(res => {
+            //         this.currentPageList = res.data.data;
+            //         console.log(res, "page");
+            //     })
+            //     .catch(err => {
+            //         console.error(err);
+            //     });
         },
         handleSelect(val1, val2) {
             // debugger;
@@ -120,6 +149,7 @@ export default {
         this.$HTTP(this.$httpConfig.getConsultQuestion, {})
             .then(res => {
                 this.dataList = res.data.data;
+                console.log(this.dataList, "this.dataList");
                 for (let i = 0; i < this.dataList.length; i++) {
                     this.getAskTime = this.dataList[i].create_time;
                 }
