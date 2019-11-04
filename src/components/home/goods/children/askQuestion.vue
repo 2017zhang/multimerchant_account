@@ -62,6 +62,7 @@
             :receivedData="receivedData"
         ></reply-question>
         <el-pagination
+            v-if="showPage"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -93,7 +94,8 @@ export default {
             multipleSelection: [],
             currentPage: 1,
             pagesize: 10,
-            currentPageList: []
+            currentPageList: [],
+            showPage: true
         };
     },
 
@@ -111,16 +113,6 @@ export default {
         handleCurrentChange(val) {
             this.currentPage = val;
             console.log(`当前页: ${val}`);
-            // this.$HTTP(this.$httpConfig.getConsultQuestion, {
-            //     page: `${val}`
-            // })
-            //     .then(res => {
-            //         this.currentPageList = res.data.data;
-            //         console.log(res, "page");
-            //     })
-            //     .catch(err => {
-            //         console.error(err);
-            //     });
         },
         handleSelect(val1, val2) {
             // debugger;
@@ -135,6 +127,7 @@ export default {
                 });
                 this.showItemData = true;
                 this.showListData = false;
+                this.showPage = false;
             }
         },
 
