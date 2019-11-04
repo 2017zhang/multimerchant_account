@@ -19,7 +19,9 @@
                 <el-table-column prop="goods_name" label="商品名称" width="120"></el-table-column>
                 <el-table-column prop="user_name" label="咨询人"></el-table-column>
                 <el-table-column prop="content" label="咨询问题"></el-table-column>
-                <el-table-column prop="create_time" label="咨询时间"></el-table-column>
+                <el-table-column  label="咨询时间">
+                    <template slot-scope="scope">{{ scope.row.create_time|formatDate }}</template>
+                </el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">{{scope.row.status==0?'未回复':'已回复'}}</template>
                 </el-table-column>
