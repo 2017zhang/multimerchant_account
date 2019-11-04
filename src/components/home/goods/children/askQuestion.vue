@@ -10,7 +10,7 @@
                 :data="dataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"
                 tooltip-effect="dark"
                 style="width: 100%"
-                @selection-change="handleSelectionChange(dataList)"
+                @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="编号" width="120">
@@ -19,7 +19,7 @@
                 <el-table-column prop="goods_name" label="商品名称" width="120"></el-table-column>
                 <el-table-column prop="user_name" label="咨询人"></el-table-column>
                 <el-table-column prop="content" label="咨询问题"></el-table-column>
-                <el-table-column  label="咨询时间">
+                <el-table-column label="咨询时间">
                     <template slot-scope="scope">{{ scope.row.create_time|formatDate }}</template>
                 </el-table-column>
                 <el-table-column label="状态">
@@ -39,7 +39,11 @@
             </div>
         </div>
         <div class="itemWrapper" v-if="showItemData">
-            <h6>商品咨询内页</h6>
+            <div class="header">
+                <h6>商品咨询内页</h6>
+                <span @click="backBefore">返回上一层</span>
+            </div>
+
             <div class="goods_name">
                 <h5>商品名称:</h5>
                 <span>{{getReturnData.goods_name}}</span>
@@ -102,10 +106,15 @@ export default {
     },
 
     methods: {
+        backBefore(){
+            this.showListData=true;
+            this.showItemData=false;
+        },
         change() {
             console.log(1);
         },
         handleSelectionChange(val) {
+            console.log(val, "handleSelectionChange");
             this.multipleSelection = val;
         },
         handleSizeChange(val) {
@@ -144,6 +153,7 @@ export default {
         this.$HTTP(this.$httpConfig.getConsultQuestion, {})
             .then(res => {
                 this.dataList = res.data.data;
+                console.log(this.$refs.multipleTable, "multipleTable");
                 console.log(this.dataList, "this.dataList");
                 for (let i = 0; i < this.dataList.length; i++) {
                     this.getAskTime = this.dataList[i].create_time;
@@ -183,12 +193,20 @@ export default {
         }
     }
     .itemWrapper {
-        h6 {
+        .header {
+            display: flex;
+            justify-content: space-between;
             border-bottom: 1px solid #e8e8e8;
             padding: 10px 0;
-            font-size: 16px;
-            color: #333;
+            h6 {
+                font-size: 16px;
+                color: #333;
+            }
+            span{
+                cursor: pointer;
+            }
         }
+
         .goods_name {
             display: flex;
             align-items: center;
