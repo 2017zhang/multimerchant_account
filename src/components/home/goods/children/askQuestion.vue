@@ -109,6 +109,7 @@ export default {
         backBefore(){
             this.showListData=true;
             this.showItemData=false;
+            this.showPage=true;
         },
         change() {
             console.log(1);
