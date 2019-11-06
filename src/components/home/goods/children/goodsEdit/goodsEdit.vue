@@ -147,7 +147,7 @@ export default {
 		//           this.spec_data = res.data.data;
 		//           console.log(this.spec_data)
 		//           let item = res.data.data.item_id;
-		//           let children = res.data.data.specList.children;  
+		//           let children = res.data.data.specList.children;
 		//           let status = true;
 		//           for (let i in item) {
 		//             for (let index in children) {
@@ -180,7 +180,7 @@ export default {
 		}
 	},
 	created() {
-		
+
 		//获取通用信息里的三级分类id
 	},
 	components: {

@@ -42,6 +42,13 @@ const config = {
   consultReply: request + 'goods/consultReply', //商品咨询回复
   checkReply: request + 'goods/checkReply', //商品咨询查看
 
+  //店内分类
+  addStoreClass: request + 'StoreInsideClass/addStoreClass', //添加店内分类
+  storeClassList: request + 'StoreInsideClass/storeClassList', //添加店内所有一级分类
+  nextClass: request + 'StoreInsideClass/nextClass', //通过一级分类id获取其下所以二级分类
+  delClass: request + 'StoreInsideClass/delClass', //删除分类
+  updateClass: request + 'StoreInsideClass/updateClass', //编辑分类
+
   // 发布商品
   getBrandList: request + 'Brand/getBrandList', //获取品牌列表
   getGoodsFreightList: request + 'Freights/getFreightList', //获取运费模块列表

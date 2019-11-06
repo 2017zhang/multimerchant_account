@@ -17,6 +17,7 @@ const Picturelist = r => require(['@/components/home/goods/children/Picturelist'
 const goodsType = r => require(['@/components/home/goods/children/goodsType'], r); //商户中心-商品类型
 const addGoodsType = r => require(['@/components/home/goods/children/addGoodsType'], r); //商户中心-添加商品类型
 const goodsSpec = r => require(['@/components/home/goods/children/goodsSpec'], r); //商户中心-商品规格
+const storeClass = r => require(['@/components/home/goods/children/storeClass'], r); //商户中心-店内分类
 const addGoodsSpec = r => require(['@/components/home/goods/children/addGoodsSpec'], r); //商户中心-添加商品规格
 const updateGoodsSpec = r => require(['@/components/home/goods/children/updateGoodsSpec'], r); //商户中心-添加商品规格
 // const copyGoodsSpec = r => require(['@/components/home/goods/children/copyGoodsSpec'], r); //商户中心-复制商品规格属性
@@ -392,6 +393,11 @@ const router = new Router({
                 path: '/addSales',
                 name: 'addSales',
                 component: addSales
+            },
+            { //商户中心-促销-添加商品促销活动
+                path: '/storeClass',
+                name: 'storeClass',
+                component: storeClass
             },
             // { //商户中心-促销-满减
             //     path: '/fullCut',

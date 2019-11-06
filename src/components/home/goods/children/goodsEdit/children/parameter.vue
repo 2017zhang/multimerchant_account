@@ -28,8 +28,8 @@
 			submit() {
 				let data = $("form").formSerialize();
 				data += '&token='+ sessionStorage.getItem('data_token');
-			///	console.log(data)   
-				let newData = {};  
+			///	console.log(data)
+				let newData = {};
 				// this.$HTTP(this.$httpConfig.editGoodsAttr,data).then((res) => {
 				this.axios.post(this.$httpConfig.editGoodsAttr, data).then((res) => {
 					if(res.data.status){
@@ -57,26 +57,26 @@
 		line-height: 70px;
 		color: red;
 	}
-	
+
 	.edit .table {
 		border-left: 1px solid #ddd;
 		border-right: 1px solid #ddd;
 		border-top: 1px solid #ddd;
 		margin-top: 15px;
 	}
-	
+
 	.edit .table tr td {
 		padding: 10px 0;
 		border-bottom: 1px solid #ddd;
 		text-align: center;
 		vertical-align: inherit;
 	}
-	
+
 	.edit .table tr td b {
 		font-weight: bold;
 		color: #333;
 	}
-	
+
 	.edit .table tr td select {
 		width: 200px;
 		height: 40px;
@@ -87,7 +87,7 @@
 		box-sizing: border-box;
 		padding: 0 15px;
 	}
-	
+
 	.edit .table tr td select option {
 		color: #ff920b;
 		border: 1px solid #eee;
@@ -103,7 +103,7 @@
 		line-height: 34px;
 		cursor: pointer;
 	}
-	
+
 	.edit .table tr td input {
 		padding-left: 5px;
 		height: 32px;
