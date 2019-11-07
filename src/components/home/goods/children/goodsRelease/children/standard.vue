@@ -73,6 +73,7 @@ export default {
       let tmp = {};
       let key;
       //	console.log($('#spec_input_tab tr'))
+      console.log(823)
       $("#spec_input_tab tr").each(function(index, ele) {
         //  console.log(ele);
         $(ele)

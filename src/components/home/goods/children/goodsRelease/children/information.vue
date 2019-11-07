@@ -35,6 +35,23 @@
 					</el-option>
 				</el-select>
 			</div>
+
+			<div class="goods_classify" style="margin: 10px 0;">
+				<span><b class="red">*</b> 店内分类： </span>
+				<el-select v-model="store_class_id" @change="selectClsssChild()" filterable placeholder="请选择">
+					<el-option v-for="item in storeClassData" :key="item.id" :label="item.class_name" :value="item.id">
+					</el-option>
+				</el-select>
+				<el-select @change="selectClassChildByTwo()" v-if="storeclassByTwo.length !== 0" v-model="store_class_two" filterable placeholder="请选择">
+					<el-option v-for="(items,indexs) in storeclassByTwo" :key="items.id" :label="items.class_name" :value="items.id">
+					</el-option>
+				</el-select>
+				<el-select v-if="storeclassByThree.length !== 0" @change="va" v-model="store_class_three" filterable placeholder="请选择">
+					<el-option v-for="(items,indexs) in storeclassByThree" :key="items.id" :label="items.class_name" :value="items.id">
+					</el-option>
+				</el-select>
+			</div>
+
 			<div class="goods_brand public">
 				<span>商品品牌： </span>
 				<el-select v-model="brand_id" placeholder="请选择" style="margin: 10px 0;">
@@ -111,8 +128,12 @@ export default {
 			class_id: 0,    // 第一级分类
 			class_two: 0,    // 第二级分类
 			class_three: 0,    // 第三级分类编号
+			store_class_id: 0, //店内第一级分类
+			store_class_two: 0, //店内第二级分类
+			store_class_three: 0, //店内第三级分类
 			brand_id: 0,    // 品牌编号
 			classData: {},   // 一级分类
+			storeClassData:[], // 店内一级分类
 			price_market: 0.00, // 市场价
 			price_member: 0.00,// 会员价
 			advance_date: 0,  // 预售期
@@ -122,7 +143,9 @@ export default {
 			detail: '', //商品详情
 			brandData: {}, // 品牌数据
 			classByTwo: [], // 二级分类数据
+			storeclassByTwo: [], // 店内二级分类数据
 			classByThree: [],  // 三级分类数据
+			storeclassByThree: [],  // 店内三级分类数据
 			weight: 0.0, // 重量 以克为计量单位
 			freight: '',		//运费模板
 			freightData: []
@@ -135,14 +158,23 @@ export default {
 		this.getClass();
 		this.getBrand();
 		this.getFreight();
+		this.getOneStoreClass(); //获取一级店内分类
 	},
-	
+
 	methods: {
 		tolink() {
 			const { href } = this.$router.resolve({
 				name: 'logistics'
 			})
 			window.open(href, '_blank')
+		},
+		getOneStoreClass(){
+			this.$HTTP(this.$httpConfig.storeClassList,{},'post').then(res=>{
+				console.log(res);
+				this.storeClassData = res.data.data;
+			}).catch(err=>{
+				console.log(err);
+			})
 		},
 		getUEContent() {
 			let content = this.$refs.ue.getUEContent();
@@ -204,6 +236,25 @@ export default {
 				console.log(err)
 			});
 		},
+
+		selectClsssChild(){
+			this.store_class_two = null
+			this.storeclassByTwo = [];
+			this.storeclassByThree = [];
+			this.store_class_three = null;
+			this.$HTTP(this.$httpConfig.nextClass, {
+				id: parseInt(this.store_class_id)
+			}, 'post').then((res) => {
+				if (!res.data.data) {
+					this.$layer.msg(res.data.message);
+					return;
+				}
+				this.storeclassByTwo = res.data.data;
+				//	console.log(this.classByThree)
+			}).catch((err) => {
+				console.log(err)
+			});
+		},
 		/**
 		 * 第三级分类
 		 */
@@ -223,6 +274,22 @@ export default {
 				console.log(err)
 			});
 		},
+		selectClassChildByTwo(){
+			this.storeclassByThree = [];
+			this.store_class_three = null;
+			this.$HTTP(this.$httpConfig.nextClass, {
+				id: parseInt(this.store_class_two)
+			}, 'post').then((res) => {
+				if (!res.data.data) {
+					this.$layer.msg('暂无数据:(');
+					return;
+				}
+				this.storeclassByThree = res.data.data;
+			}).catch((err) => {
+				console.log(err)
+			});
+		},
+
 		/**
 		 * 添加商品
 		 */
@@ -240,7 +307,10 @@ export default {
 				'price_market': this.price_market,
 				'price_member': this.price_member,
 				'weight': this.weight,
-				'express_id': this.freight
+				'express_id': this.freight,
+				'store_class_one': this.store_class_id,
+				'store_class_two': this.store_class_two,
+				'store_class_three' : this.store_class_three
 			};
 			for (let i in dataJson) {
 			//	console.log(dataJson[i]);

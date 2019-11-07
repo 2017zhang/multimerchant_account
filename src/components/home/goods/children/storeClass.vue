@@ -9,8 +9,7 @@
             <div class="notes-box">
                 <div class="notes_title">温馨提示</div>
                 <div class="notes_content">
-                    <p>1.阿萨德了阿萨德克拉斯发是</p>
-                    <p>2.奥德赛克安静肯定是吗的拉到了</p>
+                    <p>1.发布商品后请勿随意删除商品</p>
                 </div>
             </div>
             <el-table
