@@ -9,7 +9,7 @@
             <div class="notes-box">
                 <div class="notes_title">温馨提示</div>
                 <div class="notes_content">
-                    <p>1.发布商品后请勿随意删除商品</p>
+                    <p>1.发布商品后请勿随意删除分类</p>
                 </div>
             </div>
             <el-table
