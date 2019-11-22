@@ -221,7 +221,7 @@ export default {
 			this.classByTwo = [];
 			this.classByThree = [];
 			this.class_three = null;
-		//	console.log(this.class_id);
+			console.log(this.class_id);
 			//获取分类
 			this.$HTTP(this.$httpConfig.getClassById, {
 				goods_class_id: parseInt(this.class_id)
@@ -261,6 +261,7 @@ export default {
 		selectChildByTwo() {
 			this.classByThree = [];
 			this.class_three = null;
+			console.log(this.class_two,'class_two');
 			//获取分类
 			this.$HTTP(this.$httpConfig.getClassById, {
 				goods_class_id: parseInt(this.class_two)
