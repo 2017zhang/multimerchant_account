@@ -73,7 +73,6 @@ export default {
       let tmp = {};
       let key;
       //	console.log($('#spec_input_tab tr'))
-      console.log(823)
       $("#spec_input_tab tr").each(function(index, ele) {
         //  console.log(ele);
         $(ele)
@@ -84,10 +83,8 @@ export default {
             let name = $(ele).attr("name");
             let val = $(ele).val();
             tmp[name] = val;
-            console.log(val);
             inputList[key] = {};
-            if (val === "") {
-              console.log(val,name)
+            if (val === "" && name !== 'pic_url' && typeof name !== "undefined") {
               flag = true;
             }
           });
