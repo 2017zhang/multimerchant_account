@@ -96,8 +96,16 @@
         </el-table-column>
         <!--<el-table-column prop="range" label="使用范围">-->
         <!--</el-table-column>-->
-        <el-table-column prop="start_time" label="开始时间"> </el-table-column>
-        <el-table-column prop="end_time" label="结束时间"> </el-table-column>
+        <el-table-column label="开始时间">
+          <template slot-scope="scope">
+            {{ scope.row.start_time | formatDate }}
+          </template>
+        </el-table-column>
+        <el-table-column label="结束时间">
+          <template slot-scope="scope">
+            {{ scope.row.end_time | formatDate }}
+          </template>
+        </el-table-column>
         <el-table-column width="140" label="操作">
           <template slot-scope="scope">
             <!-- <el-button @click="edit(scope.row.id)" size="mini" icon="el-icon-edit"></el-button>
@@ -150,6 +158,7 @@ export default {
     };
   },
   created() {
+      console.log(sessionStorage);
   },
   mounted() {
     this.getData();
@@ -250,13 +259,13 @@ export default {
       this.$router.push({
         name: "distributiondetails",
         params: {
-          id: Number(id)
+          id: Number(id),
         }
       });
     },
     getData() {
       this.params.page = this.currentPage;
-      this.$HTTP(this.$httpConfig.getFullGiftList, { page: this.params.page })
+      this.$HTTP(this.$httpConfig.getDataList, { page: this.params.page })
         .then(res => {
           this.dataTable = res.data.data.list;
           this.page_size = res.data.data.pageSize;

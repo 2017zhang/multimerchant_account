@@ -157,7 +157,7 @@ export default {
       this.$HTTP(this.$httpConfig.setMemberConfig, data)
         .then(res => {
           this.$message.success(res.data.message);
-          this.getMemberConfig();
+        //   this.getMemberConfig();
         })
         .catch(res => {
           this.$message.error(res.data.message);
@@ -165,7 +165,7 @@ export default {
     },
     getMemberConfig() {
       // 获取分销
-      this.$HTTP(this.$httpConfig.distraibutionFit, {}, "post")
+      this.$HTTP(this.$httpConfig.getMemberConfig, {}, "post")
         .then(res => {
           this.value = res.data.data.is_open == 1 ? true : false;
           this.value1 = res.data.data.royalty_one;

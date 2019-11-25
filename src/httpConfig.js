@@ -322,12 +322,16 @@ const config = {
   /*
    * 10、 财务
    */
+  getMemberConfig: request + 'Distribution/getMemberConfig',//设置分销人员设置
   setMemberConfig: request + 'Distribution/setMemberConfig',//设置分销
   getSettlementList: request + 'Settlement/listBySettlement',//列表
   setSettlement: request + 'Settlement/shopConfirm', //确认
   getSettlementOrderList: request + 'Settlement/orderList',//查看
   getDistributeInfo:request + 'Distribution/memberDistribution',//生成分销
   getDistributePicture:request + 'Distribution/getSelectTime',//获取生成的时间段
+  getDataList: request + 'Distribution/getDistributionList',//分销列表
+  getDataListDetails: request + 'Distribution/getMemberDetail',//分销列表详情
+  // getDataListInner: request + 'Distribution/memberDetail',//分销列表详情内部
 
 
   /*
