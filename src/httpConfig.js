@@ -322,9 +322,12 @@ const config = {
   /*
    * 10、 财务
    */
+  setMemberConfig: request + 'Distribution/setMemberConfig',//设置分销
   getSettlementList: request + 'Settlement/listBySettlement',//列表
   setSettlement: request + 'Settlement/shopConfirm', //确认
   getSettlementOrderList: request + 'Settlement/orderList',//查看
+  getDistributeInfo:request + 'Distribution/memberDistribution',//生成分销
+  getDistributePicture:request + 'Distribution/getSelectTime',//获取生成的时间段
 
 
   /*
