@@ -101,8 +101,8 @@ export default {
     },
     getMemberDetail() {
       this.$HTTP(
-        this.$httpConfig.getDataListDetails,
-        { t_id: this.$route.params.id, user_id: 311 },
+        this.$httpConfig.getDataListInner,
+        { id: this.$route.params.id},
         "post"
       )
         .then(res => {

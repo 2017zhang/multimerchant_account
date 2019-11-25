@@ -331,7 +331,8 @@ const config = {
   getDistributePicture:request + 'Distribution/getSelectTime',//获取生成的时间段
   getDataList: request + 'Distribution/getDistributionList',//分销列表
   getDataListDetails: request + 'Distribution/getMemberDetail',//分销列表详情
-  // getDataListInner: request + 'Distribution/memberDetail',//分销列表详情内部
+  getDataListInner: request + 'Distribution/memberDetail',//分销列表详情内部
+  makeMoney:request +'Distribution/makeMoneyByMember',//打款
 
 
   /*
