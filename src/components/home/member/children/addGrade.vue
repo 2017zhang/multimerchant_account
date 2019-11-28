@@ -36,7 +36,7 @@
           <td>&nbsp;</td>
         </tr>
         <tr>
-          <td align="right" class="black"><b>*</b>折扣：</td>
+          <td align="right" class="black"><span id='operate'><b>*</b>折扣:</span></td>
           <td>
             <el-input
               v-model="gradeList.discount"
@@ -53,7 +53,7 @@
         <tr>
           <td align="right" class="black"><b>*</b>金额上限:</td>
           <td>
-            <span>累计消费金额</span>
+            <!-- <span>累计消费金额</span> -->
             <el-input
               v-model="inputUp"
               size="medium"
@@ -67,7 +67,7 @@
         <tr>
           <td align="right" class="black"><b>*</b>金额下限:</td>
           <td>
-            <span>累计成功交易</span>
+            <!-- <span>累计成功交易</span> -->
             <el-input
               v-model="inputDown"
               size="medium"
@@ -76,7 +76,7 @@
             >
             </el-input>
           </td>
-          <td align="left"><span>笔</span></td>
+          <td align="left"><span>元</span></td>
         </tr>
         <tr>
           <td align="right">&nbsp;</td>
@@ -222,6 +222,10 @@ export default {
 };
 </script>
 <style lang="less">
+#operate{
+
+        margin-right: 24px;
+}
 .t_tab {
   .t_title {
     color: #333;
