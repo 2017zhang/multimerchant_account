@@ -19,7 +19,7 @@
                     <span v-else>审核成功</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="发布时间" width="180">
+            <el-table-column prop="name" label="举报时间" width="180">
                 <template slot-scope="scope">
                     <span>{{ scope.row.create_time | formatDate }}</span>
                 </template>
