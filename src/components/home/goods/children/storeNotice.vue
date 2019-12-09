@@ -31,12 +31,6 @@
                         @click="handleEdit(scope.$index, scope.row)"
                         >查看</el-button
                     >
-                    <!-- <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.$index, scope.row)"
-                        >删除</el-button
-                    > -->
                 </template>
             </el-table-column>
         </el-table>
@@ -134,8 +128,6 @@ export default {
             console.log(val, 111);
         },
         handleEdit(index, row) {
-            console.log(index, row, 333);
-            this.reTableData = this.tableData.slice(index, index + 1);
             this.showNoticeItem = true;
             //获取列表详情
             this.getDetailInfo(row.id);
@@ -156,9 +148,7 @@ export default {
                     console.error(err);
                 });
         },
-        handleDelete(index, row) {
-            console.log(index, row);
-        },
+
         //返回上一级
         goBackTop(){
             this.showNoticeItem = false;
