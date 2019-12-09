@@ -1,29 +1,41 @@
 <template>
     <div class="storeNoticeItem-wrapper">
         <div class="show-detail">
-            <el-table :data="reTableData" border style="width: 100%">
-                <el-table-column prop="date" label="日期" width="180">
-                </el-table-column>
-                <el-table-column prop="name" label="姓名" width="180">
-                </el-table-column>
-                <el-table-column prop="address" label="地址"> </el-table-column>
-                <el-table-column prop="address" label="操作">
-                    <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleItemCancel(scope.$index, scope.row)"
-                            >取消</el-button
-                        >
-                        <el-button
-                            size="mini"
-                            @click="handleItemSure(scope.$index, scope.row)"
-                            >确定</el-button
-                        >
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-upload
+            <div class="container">
+                <!-- <div class="com">
+                    <h6>被举报商家:</h6>
+                    <span>{{ reportDetailData.shop_name }}</span>
+                </div> -->
+                <div class="com">
+                    <h6>相关商品:</h6>
+                    <span>{{ reportDetailData.title }}</span>
+                </div>
+                <div class="com">
+                    <h6>举报类型:</h6>
+                    <span>{{ reportDetailData.type }}</span>
+                </div>
+                <div class="com">
+                    <h6>举报主题:</h6>
+                    <span>{{ reportDetailData.topic }}</span>
+                </div>
+                <div class="com">
+                    <h6>举报内容:</h6>
+                    <span>{{ reportDetailData.content }}</span>
+                </div>
+                <div class="com">
+                    <h6>图片展示:</h6>
+                    <div
+                        class="img-wrapper"
+                        v-for="(item, index) in handlePicture"
+                        :key="index"
+                    >
+                        <img :src="URL + item" alt="" />
+                    </div>
+
+                    <!-- <span>{{ reportDetailData.pic_url }}</span> -->
+                </div>
+            </div>
+            <!-- <el-upload
                 :action="difficulty()"
                 list-type="picture-card"
                 :with-credentials="true"
@@ -39,7 +51,8 @@
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
                 <img width="100%" :src="dialogImageUrl" alt="" />
-            </el-dialog>
+            </el-dialog> -->
+            <el-button @click="confirm">确认提交</el-button>
         </div>
     </div>
 </template>
@@ -53,12 +66,24 @@ export default {
             picArr: [], //接受多张图片
             figureCollection: [], //图片路径
             dialogImageUrl: "",
-            dialogVisible: false
+            dialogVisible: false,
+            imgURL: "agent.shopsn.cn"
         };
     },
+    computed: {
+        handlePicture() {
+            if (this.reportDetailData.pic_url) {
+                return this.reportDetailData.pic_url.split(",");
+            } else {
+                return this.reportDetailData.pic_url;
+            }
+        }
+    },
     props: {
-        reTableData: Array,
-        default: []
+        reportDetailData: {
+            type: Object,
+            default: null
+        }
     },
     //生命周期 - 创建完成（访问当前this实例）
     created() {},
@@ -69,8 +94,8 @@ export default {
             this.$emit("cancel");
         },
         //确定举报上传
-        handleItemSure(index,data) {
-            console.log(index,data);
+        handleItemSure(index, data) {
+            console.log(index, data);
         },
         //上传路径
         difficulty() {
@@ -118,6 +143,26 @@ export default {
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
+        },
+        confirm() {
+            this.$HTTP(
+                this.$httpConfig.commitReport,
+                {
+                    id: this.reportDetailData.goods_id,
+                    pic_url: this.reportDetailData.pic_url
+                },
+                "post"
+            )
+                .then(res => {
+                    if (res.data.status == 1) {
+                        this.$message.success(res.data.message);
+                        this.$emit("goBackTop");
+                    }
+                    console.log(res, 3344);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
         }
     },
     components: {}
@@ -127,6 +172,10 @@ export default {
 .storeNoticeItem-wrapper {
     .el-upload__input {
         display: none;
+    }
+    .el-button {
+        position: absolute;
+        left: 50%;
     }
 }
 </style>
@@ -143,6 +192,29 @@ export default {
         height: 100%;
         width: 100%;
         background: #fff;
+    }
+    .show-detail {
+        .container {
+            .com {
+                margin: 30px 0;
+                h6 {
+                    display: inline-block;
+                    font-size: 16px;
+                }
+                span {
+                    font-size: 16px;
+                    margin-left: 5px;
+                }
+                .img-wrapper {
+                    margin: 10px 0;
+                    img {
+                        margin-left: 5px;
+                        width: 200px;
+                        height: 100px;
+                    }
+                }
+            }
+        }
     }
 }
 </style>

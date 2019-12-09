@@ -41,6 +41,10 @@ const config = {
   getConsultQuestion: request + 'goods/getConsultQuestion', //商品咨询
   consultReply: request + 'goods/consultReply', //商品咨询回复
   checkReply: request + 'goods/checkReply', //商品咨询查看
+  reportList: request + 'GoodsReport/reportList', //举报商品查询
+  reportDetail: request + 'GoodsReport/reportDetail', //举报商品查询详情
+  commitReport: request + 'GoodsReport/commitReport', //确认举报
+  
 
   //店内分类
   addStoreClass: request + 'StoreInsideClass/addStoreClass', //添加店内分类
