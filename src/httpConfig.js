@@ -56,6 +56,8 @@ const config = {
   addGoods: request + 'Goods/addGoodsInfo', //添加商品
   //商品、店铺图片操作
   addGoodsPic: request + 'GoodsImages/pictureAlbum', //添加商品图片
+  upLoadImage: request + 'UploadImage/uploadImage', // 上传图片
+  delPic: request + 'UploadImage/delPic', // 删除图片
   getGoodsImgCofig: imgRequest + uploadImage + 'FileUpload/getGoodsImageConfig', //获取商品图片配置
   delGoodsImgCofig: imgRequest + uploadImage + 'DeleteImage/deleteFile', //删除商品图片
   getGoodsImgList: request + 'GoodsImages/getImageList', //商品图片列表
