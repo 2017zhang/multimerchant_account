@@ -11,8 +11,8 @@
                 </ul>
             </div>
             <div class="info">
-                <h5>举报类型:</h5>
-                <el-select v-model="selectValue">
+                <h5>状态:</h5>
+                <el-select v-model="selectValue" @change="handleSelectChange">
                     <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -68,12 +68,13 @@
         >
         </el-pagination>
         <!-- 用于显示举报商品界面 -->
-        <store-item
+        <!-- <store-item
             v-if="showNoticeItem"
             @cancel="cancel"
             :reportDetailData="reportDetailData"
+            :getID="getID"
             @goBackTop="goBackTop"
-        ></store-item>
+        ></store-item> -->
     </div>
 </template>
 
@@ -111,32 +112,42 @@ export default {
             pagesize: 10, //每页的数据
             total: 0, //总的分页条目
             reportDetailData: {},
-            selectValue:'',
+            selectValue: "",
+            getID: 0,
             options: [
                 {
-                    value: "选项1",
-                    label: "黄金糕"
+                    value: "1",
+                    label: "未处理"
+                },
+                {
+                    value: "2",
+                    label: "已处理"
                 }
             ]
         };
     },
     //生命周期 - 创建完成（访问当前this实例）
-    created() {
-        let arr=[{
-            name:'jj'
-        },{
-            name:'kk'
-        }]
-        arr.forEach(el=>{
-            this.$set(el,'id',1)
-        })
-        console.log(arr,'arr');
-    },
+    created() {},
     //生命周期 - 挂载完成（访问DOM元素）
     mounted() {
         this.getReportList(this.currentPage);
     },
     methods: {
+        handleSelectChange(status) {
+            this.$HTTP(
+                this.$httpConfig.reportList,
+                {
+                    store_status: status
+                },
+                "get"
+            )
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        },
         //获取列表数据
         getReportList(currentPage) {
             this.$HTTP(
@@ -170,24 +181,12 @@ export default {
         },
         handleEdit(index, row) {
             this.showNoticeItem = true;
-            //获取列表详情
-            this.getDetailInfo(row.id);
-        },
-        getDetailInfo(id) {
-            this.$HTTP(
-                this.$httpConfig.reportDetail,
-                {
-                    id: id
-                },
-                "post"
-            )
-                .then(res => {
-                    this.reportDetailData = res.data.data;
-                    console.log(res.data.data, 444);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
+            this.$router.push({
+                path: "/storeNoticeItem",
+                query: {
+                    id: row.id
+                }
+            });
         },
 
         //返回上一级
@@ -206,15 +205,18 @@ export default {
 </script>
 <style lang="less">
 .storeNotice-wrapper {
+    .el-pagination .el-select .el-input {
+        display: none;
+    }
     .el-pagination {
         text-align: center;
         margin: 20px 0;
     }
-    .el-input__inner {
-        margin-left: 15px;
-    }
     .el-button {
         margin-left: 30px;
+    }
+    .el-input--suffix .el-input__inner {
+        margin-left: 10px;
     }
 }
 </style>
@@ -253,6 +255,9 @@ export default {
             }
         }
         .info {
+            h5 {
+                margin-left: 5px;
+            }
             display: flex;
             align-items: center;
             background: #efefef;

@@ -109,6 +109,7 @@ export default {
             dialogVisible: false,
             imgURL: "agent.shopsn.cn",
             textarea: "",
+            reportDetailData:{},
             imgIndex: -1,
             showImgClick: false,
             fileList: [],
@@ -123,16 +124,14 @@ export default {
         };
     },
 
-    props: {
-        reportDetailData: {
-            type: Object,
-            default: null
-        }
-    },
+  
     //生命周期 - 创建完成（访问当前this实例）
     created() {},
     //生命周期 - 挂载完成（访问DOM元素）
-    mounted() {},
+    mounted() {
+        //获取列表详情
+        this.getDetailInfo(this.$route.query.id);
+    },
     computed: {
         handlePicture() {
             if (this.reportDetailData.pic_url) {
@@ -143,11 +142,25 @@ export default {
         }
     },
     methods: {
-        handleItemCancel() {
-            this.$emit("cancel");
+        getDetailInfo(id) {
+            this.$HTTP(
+                this.$httpConfig.reportDetail,
+                {
+                    id: id
+                },
+                "post"
+            )
+                .then(res => {
+                    this.reportDetailData = res.data.data;
+                    this.getID = Number(id);
+                    console.log(res.data.data, 444);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
         },
         //检验输入信息
-        checkMessage(id) {
+        checkMessage() {
             if (this.textarea.match(/^\s*$/)) {
                 this.$message.error("请输入举报内容");
                 return;
@@ -155,22 +168,12 @@ export default {
                 this.$message.error("请上传凭证");
                 return;
             } else {
-                this.$HTTP(this.$httpConfig.commitReport, {
-                    id: id,
-                    pic_url: this.uploadFile.join(","),
-                    content: this.textarea.replace(/\s+/g, "")
+                this.$router.push({
+                    path:'/storeNotice'
                 })
-                    .then(res => {
-                        console.log(res);
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
-                this.$emit("goBackTop");
             }
         },
         UploadImage(param) {
-            console.log(this.uploadFile, 222);
             this.$HTTP(this.$httpConfig.getGoodsImgCofig, {}, "post")
                 .then(res => {
                     let data = res.data.data;
@@ -224,15 +227,16 @@ export default {
             this.$HTTP(
                 this.$httpConfig.commitReport,
                 {
-                    id: this.reportDetailData.goods_id,
-                    pic_url: this.uploadFile.join(",")
+                    id: this.$route.query.id,
+                    pic_url: this.uploadFile.join(","),
+                    content: this.textarea.replace(/\s+/g, "")
                 },
                 "post"
             )
                 .then(res => {
                     if (res.data.status == 1) {
                         this.$message.success(res.data.message);
-                        this.checkMessage(this.reportDetailData.goods_id);
+                        this.checkMessage();
                     }
                 })
                 .catch(err => {
@@ -364,19 +368,6 @@ export default {
 </style>
 <style lang="less" scoped>
 .storeNoticeItem-wrapper {
-    position: fixed;
-    top: 0;
-    background: rgba(0, 0, 0, 0.3);
-    height: 100%;
-    width: 100%;
-    z-index: 1111;
-    .show-detail {
-        position: fixed;
-        height: 100%;
-        width: 100%;
-        background: #fff;
-        overflow-y: auto;
-    }
     .show-detail {
         .container {
             h5 {
