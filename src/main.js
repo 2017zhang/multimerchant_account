@@ -31,6 +31,9 @@ Vue.prototype.$HTTP = HTTP;
 //温馨提示处的样式
 import './style/notes.css'
 
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+Vue.use(preview)
 //全局方法
 import isLogin from '../js/base';
 window.UEDITOR_CONFIG.serverUrl = 'http://center.shopsn.cn/php/controller.php'; //ueditor 上传图片URL

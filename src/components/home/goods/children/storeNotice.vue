@@ -1,5 +1,29 @@
 <template>
     <div class="storeNotice-wrapper">
+        <div class="header">
+            <h6>举报违规-列表:</h6>
+            <div class="wrapper">
+                <div class="notice">温馨提示</div>
+                <ul>
+                    <li>1<span>请填写证明内容</span></li>
+                    <li>2<span>请上传相关证明</span></li>
+                    <li>3<span>提交后,工作人员会在3-5个工作日结算</span></li>
+                </ul>
+            </div>
+            <div class="info">
+                <h5>举报类型:</h5>
+                <el-select v-model="selectValue">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    >
+                    </el-option>
+                </el-select>
+                <el-button>搜索</el-button>
+            </div>
+        </div>
         <el-table
             ref="multipleTable"
             :data="tableData"
@@ -47,8 +71,8 @@
         <store-item
             v-if="showNoticeItem"
             @cancel="cancel"
-            :reportDetailData='reportDetailData'
-            @goBackTop='goBackTop'
+            :reportDetailData="reportDetailData"
+            @goBackTop="goBackTop"
         ></store-item>
     </div>
 </template>
@@ -86,11 +110,28 @@ export default {
             currentPage: 1, //初始页
             pagesize: 10, //每页的数据
             total: 0, //总的分页条目
-            reportDetailData:{}
+            reportDetailData: {},
+            selectValue:'',
+            options: [
+                {
+                    value: "选项1",
+                    label: "黄金糕"
+                }
+            ]
         };
     },
     //生命周期 - 创建完成（访问当前this实例）
-    created() {},
+    created() {
+        let arr=[{
+            name:'jj'
+        },{
+            name:'kk'
+        }]
+        arr.forEach(el=>{
+            this.$set(el,'id',1)
+        })
+        console.log(arr,'arr');
+    },
     //生命周期 - 挂载完成（访问DOM元素）
     mounted() {
         this.getReportList(this.currentPage);
@@ -150,7 +191,7 @@ export default {
         },
 
         //返回上一级
-        goBackTop(){
+        goBackTop() {
             this.showNoticeItem = false;
         },
         //详情隐藏显示
@@ -169,9 +210,55 @@ export default {
         text-align: center;
         margin: 20px 0;
     }
+    .el-input__inner {
+        margin-left: 15px;
+    }
+    .el-button {
+        margin-left: 30px;
+    }
 }
 </style>
 <style lang="less" scoped>
 .storeNotice-wrapper {
+    .header {
+        h6 {
+            font-size: 16px;
+            border-bottom: 1px solid #e8e8e8;
+            color: #333;
+            padding: 10px 0;
+        }
+        .wrapper {
+            background: rgba(79, 192, 232, 0.11);
+            border-left: 2px solid #0ba4da;
+            margin: 15px 0;
+            .notice {
+                font-size: 16px;
+                color: #0ba4da;
+                padding-left: 8px;
+                padding-top: 20px;
+            }
+            ul {
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                li {
+                    color: #0ba4da;
+                    font-size: 13px;
+                    span {
+                        color: #0ba4da;
+                        font-size: 13px;
+                        margin: 10px 5px;
+                    }
+                }
+            }
+        }
+        .info {
+            display: flex;
+            align-items: center;
+            background: #efefef;
+            padding: 5px;
+            margin: 10px 0;
+        }
+    }
 }
 </style>
