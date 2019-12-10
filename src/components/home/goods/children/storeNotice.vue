@@ -21,7 +21,7 @@
                     >
                     </el-option>
                 </el-select>
-                <el-button>搜索</el-button>
+                <el-button @click="search">搜索</el-button>
             </div>
         </div>
         <el-table
@@ -67,14 +67,6 @@
             :total="total"
         >
         </el-pagination>
-        <!-- 用于显示举报商品界面 -->
-        <!-- <store-item
-            v-if="showNoticeItem"
-            @cancel="cancel"
-            :reportDetailData="reportDetailData"
-            :getID="getID"
-            @goBackTop="goBackTop"
-        ></store-item> -->
     </div>
 </template>
 
@@ -114,6 +106,7 @@ export default {
             reportDetailData: {},
             selectValue: "",
             getID: 0,
+            get_status: 0,
             options: [
                 {
                     value: "1",
@@ -133,6 +126,20 @@ export default {
         this.getReportList(this.currentPage);
     },
     methods: {
+        search() {
+            console.log(this.get_status);
+            this.$HTTP(this.$httpConfig.reportList, {
+                store_status: this.get_status
+            })
+                .then(res => {
+                    this.tableData = res.data.data.list;
+                    this.total = Number(res.data.data.count);
+                    console.log(res.data.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        },
         handleSelectChange(status) {
             this.$HTTP(
                 this.$httpConfig.reportList,
@@ -147,6 +154,7 @@ export default {
                 .catch(err => {
                     console.error(err);
                 });
+            this.get_status = Number(status);
         },
         //获取列表数据
         getReportList(currentPage) {
