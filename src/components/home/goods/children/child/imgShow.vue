@@ -1,31 +1,19 @@
 <template>
     <div class="img-wrapper">
         <div class="imgitem-wrapper" ref="imgDom">
-            <img
-                src="../../../../../assets/close.png"
-                v-if="showImgClose"
-                class="img-close"
-                @click="closeImg"
-            />
+            <!--<img-->
+                <!--src="../../../../../assets/close.png"-->
+                <!--v-if="showImgClose"-->
+                <!--class="img-close"-->
+                <!--@click="closeImg"-->
+            <!--/>-->
             <img
                 v-for="(item, index) in handlePicture"
                 :key="index"
-                v-if="imgIndex == index || !showImgClose"
-                :class="{ active: imgIndex == index }"
-                @click="handleImgScale(index)"
                 :src="URL + item"
-                ref="imgItem"
+                preview="index"
+                preview-text="描述文字"
             />
-            <!-- <div class="mask" v-if="showMask">
-                <img
-                    v-for="(item, index) in handlePicture"
-                    :key="index"
-                    v-if="imgIndex == index || !showImgClose"
-                    :class="{ active: imgIndex == index }"
-                    :src="URL + item"
-                    ref="imgItem"
-                />
-            </div> -->
         </div>
     </div>
 </template>
@@ -57,7 +45,9 @@ export default {
     //生命周期 - 创建完成（访问当前this实例）
     created() {},
     //生命周期 - 挂载完成（访问DOM元素）
-    mounted() {},
+    mounted() {
+        this.$previewRefresh();
+    },
     methods: {
         handleImgScale(index) {
             this.imgIndex = index;

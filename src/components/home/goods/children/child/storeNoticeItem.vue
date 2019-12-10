@@ -48,26 +48,31 @@
             </div>
             <div class="select-wrapper">
                 <h5>图片:</h5>
-                <el-upload
-                    :action="difficulty()"
-                    list-type="picture-card"
-                    :with-credentials="true"
-                    :on-success="succeed"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
-                    :on-exceed="beyond"
-                    :limit="3"
-                    name="adv_content"
-                    accept=".jpg,.jpeg,.png,.gif,.JPG,.JPEG,.GIF,.PNG,"
-                >
-                    <i class="el-icon-plus"></i>
-                </el-upload>
+                <div class="img-list">
+                    <div class="img-content" v-for="(item,key) in fileList" :key="key">
+                        <img :src="item.url">
+                        <!-- 放大icon -->
+                        <div class="layer">
+                            <i class="el-icon-zoom-in" @click="handlePictureCardPreview1(item.url)"></i>
+                            <i @click="handleRemove(item,key)" class="el-icon-delete"></i>
+                        </div>
+                    </div>
+                    <div style="margin-top: 5px">
+                        <el-upload :action="action" :http-request="UploadImage" :on-change="fileChange"
+                                   list-type="picture-card"
+                                   accept=".jpg,.png,.jpeg" :show-file-list="false" multiple name="fileData"
+                                   :data="uploadData"
+                                   :on-preview="handlePictureCardPreview1">
+                            <i class="el-icon-plus"></i>
+                        </el-upload>
+                    </div>
+                </div>
                 <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt="" />
+                    <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
             </div>
 
-            <el-button @click="confirm">确认提交</el-button>
+            <el-button style="margin-bottom: 100px" @click="confirm">确认提交</el-button>
         </div>
     </div>
 </template>
@@ -86,7 +91,14 @@ export default {
             imgURL: "agent.shopsn.cn",
             textarea: "",
             imgIndex: -1,
-            showImgClick: false
+            showImgClick: false,
+            fileList:[],
+            action: this.$store.state.image_api_url + "FileUpload/uploadImageToLocal/",
+            uploadData: {
+                sessionToken: "",
+                imageToken: ""
+            },
+            uploadFile:[],
         };
     },
 
@@ -122,12 +134,54 @@ export default {
                 this.$emit("goBackTop");
             }
         },
+        UploadImage(param) {
+            this.$HTTP(this.$httpConfig.getGoodsImgCofig, {}, 'post').then(res => {
+                let data = res.data.data;
+                this.imageConf = data.config;
+                // this.imageToken = data.token;
+                // this.sToken = data.s_token;
+                // this.uploadData.sessionToken = data.s_token;
+                // this.uploadData.imageToken = data.token;
+                const isLt2M = param.file.size / 1024 / 1024 < 3;
+                if (!isLt2M) {
+                    this.$layer.msg("上传头像图片大小不能超过 2MB!");
+                    return
+                }
+
+                var formData = new FormData();
+                formData.append("fileData", param.file);
+                formData.append("imageToken", data.token);
+                formData.append("sessionToken", data.s_token);
+                this.axios.post(this.$store.state.image_api_url + "FileUpload/uploadImageToLocal/", formData).then((res) => {
+                    if (res.data.status == 0) {
+                        this.$message({
+                            duration: 1000,
+                            type: "error",
+                            message: res.data.message
+                        });
+                        this.fileList.splice(this.fileList.length-1);
+                    } else {
+                        this.newUrl = res.data.data;
+                        this.fileList[this.fileList.length - 1].url = this.URL + res.data.data
+                        this.uploadFile.push(res.data.data);
+
+                    }
+                })
+
+            }).catch((res) => {
+                let data = res.data.data;
+                this.$layer.msg(data.token);
+            });
+        },
+        fileChange(file) {
+            this.fileList.push({name: file.name, url: file.url});
+        },
         confirm() {
             this.$HTTP(
                 this.$httpConfig.commitReport,
                 {
                     id: this.reportDetailData.goods_id,
-                    pic_url: this.reportDetailData.pic_url
+                    pic_url: this.uploadFile.join(',')
                 },
                 "post"
             )
@@ -155,34 +209,14 @@ export default {
             this.picArr.push(response.data);
             this.figureCollection.push(file.response.data);
         },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
+        handlePictureCardPreview1(url) {
+            this.dialogImageUrl = url;
             this.dialogVisible = true;
-            console.log(file, "file");
         },
         //取消图片上传
-        handleRemove(file, fileList) {
-            let index = this.figureCollection.indexOf(file.response.data);
-            if (index > -1) {
-                console.log("index值:" + index);
-                this.figureCollection.splice(index, 1);
-                this.picArr.splice(index, 1);
-                this.checkPic.splice(index, 1);
-            }
-            //后台删除当前图片
-            this.HTTP(
-                this.$httpConfig.delPic,
-                {
-                    fileName: file.response.data
-                },
-                "post"
-            )
-                .then(e => {
-                    console.log(e);
-                })
-                .catch(e => {
-                    console.log(e);
-                });
+        handleRemove(file, index) {
+            this.uploadFile.splice(index, 1);
+            this.fileList.splice(index, 1);
         },
         // 图片最大数之后
         beyond() {
@@ -195,6 +229,87 @@ export default {
 };
 </script>
 <style lang="less">
+
+
+    .img-list {
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .img-list .img-content {
+        float: left;
+        position: relative;
+        display: inline-block;
+        width: 148px;
+        height: 148px;
+        margin: 5px 20px 20px 0;
+        border: 1px solid #d1dbe5;
+        border-radius: 4px;
+        transition: all .3s;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
+        .active{
+            border: 3px solid #ff0000;
+        }
+    }
+
+    .img-list .img-content img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        border-radius: 4px;
+    }
+
+    .img-list .img-content .name {
+        margin-top: 10px;
+    }
+
+    .img-list .img-content .name > div {
+        width: 90%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        height: 25px;
+        line-height: 25px;
+    }
+
+    .img-list .img-content:hover .del,
+    .img-list .img-content:hover .layer {
+        opacity: 1;
+    }
+
+    .img-list .img-content .del,
+    .img-list .img-content .layer {
+        opacity: 0;
+        transition: all .3s;
+    }
+
+    .img-list .img-content .del {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        color: #8492a6;
+        cursor: pointer;
+        font-size: 1.1em;
+    }
+
+    .img-list .img-content .layer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 148px;
+        color: #fff;
+        text-align: center;
+        z-index: 5;
+        background-color: rgba(0, 0, 0, .4);
+    }
+
+    .img-list .img-content .layer i {
+        font-size: 1.6em;
+        margin-top: 60px;
+        margin-left: .3rem;
+    }
+
 .storeNoticeItem-wrapper {
     .el-upload__input {
         display: none;
@@ -218,6 +333,7 @@ export default {
         height: 100%;
         width: 100%;
         background: #fff;
+        overflow-y: auto;
     }
     .show-detail {
         .container {
