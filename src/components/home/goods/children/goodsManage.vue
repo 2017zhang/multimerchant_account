@@ -265,7 +265,7 @@
 				id: goods_id,
 				shelves: Number(isMark),
 			}, 'post').then((res) => {
-				this.$layer.msg(res.data.message);
+				// this.$layer.msg(res.data.message);
 				this.isMarks[index] = isMark;
 			}).catch((err) => {
 				console.log(err)
