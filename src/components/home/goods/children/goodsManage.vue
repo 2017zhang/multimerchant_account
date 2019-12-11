@@ -102,7 +102,7 @@
                                 <template slot-scope="scope">
                                     <el-switch v-model="isMarks[scope.$index]" active-color="#13ce66"
                                                inactive-color="#ff4949"
-                                               :disabled="scope.row.shelves==2"
+                                               :disabled="item.shelves==2?true:false"
                                                @click.native="goodsGoodsSheve(scope.row.id,isMarks[scope.$index],scope.$index)">
                                     </el-switch>
                                 </template>
