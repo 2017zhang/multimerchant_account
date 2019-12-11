@@ -68,6 +68,7 @@
 					<span @click="sale(item, index)" class="cursor">
 						{{shelves[item.shelves]}}
 					</span>
+                    <span v-if='item.shelves==2'>被举报商品</span>
                 </div>
 
                 <div class="fl ping color">
@@ -101,6 +102,7 @@
                                 <template slot-scope="scope">
                                     <el-switch v-model="isMarks[scope.$index]" active-color="#13ce66"
                                                inactive-color="#ff4949"
+                                               :disabled="scope.row.shelves==2"
                                                @click.native="goodsGoodsSheve(scope.row.id,isMarks[scope.$index],scope.$index)">
                                     </el-switch>
                                 </template>
@@ -122,8 +124,8 @@
                         </el-table>
                         <el-button @click="goodsDetail(item.id)" slot="reference">查看</el-button>
                     </el-popover>
-                    <el-button @click.native="edit(item)" icon="el-icon-edit"></el-button>
-                    <el-button size="small" @click="sale(item,index)">{{shelves[item.shelves]}}</el-button>
+                    <el-button @click.native="edit(item)" icon="el-icon-edit" :disabled="item.shelves==2"  ></el-button>
+                    <el-button size="small" @click="sale(item,index)"  :disabled="item.shelves==2" >{{shelves[item.shelves]}}</el-button>
                     <el-button @click="delItem(item.id)" icon="el-icon-delete"></el-button>
                 </div>
             </div>
