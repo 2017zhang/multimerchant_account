@@ -109,7 +109,7 @@
                             </el-table-column>
                             <el-table-column width="50" property="recommend" label="推荐">
                                 <template slot-scope="scope">
-                                    <el-switch disabled v-model="recommends[scope.$index]" active-color="#13ce66"
+                                    <el-switch  v-model="recommends[scope.$index]" active-color="#13ce66"
                                                inactive-color="#ff4949">
                                     </el-switch>
                                 </template>
