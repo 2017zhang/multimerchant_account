@@ -3,7 +3,7 @@
     <div class="right fl">
         <div class="Essential-information">
             <div class="commodity-logo" @click="shopEditors">
-                <img :src="URL + store.store_logo" alt="">
+                <img :src="URL + handleStoreLogo" alt="">
                 <div class="dianp clearfix">
                     <img src="../../../assets/edit.png" alt="">
                     <span>编辑店铺设置</span>
@@ -228,7 +228,8 @@ import {mapMutations, mapGetters, mapState} from 'vuex'
                 goods:{},
                 order:{},
                 config:[],
-                score: {}
+                score: {},
+                replaceImg:require('../../../assets/initLogo.png')
             }
         },
         created(){
@@ -243,6 +244,15 @@ import {mapMutations, mapGetters, mapState} from 'vuex'
             }).catch((err) =>{
                 console.log(err);
             })
+        },
+        computed:{
+            handleStoreLogo(){
+                if(this.store.store_logo ==null||this.store.store_logo.length<=0){
+                    return this.replaceImg
+                }else{
+                    return this.store.store_logo
+                }
+            }
         },
         methods:{
             goGo(){
