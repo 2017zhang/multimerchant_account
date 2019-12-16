@@ -38,15 +38,30 @@
             </div>
             <div class="input-wrapper">
                 <h6>证明内容:</h6>
-                <el-input
-                    type="textarea"
-                    :rows="4"
-                    placeholder="请输入内容"
-                    v-model="textarea"
+                <div
+                    class="el-input-wrapper"
+                    v-if="reportDetailData.store_status == 0"
                 >
-                </el-input>
+                    <el-input
+                        type="textarea"
+                        :rows="4"
+                        placeholder="请输入内容"
+                        v-model="textarea"
+                    >
+                    </el-input>
+                </div>
+
+                <div
+                    v-if="reportDetailData.store_status == 1"
+                    class="inner-input-wrapper"
+                >
+                    {{ reportDetailData.store_content }}
+                </div>
             </div>
-            <div class="select-wrapper">
+            <div
+                class="select-wrapper"
+                v-if="reportDetailData.store_status == 0"
+            >
                 <h5>图片:</h5>
                 <div class="img-list">
                     <div
@@ -88,8 +103,20 @@
                     <img width="100%" :src="dialogImageUrl" alt="" />
                 </el-dialog>
             </div>
+            <div
+                class="select-wrapper"
+                v-if="reportDetailData.store_status == 1"
+            >
+                <div class="another">
+                    <h3>图片:</h3>
+                    <img :src="URL + reportDetailData.store_pic_url" alt="" />
+                </div>
+            </div>
 
-            <el-button style="margin-bottom: 100px" @click="confirm" :disabled="reportDetailData.store_status==1"
+            <el-button
+                style="margin-bottom: 100px"
+                @click="confirm"
+                :disabled="reportDetailData.store_status == 1"
                 >确认提交</el-button
             >
         </div>
@@ -109,7 +136,7 @@ export default {
             dialogVisible: false,
             imgURL: "agent.shopsn.cn",
             textarea: "",
-            reportDetailData:{},
+            reportDetailData: {},
             imgIndex: -1,
             showImgClick: false,
             fileList: [],
@@ -124,7 +151,6 @@ export default {
         };
     },
 
-  
     //生命周期 - 创建完成（访问当前this实例）
     created() {},
     //生命周期 - 挂载完成（访问DOM元素）
@@ -169,8 +195,8 @@ export default {
                 return;
             } else {
                 this.$router.push({
-                    path:'/storeNotice'
-                })
+                    path: "/storeNotice"
+                });
             }
         },
         UploadImage(param) {
@@ -276,6 +302,13 @@ export default {
     }
 };
 </script>
+<style lang="less">
+    .storeNoticeItem-wrapper{
+        .el-textarea__inner{
+            width: 800px
+        }
+    }
+</style>
 <style lang="less">
 .img-list {
     overflow: hidden;
@@ -415,8 +448,14 @@ export default {
         }
         .input-wrapper {
             margin-left: 30px;
+            display: flex;
+            align-items: center;
             h6 {
                 margin: 10px;
+                font-size: 16px;
+            }
+            .inner-input-wrapper {
+                margin-left: 12px;
                 font-size: 16px;
             }
         }
@@ -425,6 +464,16 @@ export default {
             h5 {
                 margin: 10px;
                 font-size: 16px;
+            }
+            .another {
+                h3 {
+                    font-size: 16px;
+                    margin: 10px;
+                }
+                img {
+                    width: 200px;
+                    height: 200px;
+                }
             }
         }
     }
