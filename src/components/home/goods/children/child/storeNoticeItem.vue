@@ -41,7 +41,7 @@
                     class="el-input-wrapper"
                     v-if="reportDetailData.store_status == 0"
                 >
-                    <h6>证明内容:</h6>
+                    <h6>申诉内容:</h6>
                     <el-input
                         type="textarea"
                         :rows="4"
@@ -55,7 +55,7 @@
                     v-if="reportDetailData.store_status == 1"
                     class="inner-input-wrapper"
                 >
-                    申诉内容:
+                    证明内容:
                     {{ reportDetailData.store_content }}
                 </div>
             </div>
@@ -63,7 +63,7 @@
                 class="select-wrapper"
                 v-if="reportDetailData.store_status == 0"
             >
-                <h5>图片:</h5>
+                <h5>申诉图片:</h5>
                 <div class="img-list">
                     <div
                         class="img-content"
@@ -109,7 +109,7 @@
                 v-if="reportDetailData.store_status == 1"
             >
                 <div class="another">
-                    <h3>申诉图片:</h3>
+                    <h3>图片:</h3>
                     <div class="imgitem-wrapper" ref="imgDom">
                         <img
                             v-for="(item, index) in handleStorePic"
