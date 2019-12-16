@@ -48,6 +48,12 @@
                     <span>{{ scope.row.create_time | formatDate }}</span>
                 </template>
             </el-table-column>
+            <el-table-column  label="状态" width="180">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==0">未处理</span>
+                    <span v-else>已处理</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button

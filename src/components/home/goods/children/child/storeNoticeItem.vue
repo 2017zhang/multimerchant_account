@@ -89,7 +89,7 @@
                 </el-dialog>
             </div>
 
-            <el-button style="margin-bottom: 100px" @click="confirm"
+            <el-button style="margin-bottom: 100px" @click="confirm" :disabled="reportDetailData.store_status==1"
                 >确认提交</el-button
             >
         </div>
