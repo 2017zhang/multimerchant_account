@@ -37,11 +37,11 @@
                 </div>
             </div>
             <div class="input-wrapper">
-                <h6>证明内容:</h6>
                 <div
                     class="el-input-wrapper"
                     v-if="reportDetailData.store_status == 0"
                 >
+                    <h6>证明内容:</h6>
                     <el-input
                         type="textarea"
                         :rows="4"
@@ -55,6 +55,7 @@
                     v-if="reportDetailData.store_status == 1"
                     class="inner-input-wrapper"
                 >
+                    申诉内容:
                     {{ reportDetailData.store_content }}
                 </div>
             </div>
@@ -108,16 +109,31 @@
                 v-if="reportDetailData.store_status == 1"
             >
                 <div class="another">
-                    <h3>图片:</h3>
-                    <img :src="URL + reportDetailData.store_pic_url" alt="" />
+                    <h3>申诉图片:</h3>
+                    <div class="imgitem-wrapper" ref="imgDom">
+                        <img
+                            v-for="(item, index) in handleStorePic"
+                            :key="index"
+                            :src="URL + item"
+                            preview="index"
+                            preview-text="描述文字"
+                        />
+                    </div>
+                    <!-- <img :src="URL + reportDetailData.store_pic_url" alt="" /> -->
                 </div>
             </div>
 
             <el-button
                 style="margin-bottom: 100px"
                 @click="confirm"
-                :disabled="reportDetailData.store_status == 1"
+                v-if="reportDetailData.store_status == 0"
                 >确认提交</el-button
+            >
+            <el-button
+                style="margin-bottom: 100px"
+                @click="back"
+                v-if="reportDetailData.store_status == 1"
+                >返回列表</el-button
             >
         </div>
     </div>
@@ -165,9 +181,21 @@ export default {
             } else {
                 return this.reportDetailData.pic_url;
             }
+        },
+        handleStorePic() {
+            if (this.reportDetailData.store_pic_url) {
+                return this.reportDetailData.store_pic_url.split(",");
+            } else {
+                return this.reportDetailData.store_pic_url;
+            }
         }
     },
     methods: {
+        back() {
+            this.$router.push({
+                name: "storeNotice"
+            });
+        },
         getDetailInfo(id) {
             this.$HTTP(
                 this.$httpConfig.reportDetail,
@@ -303,11 +331,11 @@ export default {
 };
 </script>
 <style lang="less">
-    .storeNoticeItem-wrapper{
-        .el-textarea__inner{
-            width: 800px
-        }
+.storeNoticeItem-wrapper {
+    .el-textarea__inner {
+        width: 800px;
     }
+}
 </style>
 <style lang="less">
 .img-list {
