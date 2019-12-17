@@ -68,7 +68,7 @@
 					<span @click="sale(item, index)" class="cursor">
 						{{shelves[item.shelves]}}
 					</span>
-                    <span v-if='item.shelves==2'>被举报商品</span>
+                    <span v-if='item.shelves==2' :disable='true'>被举报商品</span>
                 </div>
 
                 <div class="fl ping color">
