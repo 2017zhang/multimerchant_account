@@ -65,9 +65,12 @@
                 <div class="fl ping">￥{{item.price_member}}</div>
                 <div class="fl ping">{{item.stock}}</div>
                 <div class="fl ping color">
-					<span @click="sale(item, index)" class="cursor" >
+					<span @click="sale(item, index)" class="cursor" v-if="item.shelves!=2" >
 						{{shelves[item.shelves]}}
 					</span>
+                    <span v-if="item.shelves==2" :disable='true'>
+                        {{shelves[item.shelves]}}
+                    </span>
                 </div>
 
                 <div class="fl ping color">
