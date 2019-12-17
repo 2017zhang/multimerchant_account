@@ -7,7 +7,7 @@
                 <ul>
                     <li>1<span>请填写证明内容</span></li>
                     <li>2<span>请上传相关证明</span></li>
-                    <li>3<span>提交后,工作人员会在3-5个工作日结算</span></li>
+                    <li>3<span>提交后,工作人员会在3-5个工作日审查</span></li>
                 </ul>
             </div>
             <div class="info">
