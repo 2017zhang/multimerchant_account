@@ -124,7 +124,8 @@
                         </el-table>
                         <el-button @click="goodsDetail(item.id)" slot="reference">查看</el-button>
                     </el-popover>
-                    <el-button @click.native="edit(item)" icon="el-icon-edit" :disabled="item.shelves==2"  ></el-button>
+                    <el-button @click.native="edit(item)" icon="el-icon-edit" :disabled="item.shelves==2" ></el-button>
+                    <!-- <el-button size="small" :disabled="item.shelves==2">被举报</el-button> -->
                     <el-button size="small" @click="sale(item,index)"  :disabled="item.shelves==2" >{{shelves[item.shelves]}}</el-button>
                     <el-button @click="delItem(item.id)" icon="el-icon-delete"></el-button>
                 </div>
@@ -158,7 +159,8 @@
                 goodsData: {},
                 shelves: [
                     '已下架',
-                    '出售中'
+                    '出售中',
+                    '被举报'
                 ],
                 approval: [
                     '审核中',
