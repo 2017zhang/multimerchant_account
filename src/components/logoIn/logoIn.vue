@@ -103,7 +103,7 @@
         </el-dialog>
         <!-- 底部 -->
         <div class="bottom2 text-center">
-            <div>{{configInfo[11].config_value}}</div>
+            <!-- <div>{{configInfo[11].config_value}}</div> -->
         </div>
     </div>
 </template>
@@ -228,7 +228,9 @@ export default {
     },
     methods: {
         getConfigInfo() {
-            this.$HTTP(this.$httpConfig.getHome, {})
+            this.$HTTP(this.$httpConfig.getHome, {
+                token:sessionStorage.getItem("data_token")
+            })
                 .then(res => {
                     this.configInfo = res.data.data.config;
                     console.log(res.data.data.config, 1122);
