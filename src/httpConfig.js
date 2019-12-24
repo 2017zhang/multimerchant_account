@@ -292,6 +292,8 @@ const config = {
   getServiceTypeDetail: request + 'Service/getTypeDetailById',//详情
   addServiceType: request + 'Service/addtype',//添加和修改
   serviceListInfo: request + 'SystemMsg/storeMsg', // 客服信息列表
+  serviceMsgCount: request + 'SystemMsg/msgCount', // 客服列表
+  
 
   // 客服
   getServiceManageList: request + 'Service/manageList',//列表

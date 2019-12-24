@@ -69,16 +69,32 @@ export default {
             multipleSelection: [],
             currentPage: 1,
             total: 0,
-            pagesize: 10
+            pagesize: 10,
+            timer: ""
         };
     },
     //生命周期 - 创建完成（访问当前this实例）
     created() {
         this.getServiceInfo();
+        this.getServiceData();
+        this.timer = setInterval(this.getServiceData, 600000);
+    },
+    beforeDestroy() {
+        clearInterval(this.timer);
     },
     //生命周期 - 挂载完成（访问DOM元素）
     mounted() {},
     methods: {
+        getServiceData() {
+            this.$HTTP(this.$httpConfig.serviceMsgCount, {})
+                .then(res => {
+                    this.$store.state.messageCount=res.data.data;
+                    console.log(res.data.data,221133);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        },
         getServiceInfo() {
             this.$HTTP(this.$httpConfig.serviceListInfo, {
                 page: this.currentPage
@@ -97,13 +113,13 @@ export default {
         },
         handleCurrentChange(currentPage) {
             this.currentPage = currentPage;
-            this.getServiceInfo()
+            this.getServiceInfo();
         },
-          // 初始页currentPage、初始每页数据数pagesize和数据data
+        // 初始页currentPage、初始每页数据数pagesize和数据data
         handleSizeChange(size) {
             this.pagesize = size;
             console.log(this.pagesize); //每页下拉显示数据
-        },
+        }
     },
     components: {}
 };

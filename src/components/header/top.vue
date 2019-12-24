@@ -11,6 +11,7 @@
                     <p>店铺</p>
                 </span>
                 <span @click="messageFun">
+                    <span id="showMessage">{{$store.state.messageCount}}</span>
                     <P><img src="../../assets//news.png"></P>
                     <p>消息</p>
                 </span>
@@ -124,6 +125,19 @@
   
 };
 </script>
+<style lang="less">
+    #showMessage{
+        position: absolute;
+    background: red;
+    border-radius: 4px;
+    left: 100px;
+    top: -6px;
+    width: 28px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    }
+</style>
 <style lang="less" scoped>
     .header {
         width: 100%;
@@ -159,6 +173,7 @@
                 float: right;
                 width: 240px;
                 cursor: pointer;
+                position: relative;
                 span{
                     width: 60px;
                     text-align: center;
