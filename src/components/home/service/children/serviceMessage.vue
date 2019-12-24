@@ -19,7 +19,7 @@
             @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column width="250">
+            <!-- <el-table-column width="250">
                 <template slot="header" slot-scope="scope">
                     <el-button icon="el-icon-s-flag" size="mini"
                         >标记为已读</el-button
@@ -28,7 +28,7 @@
                         >删除</el-button
                     >
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="消息内容" width="260">
                 <template slot-scope="scope">{{
                     scope.row.sm_content
@@ -45,6 +45,11 @@
                         size="mini"
                         @click="handleEdit(scope.$index, scope.row)"
                         >查看</el-button
+                    >
+                    <el-button
+                        size="mini"
+                        @click="handleDelete(scope.$index, scope.row)"
+                        >删除</el-button
                     >
                 </template>
             </el-table-column>
@@ -88,8 +93,10 @@ export default {
         getServiceData() {
             this.$HTTP(this.$httpConfig.serviceMsgCount, {})
                 .then(res => {
-                    this.$store.state.messageCount=res.data.data;
-                    console.log(res.data.data,221133);
+                    sessionStorage.setItem('countKey',JSON.stringify(res.data.data))
+                    console.log(sessionStorage.countKey,123);
+                    // this.$store.state.messageCount = res.data.data;
+                    // console.log(res.data.data, 221133);
                 })
                 .catch(err => {
                     console.error(err);
@@ -114,6 +121,12 @@ export default {
         handleCurrentChange(currentPage) {
             this.currentPage = currentPage;
             this.getServiceInfo();
+        },
+        handleEdit(index, row) {
+            console.log(index, row);
+        },
+        handleDelete(index, row) {
+            console.log(index, row);
         },
         // 初始页currentPage、初始每页数据数pagesize和数据data
         handleSizeChange(size) {
@@ -142,8 +155,11 @@ export default {
         .title {
             color: #0ba4da;
             font-size: 16px;
+            padding: 10px;
         }
         ul {
+            margin: 10px;
+            padding-bottom: 10px;
             li {
                 margin: 5px 0;
                 color: #0ba4da;

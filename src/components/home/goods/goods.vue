@@ -53,7 +53,6 @@ export default {
         
         this.$store.state.link = this.$store.state.leftNav[0].url;
         document.body.scrollTop = 0;
-        console.log(this.$route.query.type)
             if(this.$route.query.type  == 'weigui'){
                 this.$store.state.link = 'storeNotice?a=1576483743320'   
             }

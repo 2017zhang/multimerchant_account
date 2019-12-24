@@ -98,7 +98,7 @@ const conversation = r => require(['@/components/home/service/children/conversat
 const servicetype = r => require(['@/components/home/service/children/serviceType'], r); //商户中心-客服类型
 const addservicetype = r => require(['@/components/home/service/children/addServiceType'], r); //商户中心-添加客服类型
 const servicemanage = r => require(['@/components/home/service/children/serviceManage'], r); //商户中心-客服管理
-const serviceMessage = r => require(['@/components/home/service/children/serviceMessage'], r); //商户中心-客服信息
+const serviceMessage = r => require(['@/components/home/service/children/serviceMessage'], r); //商户中心-站内信
 const addservicemanage = r => require(['@/components/home/service/children/addServiceManage'], r); //商户中心-添加客服管理
 const systemInfo = r => require(['@/components/home/service/children/systemInfo'], r); //商户中心-客服-系统信息
 const account = r => require(['@/components/home/accountNum/accountNum'], r); //商户中心-账号
@@ -625,7 +625,7 @@ const router = new Router({
                 name: 'servicemanage',
                 component: servicemanage
             },
-            { //商户中心-客服信息
+            { //商户中心-站内信
                 path: '/serviceMessage',
                 name: 'serviceMessage',
                 component: serviceMessage

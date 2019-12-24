@@ -43,6 +43,13 @@ export default {
             }
             this.$set(this.status, 5, true);
         }
+
+        if (this.$route.query.type == "zhanneixing") {
+            for (var i = 0; i < this.status.length; i++) {
+                this.$set(this.status, i, false);
+            }
+            this.$set(this.status, 1, true);
+        }
     },
     methods: {
         tab(link, index, obj) {
