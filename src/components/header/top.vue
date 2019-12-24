@@ -17,7 +17,9 @@
                     <p>店铺</p>
                 </span>
                 <span @click="messageFun">
-                    <span id="showMessage">{{ handleCount }}</span>
+                    <span id="showMessage" ref="messageDom">{{
+                        handleCount
+                    }}</span>
                     <P><img src="../../assets//news.png"/></P>
                     <p>消息</p>
                 </span>
@@ -73,6 +75,7 @@ export default {
             this.$router.push("/shop");
         },
         messageFun() {
+            this.$refs.messageDom.style.display = "none";
             this.$router.push({
                 name: "service",
                 query: {
@@ -139,6 +142,9 @@ export default {
         }
     },
     mounted() {
+        this.$store.state.comData = this.$refs.messageDom;
+        console.log(this.$store.state.comData, 2233);
+        console.log(this.$refs.messageDom, "brrrr");
         for (let i = 0; i < this.nav.length; i++) {
             if (this.nav[i] !== null && this.nav[i].path == this.$route.path) {
                 this.$set(this.lcassif.status, i, true);

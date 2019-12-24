@@ -39,7 +39,6 @@ import iframeLabel from '../../page/iframe' //iframe
 
             this.$store.state.link = this.$store.state.leftNav[0].url;
             if(this.$route.query.type  == 'zhanneixing'){
-                console.log(882828282)
                 this.$store.state.link = 'serviceMessage?a=1577166184632'   
             }
         },

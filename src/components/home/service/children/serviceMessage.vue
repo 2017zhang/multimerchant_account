@@ -81,13 +81,21 @@ export default {
     //生命周期 - 创建完成（访问当前this实例）
     created() {
         this.getServiceInfo();
-     
+        console.log(document.getElementById("showMessage"), 334455);
     },
- 
+
     //生命周期 - 挂载完成（访问DOM元素）
-    mounted() {},
+    mounted() {
+        console.log(this.$route, 1);
+        this.$nextTick(e => {
+            console.log(this.$store.state.comData, 2);
+        });
+
+        if (this.$route.query.type == "zhanneixing") {
+            this.$store.state.comDate = "none";
+        }
+    },
     methods: {
-  
         getServiceInfo() {
             this.$HTTP(this.$httpConfig.serviceListInfo, {
                 page: this.currentPage
@@ -95,6 +103,7 @@ export default {
                 .then(res => {
                     this.serviceTableData = res.data.data.data;
                     this.total = Number(res.data.data.count);
+                    this.minusNumber = res.data.data.data.type;
                     console.log(res.data.data);
                 })
                 .catch(err => {
@@ -109,9 +118,25 @@ export default {
             this.getServiceInfo();
         },
         handleEdit(index, row) {
+            console.log(row.type,1122);
+            this.$router.push({
+                name: "serviceSingalData",
+                query: {
+                    id: row.id
+                }
+            });
             console.log(index, row);
         },
         handleDelete(index, row) {
+            this.$HTTP(this.$httpConfig.serviceDeleteData, {
+                id: row.id
+            })
+                .then(res => {
+                    this.$message.success(res.data.message)
+                })
+                .catch(err => {
+                    console.error(err);
+                });
             console.log(index, row);
         },
         // 初始页currentPage、初始每页数据数pagesize和数据data
