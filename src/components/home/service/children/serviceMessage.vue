@@ -81,27 +81,13 @@ export default {
     //生命周期 - 创建完成（访问当前this实例）
     created() {
         this.getServiceInfo();
-        this.getServiceData();
-        this.timer = setInterval(this.getServiceData, 600000);
+     
     },
-    beforeDestroy() {
-        clearInterval(this.timer);
-    },
+ 
     //生命周期 - 挂载完成（访问DOM元素）
     mounted() {},
     methods: {
-        getServiceData() {
-            this.$HTTP(this.$httpConfig.serviceMsgCount, {})
-                .then(res => {
-                    sessionStorage.setItem('countKey',JSON.stringify(res.data.data))
-                    console.log(sessionStorage.countKey,123);
-                    // this.$store.state.messageCount = res.data.data;
-                    // console.log(res.data.data, 221133);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
-        },
+  
         getServiceInfo() {
             this.$HTTP(this.$httpConfig.serviceListInfo, {
                 page: this.currentPage

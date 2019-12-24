@@ -41,18 +41,18 @@ export default {
             nav: [],
             lcassif: {
                 status: [false]
-            }
+            },
+            timer: "",
+            handleCount: 0
         };
     },
-    computed: {
-        handleCount() {
-            return  JSON.parse(sessionStorage.countKey) 
-        }
+    beforeDestroy() {
+        clearInterval(this.timer);
     },
     created() {
-        // debugger;
+        this.getServiceData();
+        this.timer = setInterval(this.getServiceData, 600000);
         let topMenu = sessionStorage.getItem("topPrivilege");
-        //console.log(topMenu)
         if (topMenu == null) {
             return;
         }
@@ -60,14 +60,23 @@ export default {
         this.filterRouter();
     },
     methods: {
+        getServiceData() {
+            this.$HTTP(this.$httpConfig.serviceMsgCount, {})
+                .then(res => {
+                    this.handleCount = res.data.data;
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        },
         storeFun() {
             this.$router.push("/shop");
         },
         messageFun() {
             this.$router.push({
-                name:"service",
-                query:{
-                    type:"zhanneixing"
+                name: "service",
+                query: {
+                    type: "zhanneixing"
                 }
             });
         },
