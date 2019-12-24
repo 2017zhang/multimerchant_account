@@ -1,5 +1,16 @@
 <template>
     <div class="serviceSingalData-wrapper">
+         <div class="intrduce">
+            <div class="title">
+                说明:
+            </div>
+            <ul>
+                <li>1.管理员可以查看全部信息</li>
+                <li>
+                    2.只有管理员可以删除信息,删除后其他账户该条信息也会被删除
+                </li>
+            </ul>
+        </div>
         <div class="message">
             <p>消息内容:</p>
             <span>{{ singalServiceData.sm_content }}</span>
@@ -58,6 +69,23 @@ export default {
 </style>
 <style lang="less" scoped>
 .serviceSingalData-wrapper {
+     .intrduce {
+        background: rgba(79, 192, 232, 0.11);
+        .title {
+            color: #0ba4da;
+            font-size: 16px;
+            padding: 10px;
+        }
+        ul {
+            margin: 10px;
+            padding-bottom: 10px;
+            li {
+                margin: 5px 0;
+                color: #0ba4da;
+                font-size: 13px;
+            }
+        }
+    }
     .message {
         display: flex;
         align-items: center;
