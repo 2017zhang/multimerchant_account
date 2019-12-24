@@ -19,25 +19,23 @@
             @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" width="55"> </el-table-column>
-            <!-- <el-table-column width="250">
-                <template slot="header" slot-scope="scope">
-                    <el-button icon="el-icon-s-flag" size="mini"
-                        >标记为已读</el-button
+            <el-table-column label="消息内容" width="260">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.type == 1" style="color:#bdbdbd">
+                        {{ scope.row.sm_content }}</span
                     >
-                    <el-button icon="el-icon-delete" size="mini"
-                        >删除</el-button
+                    <span v-if="scope.row.type == 0">
+                        {{ scope.row.sm_content }}</span
                     >
                 </template>
-            </el-table-column> -->
-            <el-table-column label="消息内容" width="260">
-                <template slot-scope="scope">{{
-                    scope.row.sm_content
-                }}</template>
             </el-table-column>
             <el-table-column label="发送时间" width="260">
-                <template slot-scope="scope">{{
-                    scope.row.sm_addtime | formatDate
-                }}</template>
+                <template slot-scope="scope">
+                    <span v-if="scope.row.type == 1" style="color:#bdbdbd">
+                        {{ scope.row.sm_addtime | formatDate }}
+                    </span>
+                    <span v-else>{{ scope.row.sm_addtime | formatDate }}</span>
+                </template>
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -118,7 +116,7 @@ export default {
             this.getServiceInfo();
         },
         handleEdit(index, row) {
-            console.log(row.type,1122);
+            console.log(row.type, 1122);
             this.$router.push({
                 name: "serviceSingalData",
                 query: {
@@ -132,7 +130,7 @@ export default {
                 id: row.id
             })
                 .then(res => {
-                    this.$message.success(res.data.message)
+                    this.$message.success(res.data.message);
                 })
                 .catch(err => {
                     console.error(err);

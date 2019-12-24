@@ -1,6 +1,6 @@
 <template>
     <div class="serviceSingalData-wrapper">
-         <div class="intrduce">
+        <div class="intrduce">
             <div class="title">
                 说明:
             </div>
@@ -60,16 +60,16 @@ export default {
 </script>
 <style lang="less">
 .serviceSingalData-wrapper {
-    .el-button  {
+    .el-button {
         position: absolute;
-        left: 50%;
+        left: 40%;
         top: 50%;
     }
 }
 </style>
 <style lang="less" scoped>
 .serviceSingalData-wrapper {
-     .intrduce {
+    .intrduce {
         background: rgba(79, 192, 232, 0.11);
         .title {
             color: #0ba4da;
@@ -90,16 +90,30 @@ export default {
         display: flex;
         align-items: center;
         margin: 10px;
+        font-size: 16px;
+        color: #333;
+        p {
+            font-size: 16px;
+            color: #333;
+        }
         span {
             margin-left: 10px;
+            font-size: 16px;
+            color: #333;
         }
     }
     .time {
         display: flex;
         align-items: center;
         margin: 10px;
+        p {
+            font-size: 16px;
+            color: #333;
+        }
         span {
             margin-left: 10px;
+            font-size: 16px;
+            color: #333;
         }
     }
 }
