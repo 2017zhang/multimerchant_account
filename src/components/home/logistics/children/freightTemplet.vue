@@ -56,7 +56,7 @@
 					<template slot-scope="scope">
 						<el-button @click="editItem(scope.row.id)" size="mini" type="success" icon="el-icon-edit"></el-button>
 						<el-button @click="deleteItem(scope.row.id)" size="mini" type="danger" icon="el-icon-delete"></el-button>
-						<el-button v-show="scope.row.is_free_shipping == '1'" @click="setItem(scope.row.id)" size="mini" type="warning">包邮设置</el-button>
+						<el-button @click="setItem(scope.row.id)" size="mini" type="warning">设置</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
