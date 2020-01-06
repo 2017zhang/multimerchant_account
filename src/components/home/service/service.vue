@@ -38,6 +38,9 @@ import iframeLabel from '../../page/iframe' //iframe
           mounted() {
 
             this.$store.state.link = this.$store.state.leftNav[0].url;
+            if(this.$route.query.type  == 'zhanneixing'){
+                this.$store.state.link = 'serviceMessage?a=1577166184632'   
+            }
         },
         components: {
             headerTop,

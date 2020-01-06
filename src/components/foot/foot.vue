@@ -1,21 +1,43 @@
 <template>
-  <div class="foot">Copyright 2003-2015Yisu.cn.ALL Rights Reserved.上海亿速网络科技有限公司  版权所有  沪ICP备14011490号-3</div>
+    <div class="foot">
+       {{configInfo[11].config_value}}
+    </div>
 </template>
 <script>
 export default {
-  name:'foot'
-}
+    name: "foot",
+    data(){
+        return{
+            configInfo:[]
+        }
+    },
+    created() {
+        this.getConfigInfo();
+    },
+    methods: {
+        getConfigInfo() {
+            this.$HTTP(this.$httpConfig.getHome, {})
+                .then(res => {
+                    this.configInfo = res.data.data.config;
+                    console.log(res.data.data.config, 1122);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+    }
+};
 </script>
 <style lang="less" scoped>
-    .foot {
-        height: 52px;
-        background-color: #474544;
-        text-align: center;
-        color: #FFF;
-        line-height: 52px;
-        width: 100%;
-        display: block;
-        position: fixed;
-        bottom: 0;
-    }
+.foot {
+    height: 52px;
+    background-color: #474544;
+    text-align: center;
+    color: #fff;
+    line-height: 52px;
+    width: 100%;
+    display: block;
+    position: fixed;
+    bottom: 0;
+}
 </style>

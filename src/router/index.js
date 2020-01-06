@@ -19,6 +19,7 @@ const addGoodsType = r => require(['@/components/home/goods/children/addGoodsTyp
 const goodsSpec = r => require(['@/components/home/goods/children/goodsSpec'], r); //商户中心-商品规格
 const storeClass = r => require(['@/components/home/goods/children/storeClass'], r); //商户中心-店内分类
 const storeNotice = r => require(['@/components/home/goods/children/storeNotice'], r); //商户中心-违规举报
+const storeNoticeItem = r => require(['@/components/home/goods/children/child/storeNoticeItem'], r); //商户中心-违规举报列表详情
 const addGoodsSpec = r => require(['@/components/home/goods/children/addGoodsSpec'], r); //商户中心-添加商品规格
 const updateGoodsSpec = r => require(['@/components/home/goods/children/updateGoodsSpec'], r); //商户中心-添加商品规格
 // const copyGoodsSpec = r => require(['@/components/home/goods/children/copyGoodsSpec'], r); //商户中心-复制商品规格属性
@@ -97,6 +98,8 @@ const conversation = r => require(['@/components/home/service/children/conversat
 const servicetype = r => require(['@/components/home/service/children/serviceType'], r); //商户中心-客服类型
 const addservicetype = r => require(['@/components/home/service/children/addServiceType'], r); //商户中心-添加客服类型
 const servicemanage = r => require(['@/components/home/service/children/serviceManage'], r); //商户中心-客服管理
+const serviceMessage = r => require(['@/components/home/service/children/serviceMessage'], r); //商户中心-站内信
+const serviceSingalData = r => require(['@/components/home/service/children/serviceSingalData'], r); //商户中心-站内信
 const addservicemanage = r => require(['@/components/home/service/children/addServiceManage'], r); //商户中心-添加客服管理
 const systemInfo = r => require(['@/components/home/service/children/systemInfo'], r); //商户中心-客服-系统信息
 const account = r => require(['@/components/home/accountNum/accountNum'], r); //商户中心-账号
@@ -405,6 +408,11 @@ const router = new Router({
                 name: 'storeNotice',
                 component: storeNotice
             },
+            { //商户中心-举报违规详情
+                path: '/storeNoticeItem',
+                name: 'storeNoticeItem',
+                component: storeNoticeItem
+            },
 
 
             // { //商户中心-促销-满减
@@ -617,6 +625,16 @@ const router = new Router({
                 path: '/servicemanage',
                 name: 'servicemanage',
                 component: servicemanage
+            },
+            { //商户中心-站内信
+                path: '/serviceMessage',
+                name: 'serviceMessage',
+                component: serviceMessage
+            },
+            { //商户中心-单条数据显示
+                path: '/serviceSingalData',
+                name: 'serviceSingalData',
+                component: serviceSingalData
             },
             { //商户中心-添加客服管理
                 path: '/addservicemanage',

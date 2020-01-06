@@ -291,6 +291,12 @@ const config = {
   delServiceType: request + 'Service/deletetype',//删除
   getServiceTypeDetail: request + 'Service/getTypeDetailById',//详情
   addServiceType: request + 'Service/addtype',//添加和修改
+  serviceListInfo: request + 'SystemMsg/storeMsg', // 客服信息列表
+  serviceMsgCount: request + 'SystemMsg/msgCount', // 客服列表
+  serviceSingalData: request + 'SystemMsg/msgDetail', // 客服列表单条数据
+  serviceDeleteData: request + 'SystemMsg/msgDelete', // 客服列表删除数据
+
+  
 
   // 客服
   getServiceManageList: request + 'Service/manageList',//列表

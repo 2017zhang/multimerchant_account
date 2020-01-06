@@ -1,12 +1,6 @@
 <template>
     <div class="img-wrapper">
         <div class="imgitem-wrapper" ref="imgDom">
-            <!--<img-->
-                <!--src="../../../../../assets/close.png"-->
-                <!--v-if="showImgClose"-->
-                <!--class="img-close"-->
-                <!--@click="closeImg"-->
-            <!--/>-->
             <img
                 v-for="(item, index) in handlePicture"
                 :key="index"

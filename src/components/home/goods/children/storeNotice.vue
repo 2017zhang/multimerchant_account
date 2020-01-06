@@ -7,12 +7,12 @@
                 <ul>
                     <li>1<span>请填写证明内容</span></li>
                     <li>2<span>请上传相关证明</span></li>
-                    <li>3<span>提交后,工作人员会在3-5个工作日结算</span></li>
+                    <li>3<span>提交后,工作人员会在3-5个工作日审查</span></li>
                 </ul>
             </div>
             <div class="info">
-                <h5>举报类型:</h5>
-                <el-select v-model="selectValue">
+                <h5>状态:</h5>
+                <el-select v-model="selectValue" @change="handleSelectChange">
                     <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -21,7 +21,7 @@
                     >
                     </el-option>
                 </el-select>
-                <el-button>搜索</el-button>
+                <el-button @click="search">搜索</el-button>
             </div>
         </div>
         <el-table
@@ -48,6 +48,12 @@
                     <span>{{ scope.row.create_time | formatDate }}</span>
                 </template>
             </el-table-column>
+            <el-table-column  label="状态" width="180">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.store_status==0">未处理</span>
+                    <span v-else>已处理</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button
@@ -67,13 +73,6 @@
             :total="total"
         >
         </el-pagination>
-        <!-- 用于显示举报商品界面 -->
-        <store-item
-            v-if="showNoticeItem"
-            @cancel="cancel"
-            :reportDetailData="reportDetailData"
-            @goBackTop="goBackTop"
-        ></store-item>
     </div>
 </template>
 
@@ -111,32 +110,58 @@ export default {
             pagesize: 10, //每页的数据
             total: 0, //总的分页条目
             reportDetailData: {},
-            selectValue:'',
+            selectValue: "",
+            getID: 0,
+            get_status: 0,
             options: [
                 {
-                    value: "选项1",
-                    label: "黄金糕"
+                    value: "1",
+                    label: "未处理"
+                },
+                {
+                    value: "2",
+                    label: "已处理"
                 }
             ]
         };
     },
     //生命周期 - 创建完成（访问当前this实例）
-    created() {
-        let arr=[{
-            name:'jj'
-        },{
-            name:'kk'
-        }]
-        arr.forEach(el=>{
-            this.$set(el,'id',1)
-        })
-        console.log(arr,'arr');
-    },
+    created() {},
     //生命周期 - 挂载完成（访问DOM元素）
     mounted() {
         this.getReportList(this.currentPage);
     },
     methods: {
+        search() {
+            console.log(this.get_status);
+            this.$HTTP(this.$httpConfig.reportList, {
+                store_status: this.get_status
+            })
+                .then(res => {
+                    this.tableData = res.data.data.list;
+                    this.total = Number(res.data.data.count);
+                    console.log(res.data.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        },
+        handleSelectChange(status) {
+            this.$HTTP(
+                this.$httpConfig.reportList,
+                {
+                    store_status: status
+                },
+                "get"
+            )
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+            this.get_status = Number(status);
+        },
         //获取列表数据
         getReportList(currentPage) {
             this.$HTTP(
@@ -170,24 +195,12 @@ export default {
         },
         handleEdit(index, row) {
             this.showNoticeItem = true;
-            //获取列表详情
-            this.getDetailInfo(row.id);
-        },
-        getDetailInfo(id) {
-            this.$HTTP(
-                this.$httpConfig.reportDetail,
-                {
-                    id: id
-                },
-                "post"
-            )
-                .then(res => {
-                    this.reportDetailData = res.data.data;
-                    console.log(res.data.data, 444);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
+            this.$router.push({
+                path: "/storeNoticeItem",
+                query: {
+                    id: row.id
+                }
+            });
         },
 
         //返回上一级
@@ -206,15 +219,18 @@ export default {
 </script>
 <style lang="less">
 .storeNotice-wrapper {
+    .el-pagination .el-select .el-input {
+        display: none;
+    }
     .el-pagination {
         text-align: center;
         margin: 20px 0;
     }
-    .el-input__inner {
-        margin-left: 15px;
-    }
     .el-button {
         margin-left: 30px;
+    }
+    .el-input--suffix .el-input__inner {
+        margin-left: 10px;
     }
 }
 </style>
@@ -253,6 +269,9 @@ export default {
             }
         }
         .info {
+            h5 {
+                margin-left: 5px;
+            }
             display: flex;
             align-items: center;
             background: #efefef;
