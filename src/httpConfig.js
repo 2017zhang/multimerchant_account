@@ -114,6 +114,7 @@ const config = {
   getdeliveryListList: request + 'Delivery/getDeliveryList',//获取配送员列表---------\
   adddeliveryListList: request + 'Delivery/getAddDelivery',//添加配送员
   deleteDeliveryList: request + 'Delivery/getDelDelivery',//删除配送员
+  getFreightModelDel: request + 'FreightMode/getFreightModelDel',//删除配送地址数据
 
   // 快递公司
   getExpressList: request + 'Express/freightList', //列表
@@ -131,9 +132,9 @@ const config = {
   addFreights: request + 'Freights/freightAdd', //添加
   getFreightsDetail: request + 'Freights/freightDetail', //获取详情
   getArea: request + 'FreightCondition/getArea', //地址
-  getFreightCondition: request + 'FreightCondition/getFreightCondition', //获取自定义运费
+  getFreightModelOne: request + 'FreightMode/getFreightModelOne', //获取自定义运费
   setFreightCondition: request + 'FreightCondition/setFreightCondition', //设置自定义运费
-
+  getFreightModelSave: request + 'FreightMode/getFreightModelSave', //设置自定义运费
 
   /*
    * 4、 交易

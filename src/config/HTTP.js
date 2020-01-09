@@ -19,3 +19,20 @@ var HTTP = function(API_URL,params){
     })
 }
 module.exports = HTTP;
+// var HTTP=function(API_URL,params){
+//     params.token=sessionStorage.getItem('data_token');
+//     return new Promise((resolve,resolve)=>{
+//         axios.post(API_URL,qs.stringify(params)).then((res)=>{
+//             if(res.data.status===10001){
+//                 window.location.hash="#/login";
+//             }else if(res.data.status==1){
+//                 resolve(res);
+//             }else{
+//                 Message.error(res.data.message);
+//                 reject(res);
+//             }
+//         });;
+//     });
+// }
+// module.exports= HTTP;
+// export default HTTP;

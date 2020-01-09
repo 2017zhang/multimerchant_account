@@ -63,7 +63,6 @@ const mutations = {
         state.invoice = false;
     },
     orderFun (state, id) {
-       
         state.orderState = id
         console.log('orderState是' + id)
         console.log(this)

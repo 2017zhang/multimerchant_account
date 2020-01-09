@@ -11,12 +11,6 @@
 				<el-form-item label="模板名称">
 					<el-input style="width: 600px;" v-model="params.express_title" clearable></el-input>
 				</el-form-item>
-				<el-form-item label="仓库">
-					<el-select v-model="params.stock_id" filterable placeholder="请选择">
-						<el-option v-for="item in classData" :key="item.id" :label="item.stock_name" :value="item.id">
-						</el-option>
-					</el-select>
-				</el-form-item>
 				<el-form-item label="发货时间">
 					<el-input style="width: 600px;" v-model="params.send_time" clearable></el-input>
 					<span>几小时内发货</span>
@@ -29,9 +23,6 @@
 					<el-radio border v-model="params.valuation_method" label="0">按件数</el-radio>
 					<el-radio border v-model="params.valuation_method" label="1">按重量</el-radio>
 					<el-radio border v-model="params.valuation_method" label="2">按体积</el-radio>
-				</el-form-item>
-				<el-form-item label="是否指定条件包邮">
-					<el-switch v-model="isFree"></el-switch>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="success" @click="submit">确认提交</el-button>
@@ -48,11 +39,9 @@
 				status: 0, //0代表是新增，1代表是修改
 				params: {
 					express_title: '',
-					stock_id: 0,
 					send_time: 1,
 					is_free_shipping: '0',
 					valuation_method: '0',
-					is_select_condition: '1'
 				},
 				isFree: false,
 				classData: [], //仓库数据
@@ -106,7 +95,6 @@
 			},
 			submit() {
 				var that = this;
-				this.params.is_select_condition = Number(this.isFree);
 				console.log(this.params);
 				if(this.status) {
 					this.$HTTP(this.$httpConfig.saveFreights,this.params).then((res) => {
@@ -114,8 +102,8 @@
 						setTimeout(function() {
 							that.to();
 						}, 2000);
-					}).catch((err) => {
-						this.$message.error(err);
+					}).catch((res) => {
+						this.$message.warning(res);
 					})
 				} else {
 					this.$HTTP(this.$httpConfig.addFreights,this.params).then((res) => {
@@ -123,18 +111,17 @@
 						setTimeout(function() {
 							that.to();
 						}, 2000);
-					}).catch((err) => {
-						this.$message.error(err);
+					}).catch((res) => {
+						this.$message.warning(res);
 					})
 				}
 			},
 			queryData() {
 				this.$HTTP(this.$httpConfig.getFreightsDetail,{id: this.id}).then((res) => {
 					this.params = res.data.data;
-					this.isFree = this.params.is_select_condition == 1 ? true : false;
 					this.$message.success(res.data.message);
-				}).catch((err) => {
-					this.$message.error(err);
+				}).catch((res) => {
+					this.$message.warning(res);
 				})
 			},
 			getClass() {
@@ -145,8 +132,8 @@
 						return;
 					}
 					this.classData = res.data.data;
-				}).catch((err) => {
-					console.log(err)
+				}).catch((res) => {
+					console.log(res)
 				});
 			}
 		}

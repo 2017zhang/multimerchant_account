@@ -78,7 +78,7 @@ const addGrade = r => require(['@/components/home/member/children/addGrade'], r)
 const memberList = r => require(['@/components/home/member/children/memberList'], r); //商户中心-会员 -会员列表
 const addMember = r => require(['@/components/home/member/children/addMember'], r); //商户中心-会员 -添加会员
 const shop = r => require(['@/components/home/shop/shop'], r); //商户中心-店铺
-const add = r => require(['@/components/add/add'],r);
+const add = r => require(['@/components/add/add'], r);
 const shopfit = r => require(['@/components/home/shop/children/shopFit'], r); //商户中心-店铺设置
 const shopinfo = r => require(['@/components/home/shop/children/shopInfo'], r); //商户中心-店铺信息
 const delivery = r => require(['@/components/home/shop/children/delivery'], r); //商户中心-店铺-配送方式
@@ -119,14 +119,14 @@ const adsposition = r => require(['@/components/home/advertisement/children/adve
 const info = r => require(['@/components/order/info'], r);
 const orderIntegral = r => require(['@/components/home/trade/children/orderIntegralDetail'], r);
 const combinationOrderDetail = r => require(['@/components/home/trade/children/combinationOrderDetail'], r);//立即发货
-const packageReturn = r => require(['@/components/home/trade/packageReturn/packageReturn.vue'],r); // 套餐退货列表
-const packageRetumitem = r => require(['@/components/home/trade/packageReturn/packageRetumitem.vue'],r); //套餐退货详情
-const statistics = r => require(['@/components/reportForms/statistics.vue'],r);//报表
-const indent = r => require(['@/components/reportForms/indent.vue'],r);//统计
-const salesDetail = r => require(['@/components/reportForms/salesDetail.vue'],r); //商家销售明细
-const industryAnalyst = r => require(['@/components/reportForms/industryAnalyst.vue'],r); // 行业统计
-const deliveryConfig  = r => require(['@/components/home/logistics/children/deliveryConfig.vue'],r);
-const deliveryList = r => require(['@/components/home/logistics/children/deliveryList.vue'],r);//--------
+const packageReturn = r => require(['@/components/home/trade/packageReturn/packageReturn.vue'], r); // 套餐退货列表
+const packageRetumitem = r => require(['@/components/home/trade/packageReturn/packageRetumitem.vue'], r); //套餐退货详情
+const statistics = r => require(['@/components/reportForms/statistics.vue'], r);//报表
+const indent = r => require(['@/components/reportForms/indent.vue'], r);//统计
+const salesDetail = r => require(['@/components/reportForms/salesDetail.vue'], r); //商家销售明细
+const industryAnalyst = r => require(['@/components/reportForms/industryAnalyst.vue'], r); // 行业统计
+const deliveryConfig = r => require(['@/components/home/logistics/children/deliveryConfig.vue'], r);
+const deliveryList = r => require(['@/components/home/logistics/children/deliveryList.vue'], r);//--------
 const addDeliveryList = r => require(['@/components/home/logistics/children/addDeliveryList'], r); //商户中心-物流-添加配送员
 // 引入公共组件
 import cityThree from '../common/cityThree.vue'; //省市区三级联查
@@ -299,18 +299,24 @@ const router = new Router({
             { //商户中心-添加运费模板
                 path: '/addFreightTemplet',
                 name: 'addFreightTemplet',
+                meta: {
+                    title: "运费模板列表"
+                },
                 component: addFreightTemplet
             },
             { //商户中心-添加邮费设置
                 path: '/addFreightTempletPostage',
                 name: 'addFreightTempletPostage',
+                meta: {
+                    title: '运费省份设置'
+                },
                 component: addFreightTempletPostage
             },
             {
                 // 交付配置
-                path:'/deliveryConfig',
-                name:'deliveryConfig',
-                component:deliveryConfig
+                path: '/deliveryConfig',
+                name: 'deliveryConfig',
+                component: deliveryConfig
             },
             // { //商户中心-交易
             //     path: '/trade',
@@ -371,7 +377,7 @@ const router = new Router({
             {//商品中心-交易-套餐退货/退货详情
                 path: '/packageRetumitem/:id',
                 name: 'packageRetumitem',
-                component:packageRetumitem
+                component: packageRetumitem
             },
             // { //商户中心-交易-评价
             //     path: '/evaluate',
@@ -702,9 +708,9 @@ const router = new Router({
             //     component: adslist
             // },
             {
-                path:"/distributiondetails/:id",
-                name:"distributiondetails",
-                component:distributiondetails
+                path: "/distributiondetails/:id",
+                name: "distributiondetails",
+                component: distributiondetails
             },
             { //商户中心-添加广告
                 path: '/addads',
@@ -766,31 +772,31 @@ const router = new Router({
 
 });
 
-Router.prototype.initLocalRouters = function() {
-        let allPrivilege = sessionStorage.getItem('allPrivilege');
-        if (allPrivilege) {
-            allPrivilege = JSON.parse(allPrivilege);
-            let topMenu = [];
-            let json = {};
-            let index = 0;
-            for (var i in allPrivilege) {
-                json = {
-                    name: allPrivilege[i].name,
-                    path: allPrivilege[i].path,
-                    component: eval(allPrivilege[i].name)
-                }
-
-                topMenu[index] = json;
-
-                index++;
+Router.prototype.initLocalRouters = function () {
+    let allPrivilege = sessionStorage.getItem('allPrivilege');
+    if (allPrivilege) {
+        allPrivilege = JSON.parse(allPrivilege);
+        let topMenu = [];
+        let json = {};
+        let index = 0;
+        for (var i in allPrivilege) {
+            json = {
+                name: allPrivilege[i].name,
+                path: allPrivilege[i].path,
+                component: eval(allPrivilege[i].name)
             }
-            router.addRoutes(topMenu);
-        }
 
+            topMenu[index] = json;
+
+            index++;
+        }
+        router.addRoutes(topMenu);
     }
-    //router.beforeEach((to,from,next)=>{
-    //	console.log(arguments)
-    //	next();
-    //})
+
+}
+//router.beforeEach((to,from,next)=>{
+//	console.log(arguments)
+//	next();
+//})
 router.initLocalRouters();
 export default router
