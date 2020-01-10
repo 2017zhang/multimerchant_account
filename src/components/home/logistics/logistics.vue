@@ -28,7 +28,7 @@ export default {
     data (){
       return {
           title:'',
-        //   哈哈哈
+        //   哈哈哈方法
           loading:true
         //   list:[{url:'shipAddress',title:'发货地址'},{url:'expressList',title:'快递公司列表'},{url:'freightTemplet',title:'运费模板'},{url:'freightFit',title:'运费设置'},],
       }
