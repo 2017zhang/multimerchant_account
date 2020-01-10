@@ -52,6 +52,7 @@ export default {
         clearInterval(this.timer);
     },
     created() {
+       
         this.getServiceData();
         this.timer = setInterval(this.getServiceData, 600000);
         let topMenu = sessionStorage.getItem("topPrivilege");
