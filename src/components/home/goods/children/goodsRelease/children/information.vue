@@ -77,7 +77,7 @@
 			<div class="depot_num z_num">
 				<span><b class="red">*</b> 商品重量：</span>
 				<el-input v-model="weight" size="medium" style="width: 250px;margin: 10px 0;" clearable>
-				</el-input> g
+				</el-input> kg
 			</div>
 			<div class="goods_classify" style="margin: 10px 0;">
 				<span><b class="red">*</b> 运费设置：</span>
@@ -96,11 +96,11 @@
 				推荐
 			</div>
 		</div>
-		<div class="presell_days">
-			<span><b class="red">*</b> 预售天数(库存为0)：</span>
-			<el-input v-model="advance_date" size="medium" style="width: 250px;margin: 10px 0;" clearable>
-			</el-input> 天
-		</div>
+		<!--<div class="presell_days">-->
+			<!--<span><b class="red">*</b> 预售天数(库存为0)：</span>-->
+			<!--<el-input v-model="advance_date" size="medium" style="width: 250px;margin: 10px 0;" clearable>-->
+			<!--</el-input> 天-->
+		<!--</div>-->
 		<div class="editor">
 			<span class="fl">商品详情描述： </span>
 			<div class="ue fl">
