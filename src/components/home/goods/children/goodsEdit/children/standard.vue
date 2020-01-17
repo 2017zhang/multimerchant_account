@@ -39,7 +39,7 @@
         </ul>
       </div>
     </div>
-    <div class="g_edit"></div>
+    <div class="g_editss"></div>
     <div class="tijiao">
       <span @click="submit">确认提交</span>
     </div>
@@ -238,8 +238,8 @@ export default {
       }
       this.$HTTP(this.$httpConfig.getGoodsSpec, { spec: spec }, "post")
         .then(res => {
-          $(".g_edit").html("");
-          $(".g_edit").append(res.data.data);
+          $(".g_editss").html("");
+          $(".g_editss").append(res.data.data);
           let id = "spec_input_tab";
           this.mergeCell(id);
           this.$nextTick(() => {
@@ -374,28 +374,28 @@ export default {
 };
 </script>
 <style>
-.g_edit .table {
+.g_editss .table {
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-top: 1px solid #ddd;
   margin-top: 15px;
 }
-.g_edit .table tr td {
+.g_editss .table tr td {
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
   text-align: center;
   vertical-align: inherit;
 }
-.g_edit .table tr td b {
+.g_editss .table tr td b {
   font-weight: bold;
   color: #333;
 }
-.g_edit .table tr td input {
+.g_editss .table tr td input {
   padding-left: 5px;
   height: 32px;
   border: 1px solid #cccccc;
 }
-.g_edit .table tr td span {
+.g_editss .table tr td span {
   background: #088be6;
   display: inline-block;
   color: #ffffff;
@@ -495,7 +495,7 @@ export default {
       }
     }
   }
-  .g_edit {
+  .g_editss {
     margin-bottom: 25px;
   }
   .tijiao {
