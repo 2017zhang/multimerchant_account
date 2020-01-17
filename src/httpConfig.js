@@ -1,8 +1,13 @@
 // const request = 'http://sapi.shopsn.cn/';
-const request = 'http://api.shopsn.cn/agent/adminstore.php/';
+
+
+// const request = 'http://api.shopsn.cn/agent/adminstore.php/';
+const request = 'http://122.14.221.140:8804/';
+const requestAdmin = 'http://122.14.221.140:8804/adminstore.php/'
 // const imgRequest = "http://center.shopsn.cn/";
 //const request = 'http://www.b2b2c_sapi.com/';
-const imgRequest = "http://center.shopsn.cn/";
+// const imgRequest = "http://center.shopsn.cn/";
+const imgRequest = "http://122.14.221.140:8801/";
 const uploadImage = 'upload.php/';
 const config = {
 
@@ -58,6 +63,10 @@ const config = {
   getGoodsFreightList: request + 'Freights/getFreightList', //获取运费模块列表
   getClassById: request + 'GoodsClass/getClassById', //获取分类
   addGoods: request + 'Goods/addGoodsInfo', //添加商品
+
+  addGoodsBase : requestAdmin +'SystemMsg/msgCount', //添加商品标识
+//   addGoodsBase : request +'SystemMsg/msgCount', //添加商品标识
+
   //商品、店铺图片操作
   addGoodsPic: request + 'GoodsImages/pictureAlbum', //添加商品图片
   upLoadImage: request + 'UploadImage/uploadImage', // 上传图片

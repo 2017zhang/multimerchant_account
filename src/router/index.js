@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from '@/App'
 import Router from 'vue-router'
+
 const subject = r => require(['@/components/subject'], r); //入口
 const login = r => require(['@/components/logoIn/logoIn'], r); //登录
 const home = r => require(['@/components/home/home'], r); //商户中心入口

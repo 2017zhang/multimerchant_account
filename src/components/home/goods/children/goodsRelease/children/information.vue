@@ -60,15 +60,157 @@
 				</el-select>
 			</div>
 			<div class="market_price z_price">
-				<span><b class="red">*</b> 市场价： </span>
+				<span><b class="red">*</b> 零售价：</span>
 				<el-input v-model="price_market" size="medium" style="width: 250px;margin: 10px 0;" clearable>
 				</el-input> 元
 			</div>
-			<div class="Member_price z_price">
+			<!-- <div class="Member_price z_price">
 				<span><b class="red">*</b> 会员价： </span>
 				<el-input v-model="price_member" size="medium" style="width: 250px;margin: 10px 0;" clearable>
 				</el-input> 元
+			</div> -->
+
+
+<div class="Member_price z_price">
+				<span><b class="red">*</b> 批发价： </span>
+				<el-input v-model="price_trade" size="medium" style="width: 250px;margin: 10px 0;" clearable>
+				</el-input> 元
 			</div>
+            <div class="Member_price z_price">
+				<span><b class="red">*</b> 起批价： </span>
+				<el-input v-model="can_trade_price" size="medium" style="width: 250px;margin: 10px 0;" clearable>
+				</el-input> 元
+			</div>
+            <div class="Member_price z_price">
+				<span><b class="red">*</b> B团价： </span>
+				<el-input v-model="price_b" size="medium" style="width: 250px;margin: 10px 0;" clearable>
+				</el-input> 元
+			</div>
+            <div class="Member_price z_price">
+				<span><b class="red">*</b> C团价： </span>
+				<el-input v-model="price_c" size="medium" style="width: 250px;margin: 10px 0;" clearable>
+				</el-input> 元
+			</div>
+
+
+            <div class="Member_price z_price" style="padding-left:0;">
+				<span><b class="red">*</b> 生产日期：</span>
+                <el-date-picker v-model="date_in_produced" type="date" placeholder="选择日" @change="dataSearch" value-format="yyyy-MM-dd" style="width: 250px;margin: 10px 0;"></el-date-picker>
+				<!-- <el-input v-model="price_c" size="medium" style="width: 250px;margin: 10px 0;" clearable>
+				</el-input>  -->
+			</div>
+            <div class="Member_price z_price">
+				<span><b class="red">*</b> 保质期：</span>
+                <el-date-picker v-model="goods_expiration_date" type="date" placeholder="选择日" @change="dataSearch" value-format="yyyy-MM-dd" style="width: 250px;margin: 10px 0;"></el-date-picker>
+				<!-- <el-input v-model="price_c" size="medium" style="width: 250px;margin: 10px 0;" clearable>
+				</el-input>  -->
+			</div>
+           
+            <div class="goods_brand public">
+				<span>商品标识： </span>
+				<el-select v-model="mark_type" placeholder="请选择" style="margin: 10px 0;">
+					<el-option v-for="(item,index) in brandData" :key="index" :label="item" :value="index">
+					</el-option>
+				</el-select>
+			</div>
+
+            <div class="goods_brand public">
+				<span>产地证明： </span>
+				<el-upload class="uploadImgBox"
+                ref='pic_place_upload'
+                    action="#"
+                    multiple
+                    :limit="1"
+                    list-type="picture-card"
+                    :before-upload="beforeAvatarUpload"
+                    :auto-upload="false"
+                    :on-change="handleChangeA"
+                    :file-list="pic_placeList"
+                    >
+                        <i slot="default" class="el-icon-plus"></i>
+                        <div slot="file" slot-scope="{file}">
+                        <img
+                            class="el-upload-list__item-thumbnail"
+                            :src="file.url" alt=""
+                        >
+                        <span class="el-upload-list__item-actions">
+                            
+                            <span
+                            v-if="!disabled"
+                            class="el-upload-list__item-delete"
+                            @click="handleRemove(file,'pic_place_upload')"
+                            >
+                            <i class="el-icon-delete"></i>
+                            </span>
+                        </span>
+                        </div>
+                    </el-upload>
+			</div>
+
+            <div class="goods_brand public">
+				<span>合格证明： </span>
+				<el-upload class="uploadImgBox"
+                ref='pic_qualified_upload'
+                    action="#"
+                    multiple
+                    :limit="1"
+                    list-type="picture-card"
+                    :auto-upload="false"
+                    :before-upload="beforeAvatarUpload"
+                    :on-change="handleChangeB"
+                    :file-list="pic_qualifiedList">
+                        <i slot="default" class="el-icon-plus"></i>
+                        <div slot="file" slot-scope="{file}">
+                        <img
+                            class="el-upload-list__item-thumbnail"
+                            :src="file.url" alt=""
+                        >
+                        <span class="el-upload-list__item-actions">
+                            
+                            <span
+                            v-if="!disabled"
+                            class="el-upload-list__item-delete"
+                            @click="handleRemoveB(file)"
+                            >
+                            <i class="el-icon-delete"></i>
+                            </span>
+                        </span>
+                        </div>
+                    </el-upload>
+			</div>
+<div class="goods_brand public">
+				<span>检查报告： </span>
+				<el-upload class="uploadImgBox"
+                ref='pic_examine_upload'
+                    action="#"
+                    multiple
+                    :limit="1"
+                    list-type="picture-card"
+                    :auto-upload="false"
+                    :on-change="handleChangeC"
+                    :file-list="pic_examineList"
+                    >
+                        <i slot="default" class="el-icon-plus"></i>
+                        <div slot="file" slot-scope="{file}">
+                        <img
+                            class="el-upload-list__item-thumbnail"
+                            :src="file.url" alt=""
+                        >
+                        <span class="el-upload-list__item-actions">
+                            
+                            <span
+                            v-if="!disabled"
+                            class="el-upload-list__item-delete"
+                            @click="handleRemoveC(file)"
+                            >
+                            <i class="el-icon-delete"></i>
+                            </span>
+                        </span>
+                        </div>
+                    </el-upload>
+			</div>
+
+
 			<div class="depot_num z_num">
 				<span><b class="red">*</b> 仓库数量： </span>
 				<el-input v-model="stock" size="medium" style="width: 250px;margin: 10px 0;" clearable>
@@ -90,8 +232,8 @@
 			</div>
 			<div class="set">
 				<span>设置： </span>
-				<input type="checkbox" v-model="shelves">
-				上架
+				<!-- <input type="checkbox" v-model="shelves">
+				上架 -->
 				<input type="checkbox" v-model="recommend">
 				推荐
 			</div>
@@ -134,8 +276,28 @@ export default {
 			brand_id: 0,    // 品牌编号
 			classData: {},   // 一级分类
 			storeClassData:[], // 店内一级分类
-			price_market: 0.00, // 市场价
+			// price_market: 0.00, // 市场价
 			price_member: 0.00,// 会员价
+
+            mark_type:'',           //商品标示:
+            price_market:0.00,         //零售价:
+            price_trade: 0.00,         //批发价:
+            can_trade_price:0.00,         //起批价:
+            price_b:0.00,              //B团价:
+            price_c:0.00,               // C团价:
+            date_in_produced:'',         //生产日期:
+            goods_expiration_date:'',      //保质期:
+            pic_place:'123',               // 产地证明:
+            pic_qualified:'',           // 合格证明:
+            pic_examine:'',             // 检查报告:
+            pic_placeList:[],               // 产地证明:
+            pic_qualifiedList:[],           // 合格证明:
+            pic_examineList:[],             // 检查报告:
+            
+         dialogImageUrl: '',
+        dialogVisible: false,
+        disabled: false,
+
 			advance_date: 0,  // 预售期
 			shelves: 0,  // 是否上架
 			recommend: 0,  // 是否推荐
@@ -148,7 +310,9 @@ export default {
 			storeclassByThree: [],  // 店内三级分类数据
 			weight: 0.0, // 重量 以克为计量单位
 			freight: '',		//运费模板
-			freightData: []
+			freightData: [],
+            addGoodsBaseData:[]
+
 		};
 	},
 	props: [],
@@ -159,6 +323,8 @@ export default {
 		this.getBrand();
 		this.getFreight();
 		this.getOneStoreClass(); //获取一级店内分类
+        this.initData({});
+        this.GetGoodsBase();
 	},
 
 	methods: {
@@ -194,7 +360,8 @@ export default {
 		//获取运费
 		getFreight() {
 			this.$HTTP(this.$httpConfig.getGoodsFreightList, {}, 'post').then((res) => {
-				this.freightData = res.data.data;
+				this.addGoodsBaseData = res.data.data;
+                console.log(this.addGoodsBaseData);
 			}).catch((err) => {
 				this.$message.error(err.data.message);
 			});
@@ -290,11 +457,28 @@ export default {
 				console.log(err)
 			});
 		},
-
+        warningOpen(text) {
+            this.$message({
+            message: text,
+            type: 'warning'
+            });
+        },
+        // 商品标识 addGoodsBase
+            GetGoodsBase() {
+                console.log("商品标识")
+			this.$HTTP(this.$httpConfig.addGoodsBase, {}, 'post').then((res) => {
+				this.addGoodsBaseData = res.data.data;
+                console.log(this.addGoodsBaseData)
+			}).catch((err) => {
+                console.log("失败-商品标识")
+				this.$message.error(err.data.message);
+			});
+		},
 		/**
 		 * 添加商品
 		 */
 		addGoods() {
+
 			let dataJson = {
 				'id': 0,
 				'class_id': this.class_id,
@@ -305,32 +489,72 @@ export default {
 				'shelves': Number(this.shelves),
 				'advance_date': this.advance_date,
 				'stock': this.stock,
-				'price_market': this.price_market,
+				// 'price_market': this.price_market,
 				'price_member': this.price_member,
 				'weight': this.weight,
 				'express_id': this.freight,
 				'store_class_one': this.store_class_id,
 				'store_class_two': this.store_class_two,
-				'store_class_three' : this.store_class_three
+				'store_class_three' : this.store_class_three,
+
+            
+            'price_market':this.price_market,         //零售价:
+            'price_trade':this.price_trade,         //批发价:
+            'can_trade_price':this.can_trade_price,         //起批价:
+            'price_b':this.price_b,              //B团价:
+            'price_c':this.price_c,               // C团价:
+            
+
 			};
+            console.log("商品标示:"+this.mark_type);
+            console.log("零售价:"+this.price_market);
+            console.log("批发价:"+this.price_trade);
+            console.log("起批价:"+this.can_trade_price);
+            console.log("B团价:"+this.price_b);
+            console.log("C团价:"+this.price_c);
+            console.log("生产日期:"+this.date_in_produced);
+            console.log("保质期:"+this.goods_expiration_date)
+            console.log("产地证明:"+this.pic_place)
+            console.log("合格证明:"+this.pic_qualified)
+            console.log("检查报告:"+this.pic_examine)
 			for (let i in dataJson) {
 			//	console.log(dataJson[i]);
 				if (isNaN(dataJson[i])) {
-					this.$layer.msg('数据不合法');
+					// this.$layer.msg('数据不合法');
+                    console.log(dataJson[i])
+                    this.warningOpen("数据不合法");
 					return;
 				}
 			}
+             console.log("提交")
 			if (!/^[\u4e00-\u9fa5\s_a-zA-Z0-9/_、，；！：,. 。“”【】（）*+-]+$/.test(this.title)) {
-				this.$layer.msg('商品名称异常，请尽量输入中文符号');
+				// this.$layer.msg('商品名称异常，请尽量输入中文符号');
+                this.warningOpen("商品名称异常，请尽量输入中文符号");
 				return false;
 			}
 			// if (!/^[\^[a-zA-Z\u4e00-\u9fa5]+$/.test(this.title)) {
 			// 	this.$layer.msg('商品名称异常，请尽量输入中文符号');
 			// 	return false;
 			// }
+            if(!this.mark_type){
+                 this.warningOpen("商品名称异常，请尽量输入中文符号");
+				return false;
+            }
+
+            
 			dataJson['title'] = this.title;
 			dataJson['detail'] = this.getUEContent();
 			dataJson['description'] = this.description;
+            // 非数字
+            dataJson['mark_type'] = this.mark_type,           //商品标示:
+            dataJson['date_in_produced'] = this.date_in_produced,         //生产日期:
+            dataJson['goods_expiration_date'] = this.goods_expiration_date,      //保质期:
+            dataJson['pic_place'] = this.pic_place,               // 产地证明:
+            dataJson['pic_qualified'] = this.pic_qualified,           // 合格证明:
+            dataJson['pic_examine'] = this.pic_examine,             // 检查报告:
+           
+
+
 			console.log(dataJson);
 			// 提交商品基本信息
 			this.$HTTP(this.$httpConfig.addGoods, dataJson, 'post').then((res) => {
@@ -343,7 +567,101 @@ export default {
 			}).catch((err) => {
 				console.log(err)
 			});
-		}
+		},
+        // 日期
+        dataSearch() {
+      this.getListByDay();
+    },
+    async initData(data) {
+      //获取当前时间
+      var now   = new Date();
+      var monthn = now.getMonth()+1;
+      var yearn  = now.getFullYear();
+      var dayn = now.getDate();
+      this.selectDay = yearn+"-"+monthn+"-"+dayn;
+
+      this.selectUser = parseInt(sessionStorage.getItem("userid"));
+      this.getListByDay();
+    },
+    async getListByDay(data) {
+
+    },
+     handleRemove(file) {
+        // this.dialogVisible = false;
+        this.$refs.pic_place_upload.clearFiles();
+        // this.$refs.upload.clearFiles();
+      },
+      handleRemoveB(file) {
+        this.$refs.pic_qualified_upload.clearFiles();
+      },
+      handleRemoveC(file) {
+        this.$refs.pic_examine_upload.clearFiles();
+      },
+       
+        handleChangeA(file,data){
+            let path = data[0].url;
+            let ext = data[0].raw.type; 
+            let _this = this;
+            this.getUrlBase64(path, ext, function (base64) {
+        _this.pic_place = base64;
+        });
+        },
+         
+        handleChangeB(file,data){
+            let path = data[0].url;
+            let ext = data[0].raw.type;
+            let _this = this;
+            this.getUrlBase64(path, ext, function (base64) {
+            console.log(base64);//base64编码值
+            _this.pic_qualified = base64;        // // 合格证明                    
+        });
+        },
+        handleChangeC(file,data){
+            let path = data[0].url;
+            let ext = data[0].raw.type;
+            let _this = this;
+            this.getUrlBase64(path, ext, function (base64) {
+            console.log(base64);//base64编码值
+            _this.pic_examine = base64;        // // 检查报告                      
+        });
+        },
+
+
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        console.log(this.dialogImageUrl)
+        this.dialogVisible = true;
+      },
+       beforeAvatarUpload(file) {
+           console.log("001");
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+              this.warningOpen("上传头像图片只能是 JPG 格式!");
+        }
+        if (!isLt2M) {
+          this.warningOpen('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+    //   图片转换base64
+    getUrlBase64(url, ext, callback) {
+    var canvas = document.createElement("canvas");   //创建canvas DOM元素
+    var ctx = canvas.getContext("2d");
+    var img = new Image;
+    img.crossOrigin = 'Anonymous';
+    img.src = url;
+    img.onload = function () {
+        // canvas.height = 60; //指定画板的高度,自定义
+        // canvas.width = 85; //指定画板的宽度，自定义
+        ctx.drawImage(img, 0, 0, 60, 85); //参数可自定义
+        var dataURL = canvas.toDataURL("image/" + ext);
+        callback.call(this, dataURL); //回掉函数获取Base64编码
+        canvas = null;
+        return dataURL;
+    };
+}
 	},
 	components: {
 		UE
@@ -356,6 +674,21 @@ body {
 }
 </style>
 <style lang="less" scoped>
+.uploadImgBox{
+        border: 1px solid;
+    display: inline-block;
+    margin-left: 40px;
+    margin-bottom:20px;
+}
+// .currency .z_info .public span, .currency .z_info .z_num span, .currency .z_info .z_price span{
+//     border: 1px solid;
+//     min-width: 57px;
+//     display: inline-block;
+// }
+.currency .z_info .public .uploadImgBox .el-upload-list__item-preview span{
+    width: auto;
+    padding:0;
+}
 .currency {
   width: 100%;
   height: auto;
